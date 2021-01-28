@@ -1,10 +1,11 @@
 {
   "name": "@dalane/projects-api-client",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "",
   "main": "./build/index.js",
   "types": "./build/index.d.ts",
   "scripts": {
+    "prepare": "npm run build",
     "build-openapi-client": "./node_modules/.bin/oazapfts ./src/openapi.json ./src/client.ts",
     "prebuild": "rm -rf ./build",
     "build": "./node_modules/.bin/tsc"
