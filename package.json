@@ -8,14 +8,14 @@
     "prepare": "npm run build",
     "build-openapi-client": "./node_modules/.bin/oazapfts ./src/openapi.json ./src/client.ts",
     "prebuild": "rm -rf ./build",
-    "build": "./node_modules/.bin/tsc"
+    "build": "tsc"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "content-type": "^1.0.4",
     "debug": "4.3.1",
-    "node-fetch": "2.6.0",
+    "node-fetch": "^2.6.1",
     "opossum": "5.1.3",
     "source-map-support": "0.5.19"
   },
