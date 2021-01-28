@@ -1,0 +1,5331 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "cloud.dalane.api.projects",
+    "description": "An API for Dalane Cloud Project Management Platform.",
+    "version": "v1"
+  },
+  "servers": [
+    {
+      "url": "http://projects.api.dalane.cloud/v1"
+    }
+  ],
+  "security": [
+    {
+      "openId": []
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "openId": {
+        "type": "openIdConnect",
+        "openIdConnectUrl": "http://auth.dalane.cloud/.well-known/openid-configuration"
+      }
+    },
+    "parameters": {
+      "pagination_query_param": {
+        "name": "page",
+        "in": "query",
+        "required": false,
+        "style": "deepObject",
+        "explode": true,
+        "schema": {
+          "type": "object",
+          "properties": {
+            "size": {
+              "description": "Specify the number of records to return in a page. The default is 100. 0 returns all records.",
+              "type": "number",
+              "minimum": 0,
+              "default": 100
+            },
+            "number": {
+              "type": "number",
+              "minimum": 1,
+              "default": 1
+            }
+          }
+        }
+      },
+      "element_id": {
+        "name": "element_id",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "string",
+          "format": "uuid"
+        }
+      },
+      "assignment_id": {
+        "name": "assignment_id",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "string",
+          "format": "uuid"
+        }
+      },
+      "expected_version": {
+        "name": "X-Expected-Version",
+        "in": "header",
+        "required": false,
+        "schema": {
+          "type": "string"
+        }
+      },
+      "include": {
+        "name": "include",
+        "in": "query",
+        "style": "form",
+        "explode": true,
+        "required": false,
+        "schema": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "filter": {
+        "name": "filter",
+        "in": "query",
+        "required": false,
+        "style": "deepObject",
+        "explode": true,
+        "schema": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      },
+      "period_start_query": {
+        "name": "period_start",
+        "in": "query",
+        "required": true,
+        "schema": {
+          "type": "integer"
+        }
+      },
+      "period_end_query": {
+        "name": "period_end",
+        "in": "query",
+        "required": true,
+        "schema": {
+          "type": "integer"
+        }
+      },
+      "assumption_id": {
+        "name": "assumption_id",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "string",
+          "format": "uuid"
+        }
+      },
+      "dependency_id": {
+        "name": "dependency_id",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "string",
+          "format": "uuid"
+        }
+      },
+      "requiredAtLimitQueryParam": {
+        "name": "requiredAtLimit",
+        "in": "query",
+        "required": false,
+        "schema": {
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "issue_id": {
+        "name": "issue_id",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "string",
+          "format": "uuid"
+        }
+      },
+      "organisation_id_param": {
+        "name": "organisation_id",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "string",
+          "format": "uuid"
+        }
+      },
+      "project_id": {
+        "name": "project_id",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "string",
+          "format": "uuid"
+        }
+      },
+      "risk_id": {
+        "name": "risk_id",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "string",
+          "format": "uuid"
+        }
+      },
+      "workpackage_id_query": {
+        "name": "workpackage_id",
+        "in": "query",
+        "required": false,
+        "schema": {
+          "type": "string",
+          "format": "uuid"
+        }
+      },
+      "period_interval_query": {
+        "name": "interval",
+        "in": "query",
+        "required": true,
+        "schema": {
+          "type": "integer",
+          "minimum": 1
+        }
+      },
+      "workpackage_id": {
+        "name": "workpackage_id",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "string",
+          "format": "uuid"
+        }
+      }
+    },
+    "schemas": {
+      "ErrorObject": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "errors": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "number"
+                },
+                "code": {
+                  "type": "string"
+                },
+                "title": {
+                  "type": "string"
+                },
+                "detail": {
+                  "type": "string"
+                },
+                "source": {
+                  "type": "object",
+                  "properties": {
+                    "pointer": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "pointer"
+                  ]
+                },
+                "stack": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "status",
+                "code",
+                "title",
+                "detail"
+              ]
+            }
+          }
+        },
+        "required": [
+          "errors"
+        ]
+      },
+      "MetadataObject": {
+        "type": "object",
+        "properties": {
+          "count": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "page": {
+            "type": "object",
+            "properties": {
+              "number": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "size": {
+                "type": "integer",
+                "minimum": 1
+              }
+            },
+            "required": [
+              "number",
+              "size"
+            ]
+          }
+        },
+        "required": [
+          "count",
+          "page"
+        ]
+      },
+      "AssumptionRatingEnum": {
+        "type": "string",
+        "enum": [
+          "Very High",
+          "High",
+          "Moderate",
+          "Low",
+          "Very Low",
+          "None"
+        ]
+      },
+      "AssumptionImpactEnum": {
+        "type": "string",
+        "enum": [
+          "None",
+          "Negligible",
+          "Minor",
+          "Moderate",
+          "Major",
+          "Severe"
+        ]
+      },
+      "AssumptionStatusEnum": {
+        "type": "string",
+        "enum": [
+          "Proposed",
+          "Open",
+          "Closed",
+          "Rejected",
+          "Deleted"
+        ]
+      },
+      "AssumptionEntity": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "assumption_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "project_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "workpackage_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "rbs_element_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "assumption_number": {
+            "type": "number",
+            "minimum": 1
+          },
+          "name": {
+            "type": "string"
+          },
+          "status": {
+            "$ref": "#/components/schemas/AssumptionStatusEnum"
+          },
+          "description": {
+            "type": "string"
+          },
+          "reason": {
+            "type": "string"
+          },
+          "closeout_by": {
+            "type": "integer",
+            "nullable": true
+          },
+          "closed_at": {
+            "type": "integer",
+            "nullable": true
+          },
+          "actions": {
+            "type": "string"
+          },
+          "incorrect_effect": {
+            "type": "string"
+          },
+          "incorrect_schedule_impact": {
+            "$ref": "#/components/schemas/AssumptionImpactEnum"
+          },
+          "incorrect_cost_impact": {
+            "$ref": "#/components/schemas/AssumptionImpactEnum"
+          },
+          "incorrect_safety_impact": {
+            "$ref": "#/components/schemas/AssumptionImpactEnum"
+          },
+          "incorrect_quality_impact": {
+            "$ref": "#/components/schemas/AssumptionImpactEnum"
+          },
+          "incorrect_reputation_impact": {
+            "$ref": "#/components/schemas/AssumptionImpactEnum"
+          },
+          "overall_impact": {
+            "$ref": "#/components/schemas/AssumptionImpactEnum"
+          },
+          "incorrect_score": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 25
+          },
+          "incorrect_rating": {
+            "$ref": "#/components/schemas/AssumptionRatingEnum"
+          },
+          "created_at": {
+            "type": "number"
+          },
+          "updated_at": {
+            "type": "number"
+          },
+          "version": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "workpackage": {
+            "$ref": "#/components/schemas/WorkpackageEntity"
+          },
+          "rbs_element": {
+            "$ref": "#/components/schemas/RbsElement"
+          }
+        },
+        "required": [
+          "assumption_id",
+          "project_id",
+          "assumption_number",
+          "name",
+          "status",
+          "created_at",
+          "updated_at",
+          "version"
+        ]
+      },
+      "CreateAssumptionDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "workpackage_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "rbs_element_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string",
+            "minLength": 2
+          },
+          "status": {
+            "$ref": "#/components/schemas/AssumptionStatusEnum"
+          },
+          "description": {
+            "type": "string"
+          },
+          "reason": {
+            "type": "string"
+          },
+          "closeout_by": {
+            "type": "number"
+          },
+          "closed_at": {
+            "type": "number"
+          },
+          "actions": {
+            "type": "string"
+          },
+          "incorrect_effect": {
+            "type": "string"
+          },
+          "incorrect_schedule_impact": {
+            "$ref": "#/components/schemas/AssumptionImpactEnum"
+          },
+          "incorrect_cost_impact": {
+            "$ref": "#/components/schemas/AssumptionImpactEnum"
+          },
+          "incorrect_safety_impact": {
+            "$ref": "#/components/schemas/AssumptionImpactEnum"
+          },
+          "incorrect_quality_impact": {
+            "$ref": "#/components/schemas/AssumptionImpactEnum"
+          },
+          "incorrect_reputation_impact": {
+            "$ref": "#/components/schemas/AssumptionImpactEnum"
+          }
+        },
+        "required": [
+          "name",
+          "status"
+        ]
+      },
+      "UpdateAssumptionDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "workpackage_id": {
+            "type": "string",
+            "nullable": true,
+            "format": "uuid"
+          },
+          "rbs_element_id": {
+            "type": "string",
+            "nullable": true,
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string"
+          },
+          "status": {
+            "$ref": "#/components/schemas/AssumptionStatusEnum"
+          },
+          "description": {
+            "type": "string",
+            "nullable": true,
+            "format": "uuid"
+          },
+          "reason": {
+            "type": "string",
+            "nullable": true,
+            "format": "uuid"
+          },
+          "closeout_by": {
+            "type": "integer",
+            "nullable": true
+          },
+          "closed_at": {
+            "type": "integer",
+            "nullable": true
+          },
+          "actions": {
+            "type": "string",
+            "nullable": true
+          },
+          "incorrect_effect": {
+            "type": "string",
+            "nullable": true
+          },
+          "incorrect_schedule_impact": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/AssumptionImpactEnum"
+              },
+              {
+                "nullable": true
+              }
+            ]
+          },
+          "incorrect_cost_impact": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/AssumptionImpactEnum"
+              },
+              {
+                "nullable": true
+              }
+            ]
+          },
+          "incorrect_safety_impact": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/AssumptionImpactEnum"
+              },
+              {
+                "nullable": true
+              }
+            ]
+          },
+          "incorrect_quality_impact": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/AssumptionImpactEnum"
+              },
+              {
+                "nullable": true
+              }
+            ]
+          },
+          "incorrect_reputation_impact": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/AssumptionImpactEnum"
+              },
+              {
+                "nullable": true
+              }
+            ]
+          }
+        }
+      },
+      "AssumptionsByStatusEntity": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "$ref": "#/components/schemas/AssumptionStatusEnum"
+          },
+          "count": {
+            "type": "integer",
+            "minimum": 0
+          }
+        },
+        "required": [
+          "status",
+          "count"
+        ]
+      },
+      "AssumptionsByRatingEntity": {
+        "type": "object",
+        "properties": {
+          "incorrect_rating": {
+            "$ref": "#/components/schemas/AssumptionRatingEnum"
+          },
+          "count": {
+            "type": "integer",
+            "minimum": 0
+          }
+        },
+        "required": [
+          "incorrect_rating",
+          "count"
+        ]
+      },
+      "AssumptionDashboardEntity": {
+        "type": "object",
+        "properties": {
+          "by_status": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AssumptionsByStatusEntity"
+            }
+          },
+          "by_rating": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AssumptionsByRatingEntity"
+            }
+          },
+          "open": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AssumptionEntity"
+            }
+          }
+        },
+        "required": [
+          "by_status",
+          "by_rating",
+          "open"
+        ]
+      },
+      "DependencyStatusEnum": {
+        "type": "string",
+        "enum": [
+          "Proposed",
+          "Open",
+          "Delivered",
+          "Accepted",
+          "Rejected",
+          "Cancelled",
+          "Deleted"
+        ]
+      },
+      "LateDependencyImpactEnum": {
+        "type": "string",
+        "enum": [
+          "None",
+          "Negligible",
+          "Minor",
+          "Moderate",
+          "Major",
+          "Severe"
+        ]
+      },
+      "LateDependencyLikelihoodEnum": {
+        "type": "string",
+        "enum": [
+          "Never",
+          "Rare",
+          "Unlikely",
+          "Possible",
+          "Likely",
+          "Almost Certain"
+        ]
+      },
+      "LateDependencyRatingEnum": {
+        "type": "string",
+        "enum": [
+          "Very High",
+          "High",
+          "Moderate",
+          "Low",
+          "Very Low",
+          "None"
+        ]
+      },
+      "CreateDependencyDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "workpackage_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string"
+          },
+          "status": {
+            "$ref": "#/components/schemas/DependencyStatusEnum"
+          },
+          "description": {
+            "type": "string"
+          },
+          "required_at": {
+            "type": "number"
+          },
+          "expected_at": {
+            "type": "number"
+          },
+          "actions": {
+            "type": "string"
+          },
+          "late_cost_impact": {
+            "$ref": "#/components/schemas/LateDependencyImpactEnum"
+          },
+          "late_schedule_impact": {
+            "$ref": "#/components/schemas/LateDependencyImpactEnum"
+          },
+          "late_quality_impact": {
+            "$ref": "#/components/schemas/LateDependencyImpactEnum"
+          },
+          "late_reputation_impact": {
+            "$ref": "#/components/schemas/LateDependencyImpactEnum"
+          },
+          "late_safety_impact": {
+            "$ref": "#/components/schemas/LateDependencyImpactEnum"
+          }
+        },
+        "required": [
+          "name",
+          "status"
+        ]
+      },
+      "UpdateDependencyDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "status": {
+            "$ref": "#/components/schemas/DependencyStatusEnum"
+          },
+          "workpackage_id": {
+            "type": "string",
+            "nullable": true,
+            "format": "uuid"
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "required_at": {
+            "type": "number",
+            "nullable": true
+          },
+          "expected_at": {
+            "type": "number",
+            "nullable": true
+          },
+          "actions": {
+            "type": "string",
+            "nullable": true
+          },
+          "late_cost_impact": {
+            "$ref": "#/components/schemas/LateDependencyImpactEnum"
+          },
+          "late_schedule_impact": {
+            "$ref": "#/components/schemas/LateDependencyImpactEnum"
+          },
+          "late_quality_impact": {
+            "$ref": "#/components/schemas/LateDependencyImpactEnum"
+          },
+          "late_reputation_impact": {
+            "$ref": "#/components/schemas/LateDependencyImpactEnum"
+          },
+          "late_safety_impact": {
+            "$ref": "#/components/schemas/LateDependencyImpactEnum"
+          }
+        }
+      },
+      "DependencyEntity": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "dependency_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "project_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "workpackage_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "dependency_number": {
+            "type": "number",
+            "minimum": 1
+          },
+          "name": {
+            "type": "string"
+          },
+          "status": {
+            "$ref": "#/components/schemas/DependencyStatusEnum"
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "required_at": {
+            "type": "number",
+            "nullable": true
+          },
+          "expected_at": {
+            "type": "number",
+            "nullable": true
+          },
+          "actions": {
+            "type": "string",
+            "nullable": true
+          },
+          "late_cost_impact": {
+            "$ref": "#/components/schemas/LateDependencyImpactEnum"
+          },
+          "late_schedule_impact": {
+            "$ref": "#/components/schemas/LateDependencyImpactEnum"
+          },
+          "late_quality_impact": {
+            "$ref": "#/components/schemas/LateDependencyImpactEnum"
+          },
+          "late_reputation_impact": {
+            "$ref": "#/components/schemas/LateDependencyImpactEnum"
+          },
+          "late_safety_impact": {
+            "$ref": "#/components/schemas/LateDependencyImpactEnum"
+          },
+          "overall_impact": {
+            "$ref": "#/components/schemas/LateDependencyImpactEnum"
+          },
+          "late_delivery_score": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "late_delivery_rating": {
+            "$ref": "#/components/schemas/LateDependencyRatingEnum"
+          },
+          "created_at": {
+            "type": "number"
+          },
+          "updated_at": {
+            "type": "number"
+          },
+          "version": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "workpackage": {
+            "$ref": "#/components/schemas/WorkpackageEntity"
+          }
+        },
+        "required": [
+          "dependency_id",
+          "project_id",
+          "dependency_number",
+          "name",
+          "status",
+          "late_cost_impact",
+          "late_schedule_impact",
+          "late_quality_impact",
+          "late_reputation_impact",
+          "late_safety_impact",
+          "overall_impact",
+          "late_delivery_score",
+          "late_delivery_rating",
+          "created_at",
+          "updated_at",
+          "version"
+        ]
+      },
+      "DependenciesByStatusEntity": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "$ref": "#/components/schemas/DependencyStatusEnum"
+          },
+          "count": {
+            "type": "integer",
+            "minimum": 0
+          }
+        },
+        "required": [
+          "status",
+          "count"
+        ]
+      },
+      "DependenciesByRatingEntity": {
+        "type": "object",
+        "properties": {
+          "late_delivery_rating": {
+            "$ref": "#/components/schemas/LateDependencyRatingEnum"
+          },
+          "count": {
+            "type": "integer",
+            "minimum": 0
+          }
+        },
+        "required": [
+          "late_delivery_rating",
+          "count"
+        ]
+      },
+      "DependencyDashboardEntity": {
+        "type": "object",
+        "properties": {
+          "by_status": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DependenciesByStatusEntity"
+            }
+          },
+          "by_rating": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DependenciesByRatingEntity"
+            }
+          },
+          "open": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DependencyEntity"
+            }
+          }
+        },
+        "required": [
+          "by_status",
+          "by_rating",
+          "open"
+        ]
+      },
+      "IssueStatusEnum": {
+        "type": "string",
+        "enum": [
+          "Proposed",
+          "Open",
+          "Closed",
+          "Rejected",
+          "Deleted"
+        ]
+      },
+      "IssueRatingEnum": {
+        "type": "string",
+        "enum": [
+          "Very High",
+          "High",
+          "Moderate",
+          "Low",
+          "Very Low",
+          "None"
+        ]
+      },
+      "IssueImpactEnum": {
+        "type": "string",
+        "enum": [
+          "None",
+          "Negligible",
+          "Minor",
+          "Moderate",
+          "Major",
+          "Severe"
+        ]
+      },
+      "IssueCauseEnum": {
+        "type": "string",
+        "enum": [
+          "Risk",
+          "Assumption",
+          "Dependency",
+          "Other"
+        ]
+      },
+      "CreateIssueDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "workpackage_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string"
+          },
+          "status": {
+            "$ref": "#/components/schemas/IssueStatusEnum"
+          },
+          "description": {
+            "type": "string"
+          },
+          "started_at": {
+            "type": "number"
+          },
+          "expected_at": {
+            "type": "number"
+          },
+          "closed_at": {
+            "type": "number"
+          },
+          "caused_by": {
+            "$ref": "#/components/schemas/IssueCauseEnum"
+          },
+          "assumption_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "risk_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "dependency_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "actions": {
+            "type": "string"
+          },
+          "effect": {
+            "type": "string"
+          },
+          "schedule_impact": {
+            "$ref": "#/components/schemas/IssueImpactEnum"
+          },
+          "cost_impact": {
+            "$ref": "#/components/schemas/IssueImpactEnum"
+          },
+          "safety_impact": {
+            "$ref": "#/components/schemas/IssueImpactEnum"
+          },
+          "quality_impact": {
+            "$ref": "#/components/schemas/IssueImpactEnum"
+          },
+          "reputation_impact": {
+            "$ref": "#/components/schemas/IssueImpactEnum"
+          }
+        },
+        "required": [
+          "name",
+          "status",
+          "schedule_impact",
+          "cost_impact",
+          "safety_impact",
+          "quality_impact",
+          "reputation_impact"
+        ]
+      },
+      "UpdateIssueDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "status": {
+            "$ref": "#/components/schemas/IssueStatusEnum"
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "started_at": {
+            "type": "number",
+            "nullable": true
+          },
+          "expected_at": {
+            "type": "number",
+            "nullable": true
+          },
+          "closed_at": {
+            "type": "number",
+            "nullable": true
+          },
+          "caused_by": {
+            "$ref": "#/components/schemas/IssueCauseEnum"
+          },
+          "workpackage_id": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          },
+          "assumption_id": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          },
+          "risk_id": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          },
+          "dependency_id": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          },
+          "actions": {
+            "type": "string",
+            "nullable": true
+          },
+          "effect": {
+            "type": "string",
+            "nullable": true
+          },
+          "schedule_impact": {
+            "$ref": "#/components/schemas/IssueImpactEnum"
+          },
+          "cost_impact": {
+            "$ref": "#/components/schemas/IssueImpactEnum"
+          },
+          "safety_impact": {
+            "$ref": "#/components/schemas/IssueImpactEnum"
+          },
+          "quality_impact": {
+            "$ref": "#/components/schemas/IssueImpactEnum"
+          },
+          "reputation_impact": {
+            "$ref": "#/components/schemas/IssueImpactEnum"
+          }
+        }
+      },
+      "IssueEntity": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "issue_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "project_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "workpackage_id": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          },
+          "issue_number": {
+            "type": "number",
+            "minimum": 1
+          },
+          "name": {
+            "type": "string"
+          },
+          "status": {
+            "$ref": "#/components/schemas/IssueStatusEnum"
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "reason": {
+            "type": "string",
+            "nullable": true
+          },
+          "started_at": {
+            "type": "number",
+            "nullable": true
+          },
+          "expected_at": {
+            "type": "number",
+            "nullable": true
+          },
+          "closed_at": {
+            "type": "number",
+            "nullable": true
+          },
+          "caused_by": {
+            "$ref": "#/components/schemas/IssueCauseEnum"
+          },
+          "assumption_id": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          },
+          "risk_id": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          },
+          "dependency_id": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          },
+          "other_reason": {
+            "type": "string",
+            "nullable": true
+          },
+          "actions": {
+            "type": "string",
+            "nullable": true
+          },
+          "effect": {
+            "type": "string",
+            "nullable": true
+          },
+          "schedule_impact": {
+            "$ref": "#/components/schemas/IssueImpactEnum"
+          },
+          "cost_impact": {
+            "$ref": "#/components/schemas/IssueImpactEnum"
+          },
+          "safety_impact": {
+            "$ref": "#/components/schemas/IssueImpactEnum"
+          },
+          "quality_impact": {
+            "$ref": "#/components/schemas/IssueImpactEnum"
+          },
+          "reputation_impact": {
+            "$ref": "#/components/schemas/IssueImpactEnum"
+          },
+          "issue_rating": {
+            "$ref": "#/components/schemas/IssueRatingEnum"
+          },
+          "created_at": {
+            "type": "number"
+          },
+          "updated_at": {
+            "type": "number"
+          },
+          "version": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "workpackage": {
+            "$ref": "#/components/schemas/WorkpackageEntity"
+          }
+        },
+        "required": [
+          "issue_id",
+          "project_id",
+          "workpackage_id",
+          "issue_number",
+          "name",
+          "status",
+          "description",
+          "reason",
+          "started_at",
+          "expected_at",
+          "closed_at",
+          "caused_by",
+          "assumption_id",
+          "risk_id",
+          "dependency_id",
+          "other_reason",
+          "actions",
+          "effect",
+          "schedule_impact",
+          "cost_impact",
+          "safety_impact",
+          "quality_impact",
+          "reputation_impact",
+          "issue_rating",
+          "created_at",
+          "updated_at",
+          "version"
+        ]
+      },
+      "IssueDashboardEntity": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "count_by_status": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "$ref": "#/components/schemas/IssueStatusEnum"
+                },
+                "count": {
+                  "type": "integer",
+                  "minimum": 0
+                }
+              },
+              "required": [
+                "status",
+                "count"
+              ]
+            }
+          },
+          "count_by_rating": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "issue_rating": {
+                  "$ref": "#/components/schemas/IssueRatingEnum"
+                },
+                "count": {
+                  "type": "integer",
+                  "minimum": 0
+                }
+              },
+              "required": [
+                "issue_rating",
+                "count"
+              ]
+            }
+          },
+          "period_issues": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/IssueEntity"
+            }
+          }
+        },
+        "required": [
+          "count_by_status",
+          "count_by_rating",
+          "period_issues"
+        ]
+      },
+      "ObsEntity": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "project_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "elements": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "element_id": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "code": {
+                  "type": "string"
+                },
+                "path": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "position": {
+                  "type": "number",
+                  "minimum": 0
+                },
+                "description": {
+                  "type": "string"
+                },
+                "parent_id": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              },
+              "required": [
+                "element_id",
+                "code",
+                "path",
+                "name",
+                "position"
+              ]
+            }
+          },
+          "created_at": {
+            "type": "number"
+          },
+          "updated_at": {
+            "type": "number"
+          },
+          "version": {
+            "type": "number",
+            "minimum": 1
+          }
+        },
+        "required": [
+          "project_id",
+          "elements",
+          "created_at",
+          "updated_at",
+          "version"
+        ]
+      },
+      "ObsElement": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "element_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "code": {
+            "type": "string"
+          },
+          "path": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "position": {
+            "type": "number",
+            "minimum": 0
+          },
+          "description": {
+            "type": "string"
+          },
+          "parent_id": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        "required": [
+          "element_id",
+          "code",
+          "path",
+          "name",
+          "position"
+        ]
+      },
+      "AddObsElementDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "A unique code to represent the OBS element."
+          },
+          "role": {
+            "type": "string",
+            "description": "A unique role name"
+          },
+          "description": {
+            "type": "string",
+            "description": "A brief description of the role."
+          },
+          "parent_id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "The ID of the parent element"
+          },
+          "position": {
+            "type": "number",
+            "minimum": 0,
+            "description": "A number indicating where the element will be displayed amongst its siblings. Defaults to the last position"
+          }
+        },
+        "required": [
+          "code",
+          "role"
+        ]
+      },
+      "MoveObsElementDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "parent_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "position": {
+            "type": "integer",
+            "minimum": 0
+          }
+        }
+      },
+      "UpdateObsElementDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "role": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          }
+        }
+      },
+      "CreateObsDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "method": {
+            "type": "string",
+            "enum": [
+              "empty",
+              "upload",
+              "template",
+              "copy"
+            ]
+          },
+          "templateName": {
+            "type": "string"
+          },
+          "projectIdToCopy": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "data": {
+            "type": "object"
+          }
+        },
+        "required": [
+          "method"
+        ]
+      },
+      "OrganisationEntity": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "organisation_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string"
+          },
+          "created_at": {
+            "type": "number"
+          },
+          "updated_at": {
+            "type": "number"
+          },
+          "version": {
+            "type": "integer",
+            "minimum": 1
+          }
+        },
+        "required": [
+          "organisation_id",
+          "name",
+          "created_at",
+          "updated_at",
+          "version"
+        ]
+      },
+      "ProjectStatusEnum": {
+        "type": "string",
+        "enum": [
+          "Proposed",
+          "Delivering",
+          "Rejected",
+          "Completed",
+          "Deleted",
+          "Cancelled"
+        ]
+      },
+      "ProjectRiskSettings": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "method": {
+            "type": "string",
+            "enum": [
+              "Average",
+              "Highest"
+            ],
+            "description": "Sets how the overall risk score will be calculated from the combined impact scores."
+          },
+          "ratings": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "extreme": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "ge": {
+                    "type": "number",
+                    "minimum": 0
+                  }
+                },
+                "required": [
+                  "ge"
+                ]
+              },
+              "serious": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "ge": {
+                    "type": "number",
+                    "minimum": 0
+                  }
+                },
+                "required": [
+                  "ge"
+                ]
+              },
+              "medium": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "ge": {
+                    "type": "number",
+                    "minimum": 0
+                  }
+                },
+                "required": [
+                  "ge"
+                ]
+              },
+              "low": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "ge": {
+                    "type": "number",
+                    "minimum": 0
+                  }
+                },
+                "required": [
+                  "ge"
+                ]
+              }
+            },
+            "required": [
+              "extreme",
+              "serious",
+              "medium",
+              "low"
+            ]
+          }
+        },
+        "required": [
+          "method",
+          "ratings"
+        ]
+      },
+      "ProjectEntity": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "project_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "organisation_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "owner_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "status": {
+            "$ref": "#/components/schemas/ProjectStatusEnum"
+          },
+          "friendly_id": {
+            "type": "string"
+          },
+          "settings": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "risk": {
+                "$ref": "#/components/schemas/ProjectRiskSettings"
+              }
+            },
+            "required": [
+              "risk"
+            ]
+          },
+          "created_at": {
+            "type": "number"
+          },
+          "updated_at": {
+            "type": "number"
+          },
+          "version": {
+            "type": "integer",
+            "minimum": 1
+          }
+        },
+        "required": [
+          "project_id",
+          "name",
+          "status",
+          "settings",
+          "created_at",
+          "updated_at",
+          "version"
+        ]
+      },
+      "CreateProjectDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "status": {
+            "$ref": "#/components/schemas/ProjectStatusEnum"
+          },
+          "organisation_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "friendly_id": {
+            "type": "string"
+          },
+          "initialise": {
+            "type": "boolean",
+            "default": false
+          },
+          "settings": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "risk": {
+                "$ref": "#/components/schemas/ProjectRiskSettings"
+              }
+            }
+          }
+        },
+        "required": [
+          "name",
+          "status",
+          "organisation_id"
+        ]
+      },
+      "ProjectDashboardEntity": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "risks": {
+            "type": "object",
+            "properties": {
+              "risks": {
+                "$ref": "#/components/schemas/RiskDashboardEntity"
+              }
+            },
+            "required": [
+              "risks"
+            ]
+          }
+        },
+        "required": [
+          "risks"
+        ]
+      },
+      "RamAssignmentEnum": {
+        "type": "string",
+        "enum": [
+          "Responsible",
+          "Accountable",
+          "Consultable",
+          "Informable"
+        ]
+      },
+      "RamEntity": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "project_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "assignments": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "assignment_id": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "wbs_element_id": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "obs_element_id": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "assignment": {
+                  "$ref": "#/components/schemas/RamAssignmentEnum"
+                }
+              },
+              "required": [
+                "assignment_id",
+                "wbs_element_id",
+                "obs_element_id",
+                "assignment"
+              ]
+            }
+          },
+          "created_at": {
+            "type": "number"
+          },
+          "updated_at": {
+            "type": "number"
+          },
+          "version": {
+            "type": "number",
+            "minimum": 1
+          }
+        },
+        "required": [
+          "project_id",
+          "assignments",
+          "created_at",
+          "updated_at",
+          "version"
+        ]
+      },
+      "CreateRamDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "method": {
+            "type": "string",
+            "enum": [
+              "empty",
+              "upload"
+            ]
+          },
+          "data": {
+            "type": "object"
+          }
+        },
+        "required": [
+          "method"
+        ]
+      },
+      "RamAssignmentEntity": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "assignment_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "wbs_element_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "obs_element_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "assignment": {
+            "$ref": "#/components/schemas/RamAssignmentEnum"
+          }
+        },
+        "required": [
+          "assignment_id",
+          "wbs_element_id",
+          "obs_element_id",
+          "assignment"
+        ]
+      },
+      "AddRamAssignmentDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "wbs_element_id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "The ID of the WBS deliverable"
+          },
+          "obs_element_id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "The ID of the OBS role"
+          },
+          "assignment": {
+            "$ref": "#/components/schemas/RamAssignmentEnum"
+          }
+        },
+        "required": [
+          "wbs_element_id",
+          "obs_element_id",
+          "assignment"
+        ]
+      },
+      "UpdateRamAssignmentDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "assignment": {
+            "$ref": "#/components/schemas/RamAssignmentEnum"
+          }
+        },
+        "required": [
+          "assignment"
+        ]
+      },
+      "RbsEntity": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "project_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "elements": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "element_id": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "code": {
+                  "type": "string"
+                },
+                "path": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "position": {
+                  "type": "number",
+                  "minimum": 0
+                },
+                "description": {
+                  "type": "string"
+                },
+                "parent_id": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              },
+              "required": [
+                "element_id",
+                "code",
+                "path",
+                "name",
+                "position"
+              ]
+            }
+          },
+          "created_at": {
+            "type": "number"
+          },
+          "updated_at": {
+            "type": "number"
+          },
+          "version": {
+            "type": "number",
+            "minimum": 1
+          }
+        },
+        "required": [
+          "project_id",
+          "elements",
+          "created_at",
+          "updated_at",
+          "version"
+        ]
+      },
+      "CreateRbsDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "method": {
+            "type": "string",
+            "enum": [
+              "empty",
+              "upload",
+              "template",
+              "copy"
+            ]
+          },
+          "template_name": {
+            "type": "string"
+          },
+          "project_id_to_copy": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "data": {
+            "type": "object"
+          }
+        },
+        "required": [
+          "method"
+        ]
+      },
+      "RbsElement": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "element_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "code": {
+            "type": "string"
+          },
+          "path": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "position": {
+            "type": "number",
+            "minimum": 0
+          },
+          "description": {
+            "type": "string"
+          },
+          "parent_id": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        "required": [
+          "element_id",
+          "code",
+          "path",
+          "name",
+          "position"
+        ]
+      },
+      "AddRbsElementDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "A unique code to represent the RBS element."
+          },
+          "name": {
+            "type": "string",
+            "description": "A unique name for the element"
+          },
+          "description": {
+            "type": "string",
+            "description": "A brief description of the element."
+          },
+          "parent_id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "The ID of the parent element"
+          },
+          "position": {
+            "type": "number",
+            "minimum": 0,
+            "description": "A number indicating where the element will be displayed amongst its siblings. Defaults to the last position"
+          }
+        },
+        "required": [
+          "code",
+          "name"
+        ]
+      },
+      "MoveRbsElementDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "parent_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "position": {
+            "type": "integer",
+            "minimum": 0
+          }
+        }
+      },
+      "UpdateRbsElementDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          }
+        }
+      },
+      "RiskHeatmapAggregate": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "impact": {
+              "$ref": "#/components/schemas/RiskImpactEnum"
+            },
+            "never": {
+              "type": "number",
+              "minimum": 0
+            },
+            "rare": {
+              "type": "number",
+              "minimum": 0
+            },
+            "unlikely": {
+              "type": "number",
+              "minimum": 0
+            },
+            "possible": {
+              "type": "number",
+              "minimum": 0
+            },
+            "likely": {
+              "type": "number",
+              "minimum": 0
+            },
+            "almost_certain": {
+              "type": "number",
+              "minimum": 0
+            }
+          },
+          "required": [
+            "impact",
+            "never",
+            "rare",
+            "unlikely",
+            "possible",
+            "likely",
+            "almost_certain"
+          ]
+        }
+      },
+      "PeriodRiskQueryAggregate": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/RiskEntity"
+        }
+      },
+      "RiskDashboardEntity": {
+        "type": "object",
+        "properties": {
+          "heatmap": {
+            "$ref": "#/components/schemas/RiskHeatmapAggregate"
+          },
+          "period_risks": {
+            "$ref": "#/components/schemas/PeriodRiskQueryAggregate"
+          },
+          "by_status": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "$ref": "#/components/schemas/RiskStatusEnum"
+                },
+                "count": {
+                  "type": "integer",
+                  "minimum": 0
+                }
+              },
+              "required": [
+                "status",
+                "count"
+              ]
+            }
+          },
+          "by_response": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "response_strategy": {
+                  "$ref": "#/components/schemas/RiskResponseEnum"
+                },
+                "count": {
+                  "type": "integer",
+                  "minimum": 0
+                }
+              },
+              "required": [
+                "response_strategy",
+                "count"
+              ]
+            }
+          },
+          "by_type": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "$ref": "#/components/schemas/RiskTypeEnum"
+                },
+                "count": {
+                  "type": "integer",
+                  "minimum": 0
+                }
+              },
+              "required": [
+                "type",
+                "count"
+              ]
+            }
+          },
+          "overdue_risks": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RiskEntity"
+            }
+          },
+          "by_rating": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "current_rating": {
+                  "$ref": "#/components/schemas/RiskRatingEnum"
+                },
+                "count": {
+                  "type": "integer",
+                  "minimum": 0
+                }
+              },
+              "required": [
+                "current_rating",
+                "count"
+              ]
+            }
+          }
+        },
+        "required": [
+          "heatmap",
+          "period_risks",
+          "by_status",
+          "by_response",
+          "by_type",
+          "overdue_risks",
+          "by_rating"
+        ]
+      },
+      "RiskTypeEnum": {
+        "type": "string",
+        "enum": [
+          "Threat",
+          "Opportunity"
+        ]
+      },
+      "RiskStatusEnum": {
+        "type": "string",
+        "enum": [
+          "Proposed",
+          "Open",
+          "Managed",
+          "Expired",
+          "Rejected",
+          "Impacted",
+          "Deleted"
+        ]
+      },
+      "RiskRatingEnum": {
+        "type": "string",
+        "enum": [
+          "Very High",
+          "High",
+          "Moderate",
+          "Low",
+          "Very Low",
+          "None"
+        ]
+      },
+      "RiskLikelihoodEnum": {
+        "type": "string",
+        "enum": [
+          "Never",
+          "Rare",
+          "Unlikely",
+          "Possible",
+          "Likely",
+          "Almost Certain"
+        ]
+      },
+      "RiskImpactEnum": {
+        "type": "string",
+        "enum": [
+          "None",
+          "Negligible",
+          "Minor",
+          "Moderate",
+          "Major",
+          "Severe"
+        ]
+      },
+      "RiskResponseEnum": {
+        "type": "string",
+        "enum": [
+          "Avoid",
+          "Reduce",
+          "Transfer",
+          "Accept"
+        ]
+      },
+      "RiskEntity": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "risk_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "project_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "workpackage_id": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          },
+          "risk_number": {
+            "type": "number",
+            "minimum": 1
+          },
+          "rbs_element_id": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "type": {
+            "$ref": "#/components/schemas/RiskTypeEnum"
+          },
+          "starting_at": {
+            "type": "number",
+            "nullable": true
+          },
+          "started_at": {
+            "type": "number",
+            "nullable": true
+          },
+          "ending_at": {
+            "type": "number",
+            "nullable": true
+          },
+          "ended_at": {
+            "type": "number",
+            "nullable": true
+          },
+          "cause": {
+            "type": "string",
+            "nullable": true
+          },
+          "effect": {
+            "type": "string",
+            "nullable": true
+          },
+          "contingency": {
+            "type": "string",
+            "nullable": true
+          },
+          "status": {
+            "$ref": "#/components/schemas/RiskStatusEnum"
+          },
+          "likelihood": {
+            "$ref": "#/components/schemas/RiskLikelihoodEnum"
+          },
+          "schedule_impact": {
+            "$ref": "#/components/schemas/RiskImpactEnum"
+          },
+          "cost_impact": {
+            "$ref": "#/components/schemas/RiskImpactEnum"
+          },
+          "safety_impact": {
+            "$ref": "#/components/schemas/RiskImpactEnum"
+          },
+          "quality_impact": {
+            "$ref": "#/components/schemas/RiskImpactEnum"
+          },
+          "reputation_impact": {
+            "$ref": "#/components/schemas/RiskImpactEnum"
+          },
+          "overall_impact": {
+            "$ref": "#/components/schemas/RiskImpactEnum"
+          },
+          "score": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 25
+          },
+          "rating": {
+            "$ref": "#/components/schemas/RiskRatingEnum"
+          },
+          "response_strategy": {
+            "$ref": "#/components/schemas/RiskResponseEnum"
+          },
+          "response_actions": {
+            "type": "string",
+            "nullable": true
+          },
+          "residual_likelihood": {
+            "$ref": "#/components/schemas/RiskLikelihoodEnum"
+          },
+          "residual_schedule_impact": {
+            "$ref": "#/components/schemas/RiskImpactEnum"
+          },
+          "residual_cost_impact": {
+            "$ref": "#/components/schemas/RiskImpactEnum"
+          },
+          "residual_safety_impact": {
+            "$ref": "#/components/schemas/RiskImpactEnum"
+          },
+          "residual_quality_impact": {
+            "$ref": "#/components/schemas/RiskImpactEnum"
+          },
+          "residual_reputation_impact": {
+            "$ref": "#/components/schemas/RiskImpactEnum"
+          },
+          "residual_overall_impact": {
+            "$ref": "#/components/schemas/RiskImpactEnum"
+          },
+          "residual_effect": {
+            "type": "string",
+            "nullable": true
+          },
+          "residual_score": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 25
+          },
+          "residual_rating": {
+            "$ref": "#/components/schemas/RiskRatingEnum"
+          },
+          "current_likelihood": {
+            "$ref": "#/components/schemas/RiskLikelihoodEnum"
+          },
+          "current_schedule_impact": {
+            "$ref": "#/components/schemas/RiskImpactEnum"
+          },
+          "current_cost_impact": {
+            "$ref": "#/components/schemas/RiskImpactEnum"
+          },
+          "current_safety_impact": {
+            "$ref": "#/components/schemas/RiskImpactEnum"
+          },
+          "current_quality_impact": {
+            "$ref": "#/components/schemas/RiskImpactEnum"
+          },
+          "current_reputation_impact": {
+            "$ref": "#/components/schemas/RiskImpactEnum"
+          },
+          "current_overall_impact": {
+            "$ref": "#/components/schemas/RiskImpactEnum"
+          },
+          "current_score": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 25
+          },
+          "current_rating": {
+            "$ref": "#/components/schemas/RiskRatingEnum"
+          },
+          "created_at": {
+            "type": "number"
+          },
+          "updated_at": {
+            "type": "number"
+          },
+          "version": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "workpackage": {
+            "$ref": "#/components/schemas/WorkpackageEntity"
+          },
+          "rbs_element": {
+            "$ref": "#/components/schemas/RbsElement"
+          }
+        },
+        "required": [
+          "risk_id",
+          "project_id",
+          "workpackage_id",
+          "risk_number",
+          "rbs_element_id",
+          "name",
+          "description",
+          "type",
+          "starting_at",
+          "started_at",
+          "ending_at",
+          "ended_at",
+          "cause",
+          "effect",
+          "contingency",
+          "status",
+          "likelihood",
+          "schedule_impact",
+          "cost_impact",
+          "safety_impact",
+          "quality_impact",
+          "reputation_impact",
+          "score",
+          "rating",
+          "response_strategy",
+          "response_actions",
+          "residual_likelihood",
+          "residual_schedule_impact",
+          "residual_cost_impact",
+          "residual_safety_impact",
+          "residual_quality_impact",
+          "residual_reputation_impact",
+          "residual_overall_impact",
+          "residual_effect",
+          "residual_score",
+          "residual_rating",
+          "current_likelihood",
+          "current_schedule_impact",
+          "current_cost_impact",
+          "current_safety_impact",
+          "current_quality_impact",
+          "current_reputation_impact",
+          "current_overall_impact",
+          "current_score",
+          "current_rating",
+          "created_at",
+          "updated_at",
+          "version"
+        ]
+      },
+      "CreateRiskDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 2
+          },
+          "workpackage_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "rbs_element_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "description": {
+            "type": "string"
+          },
+          "type": {
+            "$ref": "#/components/schemas/RiskTypeEnum"
+          },
+          "starting_at": {
+            "type": "number"
+          },
+          "ending_at": {
+            "type": "number"
+          },
+          "impacted_at": {
+            "type": "number"
+          },
+          "cause": {
+            "type": "string"
+          },
+          "effect": {
+            "type": "string"
+          },
+          "contingency": {
+            "type": "string"
+          },
+          "status": {
+            "$ref": "#/components/schemas/RiskStatusEnum"
+          },
+          "likelihood": {
+            "$ref": "#/components/schemas/RiskLikelihoodEnum"
+          },
+          "schedule_impact": {
+            "$ref": "#/components/schemas/RiskImpactEnum"
+          },
+          "cost_impact": {
+            "$ref": "#/components/schemas/RiskImpactEnum"
+          },
+          "safety_impact": {
+            "$ref": "#/components/schemas/RiskImpactEnum"
+          },
+          "quality_impact": {
+            "$ref": "#/components/schemas/RiskImpactEnum"
+          },
+          "reputation_impact": {
+            "$ref": "#/components/schemas/RiskImpactEnum"
+          },
+          "response_strategy": {
+            "$ref": "#/components/schemas/RiskResponseEnum"
+          },
+          "response_actions": {
+            "type": "string"
+          },
+          "residual_likelihood": {
+            "$ref": "#/components/schemas/RiskLikelihoodEnum"
+          },
+          "residual_schedule_impact": {
+            "$ref": "#/components/schemas/RiskImpactEnum"
+          },
+          "residual_cost_impact": {
+            "$ref": "#/components/schemas/RiskImpactEnum"
+          },
+          "residual_safety_impact": {
+            "$ref": "#/components/schemas/RiskImpactEnum"
+          },
+          "residual_quality_impact": {
+            "$ref": "#/components/schemas/RiskImpactEnum"
+          },
+          "residual_reputation_impact": {
+            "$ref": "#/components/schemas/RiskImpactEnum"
+          },
+          "residual_effect": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "type",
+          "status",
+          "likelihood",
+          "schedule_impact",
+          "cost_impact",
+          "safety_impact",
+          "quality_impact",
+          "reputation_impact",
+          "response_strategy"
+        ]
+      },
+      "UpdateRiskDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 2
+          },
+          "workpackage_id": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          },
+          "rbs_element_id": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "type": {
+            "$ref": "#/components/schemas/RiskTypeEnum"
+          },
+          "starting_at": {
+            "type": "number",
+            "nullable": true
+          },
+          "ending_at": {
+            "type": "number",
+            "nullable": true
+          },
+          "cause": {
+            "type": "string",
+            "nullable": true
+          },
+          "effect": {
+            "type": "string",
+            "nullable": true
+          },
+          "contingency": {
+            "type": "string",
+            "nullable": true
+          },
+          "status": {
+            "$ref": "#/components/schemas/RiskStatusEnum"
+          },
+          "likelihood": {
+            "$ref": "#/components/schemas/RiskLikelihoodEnum"
+          },
+          "schedule_impact": {
+            "$ref": "#/components/schemas/RiskImpactEnum"
+          },
+          "cost_impact": {
+            "$ref": "#/components/schemas/RiskImpactEnum"
+          },
+          "safety_impact": {
+            "$ref": "#/components/schemas/RiskImpactEnum"
+          },
+          "quality_impact": {
+            "$ref": "#/components/schemas/RiskImpactEnum"
+          },
+          "reputation_impact": {
+            "$ref": "#/components/schemas/RiskImpactEnum"
+          },
+          "response_strategy": {
+            "$ref": "#/components/schemas/RiskResponseEnum"
+          },
+          "response_actions": {
+            "type": "string",
+            "nullable": true
+          },
+          "residual_likelihood": {
+            "$ref": "#/components/schemas/RiskLikelihoodEnum"
+          },
+          "residual_schedule_impact": {
+            "$ref": "#/components/schemas/RiskImpactEnum"
+          },
+          "residual_cost_impact": {
+            "$ref": "#/components/schemas/RiskImpactEnum"
+          },
+          "residual_safety_impact": {
+            "$ref": "#/components/schemas/RiskImpactEnum"
+          },
+          "residual_quality_impact": {
+            "$ref": "#/components/schemas/RiskImpactEnum"
+          },
+          "residual_reputation_impact": {
+            "$ref": "#/components/schemas/RiskImpactEnum"
+          },
+          "residual_effect": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "WbsEntity": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "project_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "elements": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "element_id": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "code": {
+                  "type": "string"
+                },
+                "path": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "position": {
+                  "type": "number",
+                  "minimum": 0
+                },
+                "description": {
+                  "type": "string"
+                },
+                "parent_id": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              },
+              "required": [
+                "element_id",
+                "code",
+                "path",
+                "name",
+                "position"
+              ]
+            }
+          },
+          "created_at": {
+            "type": "number"
+          },
+          "updated_at": {
+            "type": "number"
+          },
+          "version": {
+            "type": "number",
+            "minimum": 1
+          }
+        },
+        "required": [
+          "project_id",
+          "elements",
+          "created_at",
+          "updated_at",
+          "version"
+        ]
+      },
+      "CreateWbsDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "method": {
+            "type": "string",
+            "enum": [
+              "empty",
+              "upload",
+              "template",
+              "copy"
+            ]
+          },
+          "template_name": {
+            "type": "string"
+          },
+          "project_id_to_copy": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "data": {
+            "type": "object"
+          }
+        },
+        "required": [
+          "method"
+        ]
+      },
+      "WbsElement": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "element_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "code": {
+            "type": "string"
+          },
+          "path": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "position": {
+            "type": "number",
+            "minimum": 0
+          },
+          "description": {
+            "type": "string"
+          },
+          "parent_id": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        "required": [
+          "element_id",
+          "code",
+          "path",
+          "name",
+          "position"
+        ]
+      },
+      "AddWbsElementDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "A unique code to represent the WBS element."
+          },
+          "name": {
+            "type": "string",
+            "description": "A unique name for the element"
+          },
+          "description": {
+            "type": "string",
+            "description": "A brief description of the element."
+          },
+          "parent_id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "The ID of the parent element"
+          },
+          "position": {
+            "type": "number",
+            "minimum": 0,
+            "description": "A number indicating where the element will be displayed amongst its siblings. Defaults to the last position"
+          }
+        },
+        "required": [
+          "code",
+          "name"
+        ]
+      },
+      "MoveWbsElementDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "parent_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "position": {
+            "type": "integer",
+            "minimum": 0
+          }
+        }
+      },
+      "UpdateWbsElementDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          }
+        }
+      },
+      "WorkpackageStatusEnum": {
+        "type": "string",
+        "enum": [
+          "Proposed",
+          "Approved",
+          "Delivering",
+          "Completed",
+          "Rejected",
+          "Deleted"
+        ]
+      },
+      "WorkpackageEntity": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "workpackage_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "project_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "wbs_element_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "friendly_id": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "status": {
+            "$ref": "#/components/schemas/WorkpackageStatusEnum"
+          },
+          "purpose": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "includes": {
+            "type": "string"
+          },
+          "excludes": {
+            "type": "string"
+          },
+          "commencement_criteria": {
+            "type": "string"
+          },
+          "completion_criteria": {
+            "type": "string"
+          },
+          "references": {
+            "type": "string"
+          },
+          "created_at": {
+            "type": "number"
+          },
+          "updated_at": {
+            "type": "number"
+          },
+          "version": {
+            "type": "integer",
+            "minimum": 1
+          }
+        },
+        "required": [
+          "workpackage_id",
+          "project_id",
+          "wbs_element_id",
+          "friendly_id",
+          "title",
+          "status",
+          "created_at",
+          "updated_at",
+          "version"
+        ]
+      },
+      "AddWorkpackageDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "wbs_element_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "friendly_id": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "status": {
+            "$ref": "#/components/schemas/WorkpackageStatusEnum"
+          },
+          "purpose": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "includes": {
+            "type": "string"
+          },
+          "excludes": {
+            "type": "string"
+          },
+          "commencement_criteria": {
+            "type": "string"
+          },
+          "completion_criteria": {
+            "type": "string"
+          },
+          "references": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "wbs_element_id",
+          "friendly_id",
+          "title",
+          "status"
+        ]
+      },
+      "UpdateWorkpackageDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "friendly_id": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "status": {
+            "$ref": "#/components/schemas/WorkpackageStatusEnum"
+          },
+          "wbs_element_id": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          },
+          "purpose": {
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "includes": {
+            "type": "string",
+            "nullable": true
+          },
+          "excludes": {
+            "type": "string",
+            "nullable": true
+          },
+          "commencement_criteria": {
+            "type": "string",
+            "nullable": true
+          },
+          "completion_criteria": {
+            "type": "string",
+            "nullable": true
+          },
+          "references": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      }
+    },
+    "responses": {
+      "validation_error_response": {
+        "description": "Validation Error",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorObject"
+            }
+          }
+        }
+      }
+    }
+  },
+  "paths": {
+    "/projects/{project_id}/assumptions": {
+      "get": {
+        "operationId": "listProjectAssumptions",
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AssumptionEntity"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/project_id"
+        },
+        {
+          "name": "workpackage_id",
+          "in": "query",
+          "required": false,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        {
+          "$ref": "#/components/parameters/include"
+        },
+        {
+          "$ref": "#/components/parameters/filter"
+        }
+      ]
+    },
+    "/projects/{project_id}/assumptions/dashboard": {
+      "get": {
+        "operationId": "GetProjectAssumptionsDashboard",
+        "responses": {
+          "200": {
+            "description": "Assumptions Dashboard",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AssumptionDashboardEntity"
+                }
+              }
+            }
+          }
+        }
+      },
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/project_id"
+        },
+        {
+          "name": "closeoutByLimit",
+          "in": "query",
+          "required": false,
+          "schema": {
+            "type": "integer",
+            "minimum": 0
+          }
+        }
+      ]
+    },
+    "/projects/{project_id}/assumptions/add": {
+      "post": {
+        "operationId": "createProjectAssumption",
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AssumptionEntity"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorObject"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateAssumptionDto"
+              }
+            }
+          }
+        }
+      },
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/project_id"
+        }
+      ]
+    },
+    "/projects/{project_id}/assumptions/{assumption_id}": {
+      "get": {
+        "operationId": "getProjectAssumptionById",
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AssumptionEntity"
+                }
+              }
+            }
+          }
+        }
+      },
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/project_id"
+        },
+        {
+          "$ref": "#/components/parameters/assumption_id"
+        },
+        {
+          "$ref": "#/components/parameters/include"
+        }
+      ]
+    },
+    "/projects/{project_id}/assumptions/{assumption_id}/update": {
+      "post": {
+        "operationId": "updateProjectAssumption",
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AssumptionEntity"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorObject"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateAssumptionDto"
+              }
+            }
+          }
+        }
+      },
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/project_id"
+        },
+        {
+          "$ref": "#/components/parameters/assumption_id"
+        },
+        {
+          "$ref": "#/components/parameters/expected_version"
+        }
+      ]
+    },
+    "/dashboard": {
+      "get": {
+        "operationId": "GetUserDashboard",
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/projects/{project_id}/dependencies": {
+      "get": {
+        "operationId": "listProjectDependencies",
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DependencyEntity"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/project_id"
+        },
+        {
+          "name": "workpackage_id",
+          "in": "query",
+          "required": false,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        {
+          "$ref": "#/components/parameters/include"
+        },
+        {
+          "$ref": "#/components/parameters/filter"
+        }
+      ]
+    },
+    "/projects/{project_id}/dependencies/dashboard": {
+      "get": {
+        "operationId": "GetProjectDependencyDashboard",
+        "responses": {
+          "200": {
+            "description": "Dependency Dashboard",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DependencyDashboardEntity"
+                }
+              }
+            }
+          }
+        }
+      },
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/project_id"
+        },
+        {
+          "$ref": "#/components/parameters/requiredAtLimitQueryParam"
+        }
+      ]
+    },
+    "/projects/{project_id}/dependencies/add": {
+      "post": {
+        "operationId": "createProjectDependency",
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DependencyEntity"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorObject"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateDependencyDto"
+              }
+            }
+          }
+        }
+      },
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/project_id"
+        }
+      ]
+    },
+    "/projects/{project_id}/dependencies/{dependency_id}": {
+      "get": {
+        "operationId": "getProjectDependencyById",
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DependencyEntity"
+                }
+              }
+            }
+          }
+        }
+      },
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/project_id"
+        },
+        {
+          "$ref": "#/components/parameters/dependency_id"
+        },
+        {
+          "$ref": "#/components/parameters/include"
+        }
+      ]
+    },
+    "/projects/{project_id}/dependencies/{dependency_id}/update": {
+      "post": {
+        "operationId": "updateProjectDependency",
+        "responses": {
+          "200": {
+            "description": "Updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DependencyEntity"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorObject"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateDependencyDto"
+              }
+            }
+          }
+        }
+      },
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/project_id"
+        },
+        {
+          "$ref": "#/components/parameters/dependency_id"
+        },
+        {
+          "$ref": "#/components/parameters/expected_version"
+        }
+      ]
+    },
+    "/projects/{project_id}/issues": {
+      "get": {
+        "operationId": "listProjectIssues",
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/IssueEntity"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/project_id"
+        },
+        {
+          "name": "workpackage_id",
+          "in": "query",
+          "required": false,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        {
+          "$ref": "#/components/parameters/include"
+        },
+        {
+          "$ref": "#/components/parameters/filter"
+        }
+      ]
+    },
+    "/projects/{project_id}/issues/dashboard": {
+      "get": {
+        "operationId": "GetProjectIssueDashboard",
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IssueDashboardEntity"
+                }
+              }
+            }
+          }
+        }
+      },
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/project_id"
+        },
+        {
+          "$ref": "#/components/parameters/period_start_query"
+        },
+        {
+          "$ref": "#/components/parameters/period_end_query"
+        }
+      ]
+    },
+    "/projects/{project_id}/issues/add": {
+      "post": {
+        "operationId": "createProjectIssue",
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IssueEntity"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateIssueDto"
+              }
+            }
+          }
+        }
+      },
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/project_id"
+        }
+      ]
+    },
+    "/projects/{project_id}/issue/{issue_id}": {
+      "get": {
+        "operationId": "getProjectIssueById",
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IssueEntity"
+                }
+              }
+            }
+          }
+        }
+      },
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/project_id"
+        },
+        {
+          "$ref": "#/components/parameters/issue_id"
+        },
+        {
+          "$ref": "#/components/parameters/include"
+        }
+      ]
+    },
+    "/projects/{project_id}/issues/{issue_id}/update": {
+      "post": {
+        "operationId": "updateProjectIssue",
+        "responses": {
+          "200": {
+            "description": "Updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IssueEntity"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateIssueDto"
+              }
+            }
+          }
+        }
+      },
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/project_id"
+        },
+        {
+          "$ref": "#/components/parameters/issue_id"
+        }
+      ]
+    },
+    "/projects/{project_id}/obs": {
+      "get": {
+        "operationId": "listProjectObs",
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObsEntity"
+                }
+              }
+            }
+          }
+        }
+      },
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/project_id"
+        }
+      ]
+    },
+    "/projects/{project_id}/obs/create": {
+      "description": "Create an OBS using a template or an uploaded file.",
+      "post": {
+        "operationId": "createProjectObs",
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObsEntity"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorObject"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateObsDto"
+              }
+            }
+          }
+        }
+      },
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/project_id"
+        }
+      ]
+    },
+    "/projects/{project_id}/obs/add": {
+      "post": {
+        "operationId": "addProjectObsElement",
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObsElement"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorObject"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddObsElementDto"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/expected_version"
+          }
+        ]
+      },
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/project_id"
+        }
+      ]
+    },
+    "/projects/{project_id}/obs/{element_id}": {
+      "description": "Displays details of the project obs role",
+      "get": {
+        "operationId": "findProjectObsElement",
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObsElement"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorObject"
+                }
+              }
+            }
+          }
+        }
+      },
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/project_id"
+        },
+        {
+          "$ref": "#/components/parameters/element_id"
+        }
+      ]
+    },
+    "/projects/{project_id}/obs/{element_id}/move": {
+      "description": "Moves the role in the OBS to another position. E.g. change of manager or order of the roles.",
+      "post": {
+        "operationId": "moveProjectObsElement",
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObsElement"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorObject"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MoveObsElementDto"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/expected_version"
+          }
+        ]
+      },
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/project_id"
+        },
+        {
+          "$ref": "#/components/parameters/element_id"
+        }
+      ]
+    },
+    "/projects/{project_id}/obs/{element_id}/update": {
+      "description": "Updates the project role",
+      "post": {
+        "operationId": "updateProjectObsElement",
+        "responses": {
+          "200": {
+            "description": "Updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObsElement"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorObject"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateObsElementDto"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/expected_version"
+          }
+        ]
+      },
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/project_id"
+        },
+        {
+          "$ref": "#/components/parameters/element_id"
+        }
+      ]
+    },
+    "/projects/{project_id}/obs/{element_id}/delete": {
+      "description": "Deletes the project role from the OBS",
+      "post": {
+        "operationId": "deleteProjectObsElement",
+        "responses": {
+          "204": {
+            "description": "Deleted"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorObject"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/expected_version"
+          }
+        ]
+      },
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/project_id"
+        },
+        {
+          "$ref": "#/components/parameters/element_id"
+        }
+      ]
+    },
+    "/organisations": {
+      "get": {
+        "operationId": "ListOrganisations",
+        "responses": {
+          "200": {
+            "description": "Returns an array containing organisations that the user is a member of.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/OrganisationEntity"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/organisations/{organisation_id}": {
+      "get": {
+        "operationId": "FindOrganisationById",
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrganisationEntity"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorObject"
+                }
+              }
+            }
+          }
+        }
+      },
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/organisation_id_param"
+        }
+      ]
+    },
+    "/projects": {
+      "get": {
+        "operationId": "listProjects",
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ProjectEntity"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "parameters": [
+        {
+          "name": "filter",
+          "in": "query",
+          "required": false,
+          "style": "deepObject",
+          "explode": true,
+          "schema": {
+            "type": "object",
+            "properties": {
+              "organisation_id": {
+                "type": "string",
+                "format": "uuid"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "/projects/create": {
+      "post": {
+        "operationId": "createProject",
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProjectEntity"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorObject"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateProjectDto"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/projects/{project_id}": {
+      "get": {
+        "operationId": "getProjectById",
+        "responses": {
+          "200": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProjectEntity"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorObject"
+                }
+              }
+            }
+          }
+        }
+      },
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/project_id"
+        }
+      ]
+    },
+    "/projects/{project_id}/dashboard": {
+      "get": {
+        "operationId": "getProjectDashboard",
+        "responses": {
+          "200": {
+            "description": "Returns the project's dashboard",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProjectDashboardEntity"
+                }
+              }
+            }
+          }
+        }
+      },
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/project_id"
+        }
+      ]
+    },
+    "/projects/{project_id}/ram": {
+      "description": "Returns all role assignments in the Responsibility Assignment Matrix",
+      "get": {
+        "operationId": "listProjectRam",
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RamEntity"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorObject"
+                }
+              }
+            }
+          }
+        }
+      },
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/project_id"
+        }
+      ]
+    },
+    "/projects/{project_id}/ram/create": {
+      "description": "Create a Project Responsibility Assignment Matrix by manually assigning responsibilities or uploading a file.",
+      "post": {
+        "operationId": "createProjectRam",
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RamEntity"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorObject"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateRamDto"
+              }
+            }
+          }
+        }
+      },
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/project_id"
+        }
+      ]
+    },
+    "/projects/{project_id}/ram/add": {
+      "post": {
+        "operationId": "addProjectRamAssignment",
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RamAssignmentEntity"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorObject"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddRamAssignmentDto"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/expected_version"
+          }
+        ]
+      },
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/project_id"
+        }
+      ]
+    },
+    "/projects/{project_id}/ram/{assignment_id}/update": {
+      "description": "Updates the role assignment in the Responsibility Assignment Matrix.",
+      "post": {
+        "operationId": "updateProjectRamAssignment",
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RamAssignmentEntity"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorObject"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateRamAssignmentDto"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/expected_version"
+          }
+        ]
+      },
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/project_id"
+        },
+        {
+          "$ref": "#/components/parameters/assignment_id"
+        }
+      ]
+    },
+    "/projects/{project_id}/ram/{assignment_id}/delete": {
+      "description": "Deletes a role assignment from the Responsibility Assignment Matrix",
+      "delete": {
+        "operationId": "deleteProjectRamAssignment",
+        "responses": {
+          "204": {
+            "description": "Deleted"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorObject"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/expected_version"
+          }
+        ]
+      },
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/project_id"
+        },
+        {
+          "$ref": "#/components/parameters/assignment_id"
+        }
+      ]
+    },
+    "/projects/{project_id}/rbs": {
+      "get": {
+        "operationId": "listProjectRbs",
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RbsEntity"
+                }
+              }
+            }
+          }
+        }
+      },
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/project_id"
+        }
+      ]
+    },
+    "/projects/{project_id}/rbs/create": {
+      "description": "Create a Project RBS by adding elements, using another project, a template or an uploaded file.",
+      "post": {
+        "operationId": "createProjectRbs",
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RbsEntity"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorObject"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateRbsDto"
+              }
+            }
+          }
+        }
+      },
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/project_id"
+        }
+      ]
+    },
+    "/projects/{project_id}/rbs/add": {
+      "post": {
+        "operationId": "addProjectRbsElement",
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RbsElement"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorObject"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddRbsElementDto"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/expected_version"
+          }
+        ]
+      },
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/project_id"
+        }
+      ]
+    },
+    "/projects/{project_id}/rbs/{element_id}": {
+      "description": "Displays details of the project deliverable",
+      "get": {
+        "operationId": "findProjectRbsElement",
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RbsElement"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorObject"
+                }
+              }
+            }
+          }
+        }
+      },
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/project_id"
+        },
+        {
+          "$ref": "#/components/parameters/element_id"
+        }
+      ]
+    },
+    "/projects/{project_id}/rbs/{element_id}/move": {
+      "description": "Moves the element in the RBS to another position.",
+      "post": {
+        "operationId": "moveProjectRbsElement",
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RbsElement"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorObject"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MoveRbsElementDto"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/expected_version"
+          }
+        ]
+      },
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/project_id"
+        },
+        {
+          "$ref": "#/components/parameters/element_id"
+        }
+      ]
+    },
+    "/projects/{project_id}/rbs/{element_id}/update": {
+      "description": "Updates the project RBS element",
+      "post": {
+        "operationId": "updateProjectRbsElement",
+        "responses": {
+          "200": {
+            "description": "Updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RbsElement"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorObject"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateWbsElementDto"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/expected_version"
+          }
+        ]
+      },
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/project_id"
+        },
+        {
+          "$ref": "#/components/parameters/element_id"
+        }
+      ]
+    },
+    "/projects/{project_id}/rbs/{element_id}/delete": {
+      "description": "Deletes the project deliverable from the RBS",
+      "post": {
+        "operationId": "deleteProjectRbsElement",
+        "responses": {
+          "204": {
+            "description": "Deleted"
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorObject"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorObject"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/expected_version"
+          }
+        ]
+      },
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/project_id"
+        },
+        {
+          "$ref": "#/components/parameters/element_id"
+        }
+      ]
+    },
+    "/projects/{project_id}/risks": {
+      "get": {
+        "operationId": "listProjectRisks",
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/RiskEntity"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/project_id"
+        },
+        {
+          "$ref": "#/components/parameters/workpackage_id_query"
+        },
+        {
+          "$ref": "#/components/parameters/include"
+        },
+        {
+          "$ref": "#/components/parameters/filter"
+        }
+      ]
+    },
+    "/projects/{project_id}/risks/dashboard": {
+      "get": {
+        "operationId": "GetRiskDashboardByProject",
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RiskDashboardEntity"
+                }
+              }
+            }
+          }
+        }
+      },
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/project_id"
+        },
+        {
+          "$ref": "#/components/parameters/period_start_query"
+        },
+        {
+          "$ref": "#/components/parameters/period_end_query"
+        }
+      ]
+    },
+    "/projects/{project_id}/risks/add": {
+      "post": {
+        "operationId": "createProjectRisk",
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RiskEntity"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorObject"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateRiskDto"
+              }
+            }
+          }
+        }
+      },
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/project_id"
+        }
+      ]
+    },
+    "/projects/{project_id}/risks/{risk_id}": {
+      "get": {
+        "operationId": "getProjectRiskById",
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RiskEntity"
+                }
+              }
+            }
+          }
+        }
+      },
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/project_id"
+        },
+        {
+          "$ref": "#/components/parameters/risk_id"
+        },
+        {
+          "$ref": "#/components/parameters/include"
+        }
+      ]
+    },
+    "/projects/{project_id}/risks/{risk_id}/update": {
+      "post": {
+        "operationId": "updateProjectRisk",
+        "responses": {
+          "200": {
+            "description": "Updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RiskEntity"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorObject"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateRiskDto"
+              }
+            }
+          }
+        }
+      },
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/project_id"
+        },
+        {
+          "$ref": "#/components/parameters/risk_id"
+        },
+        {
+          "$ref": "#/components/parameters/expected_version"
+        }
+      ]
+    },
+    "/projects/{project_id}/wbs": {
+      "get": {
+        "operationId": "listProjectWbs",
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WbsEntity"
+                }
+              }
+            }
+          }
+        }
+      },
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/project_id"
+        }
+      ]
+    },
+    "/projects/{project_id}/wbs/create": {
+      "description": "Create a Project WBS by adding elements, using another project, a template or an uploaded file.",
+      "post": {
+        "operationId": "createProjectWbs",
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WbsEntity"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorObject"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateWbsDto"
+              }
+            }
+          }
+        }
+      },
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/project_id"
+        }
+      ]
+    },
+    "/projects/{project_id}/wbs/add": {
+      "post": {
+        "operationId": "addProjectWbsElement",
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WbsElement"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorObject"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddWbsElementDto"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/expected_version"
+          }
+        ]
+      },
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/project_id"
+        }
+      ]
+    },
+    "/projects/{project_id}/wbs/{element_id}": {
+      "description": "Displays details of the project deliverable",
+      "get": {
+        "operationId": "findProjectWbsElement",
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WbsElement"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorObject"
+                }
+              }
+            }
+          }
+        }
+      },
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/project_id"
+        },
+        {
+          "$ref": "#/components/parameters/element_id"
+        }
+      ]
+    },
+    "/projects/{project_id}/wbs/{element_id}/move": {
+      "description": "Moves the element in the WBS to another position.",
+      "post": {
+        "operationId": "moveProjectWbsElement",
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WbsElement"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorObject"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MoveWbsElementDto"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/expected_version"
+          }
+        ]
+      },
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/project_id"
+        },
+        {
+          "$ref": "#/components/parameters/element_id"
+        }
+      ]
+    },
+    "/projects/{project_id}/wbs/{element_id}/update": {
+      "description": "Updates the project WBS element",
+      "post": {
+        "operationId": "updateProjectWbsElement",
+        "responses": {
+          "200": {
+            "description": "Updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WbsElement"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorObject"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateWbsElementDto"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/expected_version"
+          }
+        ]
+      },
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/project_id"
+        },
+        {
+          "$ref": "#/components/parameters/element_id"
+        }
+      ]
+    },
+    "/projects/{project_id}/wbs/{element_id}/delete": {
+      "description": "Deletes the project deliverable from the WBS",
+      "post": {
+        "operationId": "deleteProjectWbsElement",
+        "responses": {
+          "204": {
+            "description": "Deleted"
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorObject"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorObject"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/expected_version"
+          }
+        ]
+      },
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/project_id"
+        },
+        {
+          "$ref": "#/components/parameters/element_id"
+        }
+      ]
+    },
+    "/projects/{project_id}/work-packages": {
+      "description": "List work packages",
+      "get": {
+        "operationId": "ListWorkPackages",
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/WorkpackageEntity"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorObject"
+                }
+              }
+            }
+          }
+        }
+      },
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/project_id"
+        }
+      ]
+    },
+    "/projects/{project_id}/work-packages/add": {
+      "description": "Update work package properties",
+      "post": {
+        "operationId": "AddWorkPackage",
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WorkpackageEntity"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorObject"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorObject"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddWorkpackageDto"
+              }
+            }
+          }
+        }
+      },
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/project_id"
+        }
+      ]
+    },
+    "/projects/{project_id}/work-packages/{workpackage_id}": {
+      "description": "Get work package",
+      "get": {
+        "operationId": "FindWorkPackageById",
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WorkpackageEntity"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorObject"
+                }
+              }
+            }
+          }
+        }
+      },
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/project_id"
+        },
+        {
+          "$ref": "#/components/parameters/workpackage_id"
+        }
+      ]
+    },
+    "/projects/{project_id}/work-packages/{workpackage_id}/update": {
+      "description": "Update work package",
+      "post": {
+        "operationId": "UpdateWorkPackage",
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WorkpackageEntity"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorObject"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorObject"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateWorkpackageDto"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/expected_version"
+          }
+        ]
+      },
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/project_id"
+        },
+        {
+          "$ref": "#/components/parameters/workpackage_id"
+        }
+      ]
+    },
+    "/projects/{project_id}/work-packages/{workpackage_id}/delete": {
+      "description": "Changes the status of a work package to deleted",
+      "delete": {
+        "operationId": "MarkWorkPackageAsDeleted",
+        "responses": {
+          "204": {
+            "description": "Deleted"
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorObject"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorObject"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/expected_version"
+          }
+        ]
+      },
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/project_id"
+        },
+        {
+          "$ref": "#/components/parameters/workpackage_id"
+        }
+      ]
+    }
+  }
+}
