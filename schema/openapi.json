@@ -7,19 +7,20 @@
   },
   "servers": [
     {
-      "url": "http://projects.api.dalane.cloud/v1"
+      "url": "http://projects.api.dalane.cloud/v1",
+      "description": "live"
     }
   ],
   "security": [
     {
-      "openId": []
+      "openIdConnect": []
     }
   ],
   "components": {
     "securitySchemes": {
-      "openId": {
+      "openIdConnect": {
         "type": "openIdConnect",
-        "openIdConnectUrl": "http://auth.dalane.cloud/.well-known/openid-configuration"
+        "openIdConnectUrl": "http://localhost:8000/.well-known/openid-configuration"
       }
     },
     "parameters": {
@@ -69,7 +70,7 @@
         "in": "header",
         "required": false,
         "schema": {
-          "type": "string"
+          "type": "integer"
         }
       },
       "include": {
@@ -641,6 +642,9 @@
           "by_rating",
           "open"
         ]
+      },
+      "UserDashboardEntity": {
+        "type": "object"
       },
       "DependencyStatusEnum": {
         "type": "string",
@@ -1489,6 +1493,31 @@
           }
         }
       },
+      "CreateObsElementData": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "role": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "children": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CreateObsElementData"
+            }
+          }
+        },
+        "required": [
+          "code",
+          "role"
+        ]
+      },
       "CreateObsDto": {
         "type": "object",
         "additionalProperties": false,
@@ -1510,7 +1539,10 @@
             "format": "uuid"
           },
           "data": {
-            "type": "object"
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CreateObsElementData"
+            }
           }
         },
         "required": [
@@ -1766,6 +1798,7 @@
         "enum": [
           "Responsible",
           "Accountable",
+          "Support",
           "Consultable",
           "Informable"
         ]
@@ -3322,11 +3355,11 @@
         "operationId": "GetUserDashboard",
         "responses": {
           "200": {
-            "description": "Ok",
+            "description": "Returns the User Dashboard",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object"
+                  "$ref": "#/components/schemas/UserDashboardEntity"
                 }
               }
             }
@@ -3701,7 +3734,7 @@
     "/projects/{project_id}/obs/create": {
       "description": "Create an OBS using a template or an uploaded file.",
       "post": {
-        "operationId": "createProjectObs",
+        "operationId": "CreateProjectObs",
         "responses": {
           "201": {
             "description": "Created",
