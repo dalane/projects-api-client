@@ -1,5 +1,5 @@
 import OpenAPIClient from 'openapi-client-axios';
-import { Client as ProjectsApiClient, Components } from './projects-client';
+import { Client as ProjectsApiClient, Components } from '../schema/openapi';
 
 export { ProjectsApiClient, Components }
 

@@ -20,9 +20,8 @@
   },
   "include": [
     "./src/**/*.ts"
-  ],
+, "schema/projects-client.d.ts"  ],
   "exclude": [
-    "node_modules",
-    "./src/**/*.spec.ts"
+    "node_modules"
   ]
 }
