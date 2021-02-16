@@ -1,7 +1,8 @@
 import OpenAPIClient from 'openapi-client-axios';
-import { Client as ProjectsApiClient, Components } from '../schema/openapi';
+import { Client } from '../schema/openapi';
+export { Components } from '../schema/openapi';
 
-export { ProjectsApiClient, Components }
+export type ProjectsApiClient = Client;
 
 export interface ApiClientSettings {
 	/**
