@@ -4,8 +4,7 @@ export { Components } from '../schema/openapi';
 
 export type ProjectsApiClient = Client;
 
-// @ts-ignore
-import { version } from '../package.json';
+const { version } = require('../package.json');
 
 export interface ApiClientSettings {
 	/**
