@@ -3247,16 +3247,6 @@
                 }
               }
             }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorObject"
-                }
-              }
-            }
           }
         },
         "requestBody": {
@@ -3313,16 +3303,6 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/AssumptionEntity"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorObject"
                 }
               }
             }

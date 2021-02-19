@@ -16,8 +16,7 @@
     "sourceMap": true,
     "outDir": "./build",
     "rootDir": "./src",
-    "skipLibCheck": true,
-    "resolveJsonModule": true
+    "skipLibCheck": true
   },
   "include": [
     "./src/**/*.ts"

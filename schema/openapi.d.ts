@@ -815,57 +815,48 @@ declare namespace Paths {
     export type RequestBody = Components.Schemas.AddObsElementDto;
     namespace Responses {
       export type $201 = Components.Schemas.ObsElement;
-      export type $422 = Components.Schemas.ErrorObject;
     }
   }
   namespace AddProjectRamAssignment {
     export type RequestBody = Components.Schemas.AddRamAssignmentDto;
     namespace Responses {
       export type $201 = Components.Schemas.RamAssignmentEntity;
-      export type $422 = Components.Schemas.ErrorObject;
     }
   }
   namespace AddProjectRbsElement {
     export type RequestBody = Components.Schemas.AddRbsElementDto;
     namespace Responses {
       export type $201 = Components.Schemas.RbsElement;
-      export type $422 = Components.Schemas.ErrorObject;
     }
   }
   namespace AddProjectWbsElement {
     export type RequestBody = Components.Schemas.AddWbsElementDto;
     namespace Responses {
       export type $201 = Components.Schemas.WbsElement;
-      export type $422 = Components.Schemas.ErrorObject;
     }
   }
   namespace AddWorkPackage {
     export type RequestBody = Components.Schemas.AddWorkpackageDto;
     namespace Responses {
       export type $200 = Components.Schemas.WorkpackageEntity;
-      export type $404 = Components.Schemas.ErrorObject;
-      export type $422 = Components.Schemas.ErrorObject;
     }
   }
   namespace CreateProject {
     export type RequestBody = Components.Schemas.CreateProjectDto;
     namespace Responses {
       export type $201 = Components.Schemas.ProjectEntity;
-      export type $422 = Components.Schemas.ErrorObject;
     }
   }
   namespace CreateProjectAssumption {
     export type RequestBody = Components.Schemas.CreateAssumptionDto;
     namespace Responses {
       export type $201 = Components.Schemas.AssumptionEntity;
-      export type $422 = Components.Schemas.ErrorObject;
     }
   }
   namespace CreateProjectDependency {
     export type RequestBody = Components.Schemas.CreateDependencyDto;
     namespace Responses {
       export type $201 = Components.Schemas.DependencyEntity;
-      export type $422 = Components.Schemas.ErrorObject;
     }
   }
   namespace CreateProjectIssue {
@@ -878,87 +869,55 @@ declare namespace Paths {
     export type RequestBody = Components.Schemas.CreateObsDto;
     namespace Responses {
       export type $201 = Components.Schemas.ObsEntity;
-      export type $422 = Components.Schemas.ErrorObject;
     }
   }
   namespace CreateProjectRam {
     export type RequestBody = Components.Schemas.CreateRamDto;
     namespace Responses {
       export type $201 = Components.Schemas.RamEntity;
-      export type $422 = Components.Schemas.ErrorObject;
     }
   }
   namespace CreateProjectRbs {
     export type RequestBody = Components.Schemas.CreateRbsDto;
     namespace Responses {
       export type $201 = Components.Schemas.RbsEntity;
-      export type $422 = Components.Schemas.ErrorObject;
     }
   }
   namespace CreateProjectRisk {
     export type RequestBody = Components.Schemas.CreateRiskDto;
     namespace Responses {
       export type $201 = Components.Schemas.RiskEntity;
-      export type $422 = Components.Schemas.ErrorObject;
     }
   }
   namespace CreateProjectWbs {
     export type RequestBody = Components.Schemas.CreateWbsDto;
     namespace Responses {
       export type $201 = Components.Schemas.WbsEntity;
-      export type $422 = Components.Schemas.ErrorObject;
-    }
-  }
-  namespace DeleteProjectObsElement {
-    namespace Responses {
-      export type $422 = Components.Schemas.ErrorObject;
-    }
-  }
-  namespace DeleteProjectRamAssignment {
-    namespace Responses {
-      export type $422 = Components.Schemas.ErrorObject;
-    }
-  }
-  namespace DeleteProjectRbsElement {
-    namespace Responses {
-      export type $404 = Components.Schemas.ErrorObject;
-      export type $422 = Components.Schemas.ErrorObject;
-    }
-  }
-  namespace DeleteProjectWbsElement {
-    namespace Responses {
-      export type $404 = Components.Schemas.ErrorObject;
-      export type $422 = Components.Schemas.ErrorObject;
     }
   }
   namespace FindOrganisationById {
     namespace Responses {
       export type $200 = Components.Schemas.OrganisationEntity;
-      export type $404 = Components.Schemas.ErrorObject;
     }
   }
   namespace FindProjectObsElement {
     namespace Responses {
       export type $200 = Components.Schemas.ObsElement;
-      export type $404 = Components.Schemas.ErrorObject;
     }
   }
   namespace FindProjectRbsElement {
     namespace Responses {
       export type $200 = Components.Schemas.RbsElement;
-      export type $404 = Components.Schemas.ErrorObject;
     }
   }
   namespace FindProjectWbsElement {
     namespace Responses {
       export type $200 = Components.Schemas.WbsElement;
-      export type $404 = Components.Schemas.ErrorObject;
     }
   }
   namespace FindWorkPackageById {
     namespace Responses {
       export type $200 = Components.Schemas.WorkpackageEntity;
-      export type $404 = Components.Schemas.ErrorObject;
     }
   }
   namespace GetProjectAssumptionById {
@@ -974,7 +933,6 @@ declare namespace Paths {
   namespace GetProjectById {
     namespace Responses {
       export type $200 = Components.Schemas.ProjectEntity;
-      export type $404 = Components.Schemas.ErrorObject;
     }
   }
   namespace GetProjectDashboard {
@@ -1045,7 +1003,6 @@ declare namespace Paths {
   namespace ListProjectRam {
     namespace Responses {
       export type $200 = Components.Schemas.RamEntity;
-      export type $404 = Components.Schemas.ErrorObject;
     }
   }
   namespace ListProjectRbs {
@@ -1071,34 +1028,24 @@ declare namespace Paths {
   namespace ListWorkPackages {
     namespace Responses {
       export type $200 = Components.Schemas.WorkpackageEntity[];
-      export type $404 = Components.Schemas.ErrorObject;
-    }
-  }
-  namespace MarkWorkPackageAsDeleted {
-    namespace Responses {
-      export type $404 = Components.Schemas.ErrorObject;
-      export type $422 = Components.Schemas.ErrorObject;
     }
   }
   namespace MoveProjectObsElement {
     export type RequestBody = Components.Schemas.MoveObsElementDto;
     namespace Responses {
       export type $200 = Components.Schemas.ObsElement;
-      export type $422 = Components.Schemas.ErrorObject;
     }
   }
   namespace MoveProjectRbsElement {
     export type RequestBody = Components.Schemas.MoveRbsElementDto;
     namespace Responses {
       export type $200 = Components.Schemas.RbsElement;
-      export type $422 = Components.Schemas.ErrorObject;
     }
   }
   namespace MoveProjectWbsElement {
     export type RequestBody = Components.Schemas.MoveWbsElementDto;
     namespace Responses {
       export type $200 = Components.Schemas.WbsElement;
-      export type $422 = Components.Schemas.ErrorObject;
     }
   }
   namespace Projects {
@@ -1147,14 +1094,12 @@ declare namespace Paths {
     export type RequestBody = Components.Schemas.UpdateAssumptionDto;
     namespace Responses {
       export type $200 = Components.Schemas.AssumptionEntity;
-      export type $422 = Components.Schemas.ErrorObject;
     }
   }
   namespace UpdateProjectDependency {
     export type RequestBody = Components.Schemas.UpdateDependencyDto;
     namespace Responses {
       export type $200 = Components.Schemas.DependencyEntity;
-      export type $422 = Components.Schemas.ErrorObject;
     }
   }
   namespace UpdateProjectIssue {
@@ -1167,43 +1112,36 @@ declare namespace Paths {
     export type RequestBody = Components.Schemas.UpdateObsElementDto;
     namespace Responses {
       export type $200 = Components.Schemas.ObsElement;
-      export type $422 = Components.Schemas.ErrorObject;
     }
   }
   namespace UpdateProjectRamAssignment {
     export type RequestBody = Components.Schemas.UpdateRamAssignmentDto;
     namespace Responses {
       export type $200 = Components.Schemas.RamAssignmentEntity;
-      export type $422 = Components.Schemas.ErrorObject;
     }
   }
   namespace UpdateProjectRbsElement {
     export type RequestBody = Components.Schemas.UpdateWbsElementDto;
     namespace Responses {
       export type $200 = Components.Schemas.RbsElement;
-      export type $422 = Components.Schemas.ErrorObject;
     }
   }
   namespace UpdateProjectRisk {
     export type RequestBody = Components.Schemas.UpdateRiskDto;
     namespace Responses {
       export type $200 = Components.Schemas.RiskEntity;
-      export type $422 = Components.Schemas.ErrorObject;
     }
   }
   namespace UpdateProjectWbsElement {
     export type RequestBody = Components.Schemas.UpdateWbsElementDto;
     namespace Responses {
       export type $200 = Components.Schemas.WbsElement;
-      export type $422 = Components.Schemas.ErrorObject;
     }
   }
   namespace UpdateWorkPackage {
     export type RequestBody = Components.Schemas.UpdateWorkpackageDto;
     namespace Responses {
       export type $200 = Components.Schemas.WorkpackageEntity;
-      export type $404 = Components.Schemas.ErrorObject;
-      export type $422 = Components.Schemas.ErrorObject;
     }
   }
 }
@@ -1232,7 +1170,7 @@ export interface OperationMethods {
     parameters?: Parameters<UnknownParamsObject> | null,
     data?: Paths.CreateProjectAssumption.RequestBody,
     config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.CreateProjectAssumption.Responses.$201 | Paths.CreateProjectAssumption.Responses.$422>
+  ): OperationResponse<Paths.CreateProjectAssumption.Responses.$201>
   /**
    * getProjectAssumptionById
    */
@@ -1248,7 +1186,7 @@ export interface OperationMethods {
     parameters?: Parameters<UnknownParamsObject> | null,
     data?: Paths.UpdateProjectAssumption.RequestBody,
     config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.UpdateProjectAssumption.Responses.$200 | Paths.UpdateProjectAssumption.Responses.$422>
+  ): OperationResponse<Paths.UpdateProjectAssumption.Responses.$200>
   /**
    * GetUserDashboard
    */
@@ -1280,7 +1218,7 @@ export interface OperationMethods {
     parameters?: Parameters<UnknownParamsObject> | null,
     data?: Paths.CreateProjectDependency.RequestBody,
     config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.CreateProjectDependency.Responses.$201 | Paths.CreateProjectDependency.Responses.$422>
+  ): OperationResponse<Paths.CreateProjectDependency.Responses.$201>
   /**
    * getProjectDependencyById
    */
@@ -1296,7 +1234,7 @@ export interface OperationMethods {
     parameters?: Parameters<UnknownParamsObject> | null,
     data?: Paths.UpdateProjectDependency.RequestBody,
     config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.UpdateProjectDependency.Responses.$200 | Paths.UpdateProjectDependency.Responses.$422>
+  ): OperationResponse<Paths.UpdateProjectDependency.Responses.$200>
   /**
    * listProjectIssues
    */
@@ -1352,7 +1290,7 @@ export interface OperationMethods {
     parameters?: Parameters<UnknownParamsObject> | null,
     data?: Paths.CreateProjectObs.RequestBody,
     config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.CreateProjectObs.Responses.$201 | Paths.CreateProjectObs.Responses.$422>
+  ): OperationResponse<Paths.CreateProjectObs.Responses.$201>
   /**
    * addProjectObsElement
    */
@@ -1360,7 +1298,7 @@ export interface OperationMethods {
     parameters?: Parameters<UnknownParamsObject> | null,
     data?: Paths.AddProjectObsElement.RequestBody,
     config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.AddProjectObsElement.Responses.$201 | Paths.AddProjectObsElement.Responses.$422>
+  ): OperationResponse<Paths.AddProjectObsElement.Responses.$201>
   /**
    * findProjectObsElement
    */
@@ -1368,7 +1306,7 @@ export interface OperationMethods {
     parameters?: Parameters<UnknownParamsObject> | null,
     data?: any,
     config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.FindProjectObsElement.Responses.$200 | Paths.FindProjectObsElement.Responses.$404>
+  ): OperationResponse<Paths.FindProjectObsElement.Responses.$200>
   /**
    * moveProjectObsElement
    */
@@ -1376,7 +1314,7 @@ export interface OperationMethods {
     parameters?: Parameters<UnknownParamsObject> | null,
     data?: Paths.MoveProjectObsElement.RequestBody,
     config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.MoveProjectObsElement.Responses.$200 | Paths.MoveProjectObsElement.Responses.$422>
+  ): OperationResponse<Paths.MoveProjectObsElement.Responses.$200>
   /**
    * updateProjectObsElement
    */
@@ -1384,7 +1322,7 @@ export interface OperationMethods {
     parameters?: Parameters<UnknownParamsObject> | null,
     data?: Paths.UpdateProjectObsElement.RequestBody,
     config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.UpdateProjectObsElement.Responses.$200 | Paths.UpdateProjectObsElement.Responses.$422>
+  ): OperationResponse<Paths.UpdateProjectObsElement.Responses.$200>
   /**
    * deleteProjectObsElement
    */
@@ -1392,7 +1330,7 @@ export interface OperationMethods {
     parameters?: Parameters<UnknownParamsObject> | null,
     data?: any,
     config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.DeleteProjectObsElement.Responses.$422>
+  ): OperationResponse<any>
   /**
    * ListOrganisations
    */
@@ -1408,7 +1346,7 @@ export interface OperationMethods {
     parameters?: Parameters<UnknownParamsObject> | null,
     data?: any,
     config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.FindOrganisationById.Responses.$200 | Paths.FindOrganisationById.Responses.$404>
+  ): OperationResponse<Paths.FindOrganisationById.Responses.$200>
   /**
    * listProjects
    */
@@ -1424,7 +1362,7 @@ export interface OperationMethods {
     parameters?: Parameters<UnknownParamsObject> | null,
     data?: Paths.CreateProject.RequestBody,
     config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.CreateProject.Responses.$201 | Paths.CreateProject.Responses.$422>
+  ): OperationResponse<Paths.CreateProject.Responses.$201>
   /**
    * getProjectById
    */
@@ -1432,7 +1370,7 @@ export interface OperationMethods {
     parameters?: Parameters<UnknownParamsObject> | null,
     data?: any,
     config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.GetProjectById.Responses.$200 | Paths.GetProjectById.Responses.$404>
+  ): OperationResponse<Paths.GetProjectById.Responses.$200>
   /**
    * getProjectDashboard
    */
@@ -1448,7 +1386,7 @@ export interface OperationMethods {
     parameters?: Parameters<UnknownParamsObject> | null,
     data?: any,
     config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.ListProjectRam.Responses.$200 | Paths.ListProjectRam.Responses.$404>
+  ): OperationResponse<Paths.ListProjectRam.Responses.$200>
   /**
    * createProjectRam
    */
@@ -1456,7 +1394,7 @@ export interface OperationMethods {
     parameters?: Parameters<UnknownParamsObject> | null,
     data?: Paths.CreateProjectRam.RequestBody,
     config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.CreateProjectRam.Responses.$201 | Paths.CreateProjectRam.Responses.$422>
+  ): OperationResponse<Paths.CreateProjectRam.Responses.$201>
   /**
    * addProjectRamAssignment
    */
@@ -1464,7 +1402,7 @@ export interface OperationMethods {
     parameters?: Parameters<UnknownParamsObject> | null,
     data?: Paths.AddProjectRamAssignment.RequestBody,
     config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.AddProjectRamAssignment.Responses.$201 | Paths.AddProjectRamAssignment.Responses.$422>
+  ): OperationResponse<Paths.AddProjectRamAssignment.Responses.$201>
   /**
    * updateProjectRamAssignment
    */
@@ -1472,7 +1410,7 @@ export interface OperationMethods {
     parameters?: Parameters<UnknownParamsObject> | null,
     data?: Paths.UpdateProjectRamAssignment.RequestBody,
     config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.UpdateProjectRamAssignment.Responses.$200 | Paths.UpdateProjectRamAssignment.Responses.$422>
+  ): OperationResponse<Paths.UpdateProjectRamAssignment.Responses.$200>
   /**
    * deleteProjectRamAssignment
    */
@@ -1480,7 +1418,7 @@ export interface OperationMethods {
     parameters?: Parameters<UnknownParamsObject> | null,
     data?: any,
     config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.DeleteProjectRamAssignment.Responses.$422>
+  ): OperationResponse<any>
   /**
    * listProjectRbs
    */
@@ -1496,7 +1434,7 @@ export interface OperationMethods {
     parameters?: Parameters<UnknownParamsObject> | null,
     data?: Paths.CreateProjectRbs.RequestBody,
     config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.CreateProjectRbs.Responses.$201 | Paths.CreateProjectRbs.Responses.$422>
+  ): OperationResponse<Paths.CreateProjectRbs.Responses.$201>
   /**
    * addProjectRbsElement
    */
@@ -1504,7 +1442,7 @@ export interface OperationMethods {
     parameters?: Parameters<UnknownParamsObject> | null,
     data?: Paths.AddProjectRbsElement.RequestBody,
     config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.AddProjectRbsElement.Responses.$201 | Paths.AddProjectRbsElement.Responses.$422>
+  ): OperationResponse<Paths.AddProjectRbsElement.Responses.$201>
   /**
    * findProjectRbsElement
    */
@@ -1512,7 +1450,7 @@ export interface OperationMethods {
     parameters?: Parameters<UnknownParamsObject> | null,
     data?: any,
     config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.FindProjectRbsElement.Responses.$200 | Paths.FindProjectRbsElement.Responses.$404>
+  ): OperationResponse<Paths.FindProjectRbsElement.Responses.$200>
   /**
    * moveProjectRbsElement
    */
@@ -1520,7 +1458,7 @@ export interface OperationMethods {
     parameters?: Parameters<UnknownParamsObject> | null,
     data?: Paths.MoveProjectRbsElement.RequestBody,
     config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.MoveProjectRbsElement.Responses.$200 | Paths.MoveProjectRbsElement.Responses.$422>
+  ): OperationResponse<Paths.MoveProjectRbsElement.Responses.$200>
   /**
    * updateProjectRbsElement
    */
@@ -1528,7 +1466,7 @@ export interface OperationMethods {
     parameters?: Parameters<UnknownParamsObject> | null,
     data?: Paths.UpdateProjectRbsElement.RequestBody,
     config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.UpdateProjectRbsElement.Responses.$200 | Paths.UpdateProjectRbsElement.Responses.$422>
+  ): OperationResponse<Paths.UpdateProjectRbsElement.Responses.$200>
   /**
    * deleteProjectRbsElement
    */
@@ -1536,7 +1474,7 @@ export interface OperationMethods {
     parameters?: Parameters<UnknownParamsObject> | null,
     data?: any,
     config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.DeleteProjectRbsElement.Responses.$404 | Paths.DeleteProjectRbsElement.Responses.$422>
+  ): OperationResponse<any>
   /**
    * listProjectRisks
    */
@@ -1560,7 +1498,7 @@ export interface OperationMethods {
     parameters?: Parameters<UnknownParamsObject> | null,
     data?: Paths.CreateProjectRisk.RequestBody,
     config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.CreateProjectRisk.Responses.$201 | Paths.CreateProjectRisk.Responses.$422>
+  ): OperationResponse<Paths.CreateProjectRisk.Responses.$201>
   /**
    * getProjectRiskById
    */
@@ -1576,7 +1514,7 @@ export interface OperationMethods {
     parameters?: Parameters<UnknownParamsObject> | null,
     data?: Paths.UpdateProjectRisk.RequestBody,
     config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.UpdateProjectRisk.Responses.$200 | Paths.UpdateProjectRisk.Responses.$422>
+  ): OperationResponse<Paths.UpdateProjectRisk.Responses.$200>
   /**
    * listProjectWbs
    */
@@ -1592,7 +1530,7 @@ export interface OperationMethods {
     parameters?: Parameters<UnknownParamsObject> | null,
     data?: Paths.CreateProjectWbs.RequestBody,
     config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.CreateProjectWbs.Responses.$201 | Paths.CreateProjectWbs.Responses.$422>
+  ): OperationResponse<Paths.CreateProjectWbs.Responses.$201>
   /**
    * addProjectWbsElement
    */
@@ -1600,7 +1538,7 @@ export interface OperationMethods {
     parameters?: Parameters<UnknownParamsObject> | null,
     data?: Paths.AddProjectWbsElement.RequestBody,
     config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.AddProjectWbsElement.Responses.$201 | Paths.AddProjectWbsElement.Responses.$422>
+  ): OperationResponse<Paths.AddProjectWbsElement.Responses.$201>
   /**
    * findProjectWbsElement
    */
@@ -1608,7 +1546,7 @@ export interface OperationMethods {
     parameters?: Parameters<UnknownParamsObject> | null,
     data?: any,
     config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.FindProjectWbsElement.Responses.$200 | Paths.FindProjectWbsElement.Responses.$404>
+  ): OperationResponse<Paths.FindProjectWbsElement.Responses.$200>
   /**
    * moveProjectWbsElement
    */
@@ -1616,7 +1554,7 @@ export interface OperationMethods {
     parameters?: Parameters<UnknownParamsObject> | null,
     data?: Paths.MoveProjectWbsElement.RequestBody,
     config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.MoveProjectWbsElement.Responses.$200 | Paths.MoveProjectWbsElement.Responses.$422>
+  ): OperationResponse<Paths.MoveProjectWbsElement.Responses.$200>
   /**
    * updateProjectWbsElement
    */
@@ -1624,7 +1562,7 @@ export interface OperationMethods {
     parameters?: Parameters<UnknownParamsObject> | null,
     data?: Paths.UpdateProjectWbsElement.RequestBody,
     config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.UpdateProjectWbsElement.Responses.$200 | Paths.UpdateProjectWbsElement.Responses.$422>
+  ): OperationResponse<Paths.UpdateProjectWbsElement.Responses.$200>
   /**
    * deleteProjectWbsElement
    */
@@ -1632,7 +1570,7 @@ export interface OperationMethods {
     parameters?: Parameters<UnknownParamsObject> | null,
     data?: any,
     config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.DeleteProjectWbsElement.Responses.$404 | Paths.DeleteProjectWbsElement.Responses.$422>
+  ): OperationResponse<any>
   /**
    * ListWorkPackages
    */
@@ -1640,7 +1578,7 @@ export interface OperationMethods {
     parameters?: Parameters<UnknownParamsObject> | null,
     data?: any,
     config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.ListWorkPackages.Responses.$200 | Paths.ListWorkPackages.Responses.$404>
+  ): OperationResponse<Paths.ListWorkPackages.Responses.$200>
   /**
    * AddWorkPackage
    */
@@ -1648,7 +1586,7 @@ export interface OperationMethods {
     parameters?: Parameters<UnknownParamsObject> | null,
     data?: Paths.AddWorkPackage.RequestBody,
     config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.AddWorkPackage.Responses.$200 | Paths.AddWorkPackage.Responses.$404 | Paths.AddWorkPackage.Responses.$422>
+  ): OperationResponse<Paths.AddWorkPackage.Responses.$200>
   /**
    * FindWorkPackageById
    */
@@ -1656,7 +1594,7 @@ export interface OperationMethods {
     parameters?: Parameters<UnknownParamsObject> | null,
     data?: any,
     config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.FindWorkPackageById.Responses.$200 | Paths.FindWorkPackageById.Responses.$404>
+  ): OperationResponse<Paths.FindWorkPackageById.Responses.$200>
   /**
    * UpdateWorkPackage
    */
@@ -1664,7 +1602,7 @@ export interface OperationMethods {
     parameters?: Parameters<UnknownParamsObject> | null,
     data?: Paths.UpdateWorkPackage.RequestBody,
     config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.UpdateWorkPackage.Responses.$200 | Paths.UpdateWorkPackage.Responses.$404 | Paths.UpdateWorkPackage.Responses.$422>
+  ): OperationResponse<Paths.UpdateWorkPackage.Responses.$200>
   /**
    * MarkWorkPackageAsDeleted
    */
@@ -1672,7 +1610,7 @@ export interface OperationMethods {
     parameters?: Parameters<UnknownParamsObject> | null,
     data?: any,
     config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.MarkWorkPackageAsDeleted.Responses.$404 | Paths.MarkWorkPackageAsDeleted.Responses.$422>
+  ): OperationResponse<any>
 }
 
 export interface PathsDictionary {
@@ -1704,7 +1642,7 @@ export interface PathsDictionary {
       parameters?: Parameters<UnknownParamsObject> | null,
       data?: Paths.CreateProjectAssumption.RequestBody,
       config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.CreateProjectAssumption.Responses.$201 | Paths.CreateProjectAssumption.Responses.$422>
+    ): OperationResponse<Paths.CreateProjectAssumption.Responses.$201>
   }
   ['/projects/{project_id}/assumptions/{assumption_id}']: {
     /**
@@ -1724,7 +1662,7 @@ export interface PathsDictionary {
       parameters?: Parameters<UnknownParamsObject> | null,
       data?: Paths.UpdateProjectAssumption.RequestBody,
       config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.UpdateProjectAssumption.Responses.$200 | Paths.UpdateProjectAssumption.Responses.$422>
+    ): OperationResponse<Paths.UpdateProjectAssumption.Responses.$200>
   }
   ['/dashboard']: {
     /**
@@ -1764,7 +1702,7 @@ export interface PathsDictionary {
       parameters?: Parameters<UnknownParamsObject> | null,
       data?: Paths.CreateProjectDependency.RequestBody,
       config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.CreateProjectDependency.Responses.$201 | Paths.CreateProjectDependency.Responses.$422>
+    ): OperationResponse<Paths.CreateProjectDependency.Responses.$201>
   }
   ['/projects/{project_id}/dependencies/{dependency_id}']: {
     /**
@@ -1784,7 +1722,7 @@ export interface PathsDictionary {
       parameters?: Parameters<UnknownParamsObject> | null,
       data?: Paths.UpdateProjectDependency.RequestBody,
       config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.UpdateProjectDependency.Responses.$200 | Paths.UpdateProjectDependency.Responses.$422>
+    ): OperationResponse<Paths.UpdateProjectDependency.Responses.$200>
   }
   ['/projects/{project_id}/issues']: {
     /**
@@ -1854,7 +1792,7 @@ export interface PathsDictionary {
       parameters?: Parameters<UnknownParamsObject> | null,
       data?: Paths.CreateProjectObs.RequestBody,
       config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.CreateProjectObs.Responses.$201 | Paths.CreateProjectObs.Responses.$422>
+    ): OperationResponse<Paths.CreateProjectObs.Responses.$201>
   }
   ['/projects/{project_id}/obs/add']: {
     /**
@@ -1864,7 +1802,7 @@ export interface PathsDictionary {
       parameters?: Parameters<UnknownParamsObject> | null,
       data?: Paths.AddProjectObsElement.RequestBody,
       config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.AddProjectObsElement.Responses.$201 | Paths.AddProjectObsElement.Responses.$422>
+    ): OperationResponse<Paths.AddProjectObsElement.Responses.$201>
   }
   ['/projects/{project_id}/obs/{element_id}']: {
     /**
@@ -1874,7 +1812,7 @@ export interface PathsDictionary {
       parameters?: Parameters<UnknownParamsObject> | null,
       data?: any,
       config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.FindProjectObsElement.Responses.$200 | Paths.FindProjectObsElement.Responses.$404>
+    ): OperationResponse<Paths.FindProjectObsElement.Responses.$200>
   }
   ['/projects/{project_id}/obs/{element_id}/move']: {
     /**
@@ -1884,7 +1822,7 @@ export interface PathsDictionary {
       parameters?: Parameters<UnknownParamsObject> | null,
       data?: Paths.MoveProjectObsElement.RequestBody,
       config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.MoveProjectObsElement.Responses.$200 | Paths.MoveProjectObsElement.Responses.$422>
+    ): OperationResponse<Paths.MoveProjectObsElement.Responses.$200>
   }
   ['/projects/{project_id}/obs/{element_id}/update']: {
     /**
@@ -1894,7 +1832,7 @@ export interface PathsDictionary {
       parameters?: Parameters<UnknownParamsObject> | null,
       data?: Paths.UpdateProjectObsElement.RequestBody,
       config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.UpdateProjectObsElement.Responses.$200 | Paths.UpdateProjectObsElement.Responses.$422>
+    ): OperationResponse<Paths.UpdateProjectObsElement.Responses.$200>
   }
   ['/projects/{project_id}/obs/{element_id}/delete']: {
     /**
@@ -1904,7 +1842,7 @@ export interface PathsDictionary {
       parameters?: Parameters<UnknownParamsObject> | null,
       data?: any,
       config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.DeleteProjectObsElement.Responses.$422>
+    ): OperationResponse<any>
   }
   ['/organisations']: {
     /**
@@ -1924,7 +1862,7 @@ export interface PathsDictionary {
       parameters?: Parameters<UnknownParamsObject> | null,
       data?: any,
       config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.FindOrganisationById.Responses.$200 | Paths.FindOrganisationById.Responses.$404>
+    ): OperationResponse<Paths.FindOrganisationById.Responses.$200>
   }
   ['/projects']: {
     /**
@@ -1944,7 +1882,7 @@ export interface PathsDictionary {
       parameters?: Parameters<UnknownParamsObject> | null,
       data?: Paths.CreateProject.RequestBody,
       config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.CreateProject.Responses.$201 | Paths.CreateProject.Responses.$422>
+    ): OperationResponse<Paths.CreateProject.Responses.$201>
   }
   ['/projects/{project_id}']: {
     /**
@@ -1954,7 +1892,7 @@ export interface PathsDictionary {
       parameters?: Parameters<UnknownParamsObject> | null,
       data?: any,
       config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.GetProjectById.Responses.$200 | Paths.GetProjectById.Responses.$404>
+    ): OperationResponse<Paths.GetProjectById.Responses.$200>
   }
   ['/projects/{project_id}/dashboard']: {
     /**
@@ -1974,7 +1912,7 @@ export interface PathsDictionary {
       parameters?: Parameters<UnknownParamsObject> | null,
       data?: any,
       config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.ListProjectRam.Responses.$200 | Paths.ListProjectRam.Responses.$404>
+    ): OperationResponse<Paths.ListProjectRam.Responses.$200>
   }
   ['/projects/{project_id}/ram/create']: {
     /**
@@ -1984,7 +1922,7 @@ export interface PathsDictionary {
       parameters?: Parameters<UnknownParamsObject> | null,
       data?: Paths.CreateProjectRam.RequestBody,
       config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.CreateProjectRam.Responses.$201 | Paths.CreateProjectRam.Responses.$422>
+    ): OperationResponse<Paths.CreateProjectRam.Responses.$201>
   }
   ['/projects/{project_id}/ram/add']: {
     /**
@@ -1994,7 +1932,7 @@ export interface PathsDictionary {
       parameters?: Parameters<UnknownParamsObject> | null,
       data?: Paths.AddProjectRamAssignment.RequestBody,
       config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.AddProjectRamAssignment.Responses.$201 | Paths.AddProjectRamAssignment.Responses.$422>
+    ): OperationResponse<Paths.AddProjectRamAssignment.Responses.$201>
   }
   ['/projects/{project_id}/ram/{assignment_id}/update']: {
     /**
@@ -2004,7 +1942,7 @@ export interface PathsDictionary {
       parameters?: Parameters<UnknownParamsObject> | null,
       data?: Paths.UpdateProjectRamAssignment.RequestBody,
       config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.UpdateProjectRamAssignment.Responses.$200 | Paths.UpdateProjectRamAssignment.Responses.$422>
+    ): OperationResponse<Paths.UpdateProjectRamAssignment.Responses.$200>
   }
   ['/projects/{project_id}/ram/{assignment_id}/delete']: {
     /**
@@ -2014,7 +1952,7 @@ export interface PathsDictionary {
       parameters?: Parameters<UnknownParamsObject> | null,
       data?: any,
       config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.DeleteProjectRamAssignment.Responses.$422>
+    ): OperationResponse<any>
   }
   ['/projects/{project_id}/rbs']: {
     /**
@@ -2034,7 +1972,7 @@ export interface PathsDictionary {
       parameters?: Parameters<UnknownParamsObject> | null,
       data?: Paths.CreateProjectRbs.RequestBody,
       config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.CreateProjectRbs.Responses.$201 | Paths.CreateProjectRbs.Responses.$422>
+    ): OperationResponse<Paths.CreateProjectRbs.Responses.$201>
   }
   ['/projects/{project_id}/rbs/add']: {
     /**
@@ -2044,7 +1982,7 @@ export interface PathsDictionary {
       parameters?: Parameters<UnknownParamsObject> | null,
       data?: Paths.AddProjectRbsElement.RequestBody,
       config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.AddProjectRbsElement.Responses.$201 | Paths.AddProjectRbsElement.Responses.$422>
+    ): OperationResponse<Paths.AddProjectRbsElement.Responses.$201>
   }
   ['/projects/{project_id}/rbs/{element_id}']: {
     /**
@@ -2054,7 +1992,7 @@ export interface PathsDictionary {
       parameters?: Parameters<UnknownParamsObject> | null,
       data?: any,
       config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.FindProjectRbsElement.Responses.$200 | Paths.FindProjectRbsElement.Responses.$404>
+    ): OperationResponse<Paths.FindProjectRbsElement.Responses.$200>
   }
   ['/projects/{project_id}/rbs/{element_id}/move']: {
     /**
@@ -2064,7 +2002,7 @@ export interface PathsDictionary {
       parameters?: Parameters<UnknownParamsObject> | null,
       data?: Paths.MoveProjectRbsElement.RequestBody,
       config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.MoveProjectRbsElement.Responses.$200 | Paths.MoveProjectRbsElement.Responses.$422>
+    ): OperationResponse<Paths.MoveProjectRbsElement.Responses.$200>
   }
   ['/projects/{project_id}/rbs/{element_id}/update']: {
     /**
@@ -2074,7 +2012,7 @@ export interface PathsDictionary {
       parameters?: Parameters<UnknownParamsObject> | null,
       data?: Paths.UpdateProjectRbsElement.RequestBody,
       config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.UpdateProjectRbsElement.Responses.$200 | Paths.UpdateProjectRbsElement.Responses.$422>
+    ): OperationResponse<Paths.UpdateProjectRbsElement.Responses.$200>
   }
   ['/projects/{project_id}/rbs/{element_id}/delete']: {
     /**
@@ -2084,7 +2022,7 @@ export interface PathsDictionary {
       parameters?: Parameters<UnknownParamsObject> | null,
       data?: any,
       config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.DeleteProjectRbsElement.Responses.$404 | Paths.DeleteProjectRbsElement.Responses.$422>
+    ): OperationResponse<any>
   }
   ['/projects/{project_id}/risks']: {
     /**
@@ -2114,7 +2052,7 @@ export interface PathsDictionary {
       parameters?: Parameters<UnknownParamsObject> | null,
       data?: Paths.CreateProjectRisk.RequestBody,
       config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.CreateProjectRisk.Responses.$201 | Paths.CreateProjectRisk.Responses.$422>
+    ): OperationResponse<Paths.CreateProjectRisk.Responses.$201>
   }
   ['/projects/{project_id}/risks/{risk_id}']: {
     /**
@@ -2134,7 +2072,7 @@ export interface PathsDictionary {
       parameters?: Parameters<UnknownParamsObject> | null,
       data?: Paths.UpdateProjectRisk.RequestBody,
       config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.UpdateProjectRisk.Responses.$200 | Paths.UpdateProjectRisk.Responses.$422>
+    ): OperationResponse<Paths.UpdateProjectRisk.Responses.$200>
   }
   ['/projects/{project_id}/wbs']: {
     /**
@@ -2154,7 +2092,7 @@ export interface PathsDictionary {
       parameters?: Parameters<UnknownParamsObject> | null,
       data?: Paths.CreateProjectWbs.RequestBody,
       config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.CreateProjectWbs.Responses.$201 | Paths.CreateProjectWbs.Responses.$422>
+    ): OperationResponse<Paths.CreateProjectWbs.Responses.$201>
   }
   ['/projects/{project_id}/wbs/add']: {
     /**
@@ -2164,7 +2102,7 @@ export interface PathsDictionary {
       parameters?: Parameters<UnknownParamsObject> | null,
       data?: Paths.AddProjectWbsElement.RequestBody,
       config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.AddProjectWbsElement.Responses.$201 | Paths.AddProjectWbsElement.Responses.$422>
+    ): OperationResponse<Paths.AddProjectWbsElement.Responses.$201>
   }
   ['/projects/{project_id}/wbs/{element_id}']: {
     /**
@@ -2174,7 +2112,7 @@ export interface PathsDictionary {
       parameters?: Parameters<UnknownParamsObject> | null,
       data?: any,
       config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.FindProjectWbsElement.Responses.$200 | Paths.FindProjectWbsElement.Responses.$404>
+    ): OperationResponse<Paths.FindProjectWbsElement.Responses.$200>
   }
   ['/projects/{project_id}/wbs/{element_id}/move']: {
     /**
@@ -2184,7 +2122,7 @@ export interface PathsDictionary {
       parameters?: Parameters<UnknownParamsObject> | null,
       data?: Paths.MoveProjectWbsElement.RequestBody,
       config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.MoveProjectWbsElement.Responses.$200 | Paths.MoveProjectWbsElement.Responses.$422>
+    ): OperationResponse<Paths.MoveProjectWbsElement.Responses.$200>
   }
   ['/projects/{project_id}/wbs/{element_id}/update']: {
     /**
@@ -2194,7 +2132,7 @@ export interface PathsDictionary {
       parameters?: Parameters<UnknownParamsObject> | null,
       data?: Paths.UpdateProjectWbsElement.RequestBody,
       config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.UpdateProjectWbsElement.Responses.$200 | Paths.UpdateProjectWbsElement.Responses.$422>
+    ): OperationResponse<Paths.UpdateProjectWbsElement.Responses.$200>
   }
   ['/projects/{project_id}/wbs/{element_id}/delete']: {
     /**
@@ -2204,7 +2142,7 @@ export interface PathsDictionary {
       parameters?: Parameters<UnknownParamsObject> | null,
       data?: any,
       config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.DeleteProjectWbsElement.Responses.$404 | Paths.DeleteProjectWbsElement.Responses.$422>
+    ): OperationResponse<any>
   }
   ['/projects/{project_id}/work-packages']: {
     /**
@@ -2214,7 +2152,7 @@ export interface PathsDictionary {
       parameters?: Parameters<UnknownParamsObject> | null,
       data?: any,
       config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.ListWorkPackages.Responses.$200 | Paths.ListWorkPackages.Responses.$404>
+    ): OperationResponse<Paths.ListWorkPackages.Responses.$200>
   }
   ['/projects/{project_id}/work-packages/add']: {
     /**
@@ -2224,7 +2162,7 @@ export interface PathsDictionary {
       parameters?: Parameters<UnknownParamsObject> | null,
       data?: Paths.AddWorkPackage.RequestBody,
       config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.AddWorkPackage.Responses.$200 | Paths.AddWorkPackage.Responses.$404 | Paths.AddWorkPackage.Responses.$422>
+    ): OperationResponse<Paths.AddWorkPackage.Responses.$200>
   }
   ['/projects/{project_id}/work-packages/{workpackage_id}']: {
     /**
@@ -2234,7 +2172,7 @@ export interface PathsDictionary {
       parameters?: Parameters<UnknownParamsObject> | null,
       data?: any,
       config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.FindWorkPackageById.Responses.$200 | Paths.FindWorkPackageById.Responses.$404>
+    ): OperationResponse<Paths.FindWorkPackageById.Responses.$200>
   }
   ['/projects/{project_id}/work-packages/{workpackage_id}/update']: {
     /**
@@ -2244,7 +2182,7 @@ export interface PathsDictionary {
       parameters?: Parameters<UnknownParamsObject> | null,
       data?: Paths.UpdateWorkPackage.RequestBody,
       config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.UpdateWorkPackage.Responses.$200 | Paths.UpdateWorkPackage.Responses.$404 | Paths.UpdateWorkPackage.Responses.$422>
+    ): OperationResponse<Paths.UpdateWorkPackage.Responses.$200>
   }
   ['/projects/{project_id}/work-packages/{workpackage_id}/delete']: {
     /**
@@ -2254,7 +2192,7 @@ export interface PathsDictionary {
       parameters?: Parameters<UnknownParamsObject> | null,
       data?: any,
       config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.MarkWorkPackageAsDeleted.Responses.$404 | Paths.MarkWorkPackageAsDeleted.Responses.$422>
+    ): OperationResponse<any>
   }
 }
 
