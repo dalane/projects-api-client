@@ -3445,16 +3445,6 @@
                 }
               }
             }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorObject"
-                }
-              }
-            }
           }
         },
         "requestBody": {
@@ -3511,16 +3501,6 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/DependencyEntity"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorObject"
                 }
               }
             }
@@ -3745,16 +3725,6 @@
                 }
               }
             }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorObject"
-                }
-              }
-            }
           }
         },
         "requestBody": {
@@ -3783,16 +3753,6 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ObsElement"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorObject"
                 }
               }
             }
@@ -3833,16 +3793,6 @@
                 }
               }
             }
-          },
-          "404": {
-            "description": "Not Found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorObject"
-                }
-              }
-            }
           }
         }
       },
@@ -3866,16 +3816,6 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ObsElement"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorObject"
                 }
               }
             }
@@ -3919,16 +3859,6 @@
                 }
               }
             }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorObject"
-                }
-              }
-            }
           }
         },
         "requestBody": {
@@ -3962,16 +3892,6 @@
         "responses": {
           "204": {
             "description": "Deleted"
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorObject"
-                }
-              }
-            }
           }
         },
         "parameters": [
@@ -4019,16 +3939,6 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/OrganisationEntity"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not Found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorObject"
                 }
               }
             }
@@ -4092,16 +4002,6 @@
                 }
               }
             }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorObject"
-                }
-              }
-            }
           }
         },
         "requestBody": {
@@ -4125,16 +4025,6 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ProjectEntity"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not Found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorObject"
                 }
               }
             }
@@ -4183,16 +4073,6 @@
                 }
               }
             }
-          },
-          "404": {
-            "description": "Not Found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorObject"
-                }
-              }
-            }
           }
         }
       },
@@ -4213,16 +4093,6 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/RamEntity"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorObject"
                 }
               }
             }
@@ -4254,16 +4124,6 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/RamAssignmentEntity"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorObject"
                 }
               }
             }
@@ -4304,16 +4164,6 @@
                 }
               }
             }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorObject"
-                }
-              }
-            }
           }
         },
         "requestBody": {
@@ -4347,16 +4197,6 @@
         "responses": {
           "204": {
             "description": "Deleted"
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorObject"
-                }
-              }
-            }
           }
         },
         "parameters": [
@@ -4410,16 +4250,6 @@
                 }
               }
             }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorObject"
-                }
-              }
-            }
           }
         },
         "requestBody": {
@@ -4448,16 +4278,6 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/RbsElement"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorObject"
                 }
               }
             }
@@ -4498,16 +4318,6 @@
                 }
               }
             }
-          },
-          "404": {
-            "description": "Not Found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorObject"
-                }
-              }
-            }
           }
         }
       },
@@ -4531,16 +4341,6 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/RbsElement"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorObject"
                 }
               }
             }
@@ -4584,16 +4384,6 @@
                 }
               }
             }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorObject"
-                }
-              }
-            }
           }
         },
         "requestBody": {
@@ -4627,26 +4417,6 @@
         "responses": {
           "204": {
             "description": "Deleted"
-          },
-          "404": {
-            "description": "Not Found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorObject"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorObject"
-                }
-              }
-            }
           }
         },
         "parameters": [
@@ -4739,16 +4509,6 @@
                 }
               }
             }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorObject"
-                }
-              }
-            }
           }
         },
         "requestBody": {
@@ -4805,16 +4565,6 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/RiskEntity"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorObject"
                 }
               }
             }
@@ -4878,16 +4628,6 @@
                 }
               }
             }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorObject"
-                }
-              }
-            }
           }
         },
         "requestBody": {
@@ -4916,16 +4656,6 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/WbsElement"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorObject"
                 }
               }
             }
@@ -4966,16 +4696,6 @@
                 }
               }
             }
-          },
-          "404": {
-            "description": "Not Found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorObject"
-                }
-              }
-            }
           }
         }
       },
@@ -4999,16 +4719,6 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/WbsElement"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorObject"
                 }
               }
             }
@@ -5052,16 +4762,6 @@
                 }
               }
             }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorObject"
-                }
-              }
-            }
           }
         },
         "requestBody": {
@@ -5095,26 +4795,6 @@
         "responses": {
           "204": {
             "description": "Deleted"
-          },
-          "404": {
-            "description": "Not Found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorObject"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorObject"
-                }
-              }
-            }
           }
         },
         "parameters": [
@@ -5149,16 +4829,6 @@
                 }
               }
             }
-          },
-          "404": {
-            "description": "Not Found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorObject"
-                }
-              }
-            }
           }
         }
       },
@@ -5179,26 +4849,6 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/WorkpackageEntity"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not Found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorObject"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorObject"
                 }
               }
             }
@@ -5234,16 +4884,6 @@
                 }
               }
             }
-          },
-          "404": {
-            "description": "Not Found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorObject"
-                }
-              }
-            }
           }
         }
       },
@@ -5267,26 +4907,6 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/WorkpackageEntity"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not Found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorObject"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorObject"
                 }
               }
             }
@@ -5323,26 +4943,6 @@
         "responses": {
           "204": {
             "description": "Deleted"
-          },
-          "404": {
-            "description": "Not Found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorObject"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorObject"
-                }
-              }
-            }
           }
         },
         "parameters": [
