@@ -5,6 +5,7 @@ export { Components } from '../schema/openapi';
 export type ProjectsApiClient = Client;
 
 const { version } = require('../package.json');
+const schema = require('../schema/openapi.json');
 
 export interface ApiClientSettings {
 	/**
@@ -21,7 +22,7 @@ export interface ApiClientSettings {
 
 export async function createClient(options?: ApiClientSettings): Promise<ProjectsApiClient> {
 	const { server, identifier } = options ?? {};
-	const api = new OpenAPIClient({ definition: '../schema/openapi.json', withServer: server ?? 'live' });
+	const api = new OpenAPIClient({ definition: schema, withServer: server ?? 'live' });
 	const client = await api.getClient<ProjectsApiClient>();
 	client.defaults.headers = {
 		'user-agent': `@dalane/projects-api-client:${version}${!!identifier ? `;${identifier}` : ''}`
