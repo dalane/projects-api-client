@@ -31,6 +31,9 @@ declare namespace Components {
     namespace Include {
       export type Include = string[];
     }
+    namespace InvitationIdParam {
+      export type InvitationId = string; // uuid
+    }
     namespace IssueId {
       export type IssueId = string; // uuid
     }
@@ -75,6 +78,15 @@ declare namespace Components {
     export type ValidationErrorResponse = Schemas.ErrorObject;
   }
   namespace Schemas {
+    export interface AcceptInvitationDto {
+      user_id?: string; // uuid
+    }
+    export interface AddInvitationDto {
+      invitation_id?: string; // uuid
+      email: string; // email
+      role: TeamMemberRoleEnum;
+      message: string | null;
+    }
     export interface AddObsElementDto {
       /**
        * A unique code to represent the OBS element.
@@ -381,6 +393,21 @@ declare namespace Components {
         stack?: string;
       }[];
     }
+    export interface InvitationEntity {
+      invitation_id: string; // uuid
+      organisation_id: string; // uuid
+      organisation_name: string;
+      email: string; // email
+      role: TeamMemberRoleEnum;
+      message: string | null;
+      status: InvitationStatusEnum;
+      status_description: string | null;
+      user_id: string | null; // uuid
+      created_at: number;
+      updated_at: number;
+      version: number;
+    }
+    export type InvitationStatusEnum = "Pending" | "Sent" | "Failed" | "Accepted" | "Rejected" | "Cancelled";
     export type IssueCauseEnum = "Risk" | "Assumption" | "Dependency" | "Other";
     export interface IssueDashboardEntity {
       count_by_status: {
@@ -564,6 +591,8 @@ declare namespace Components {
       updated_at: number;
       version: number;
     }
+    export interface RejectInvitationDto {
+    }
     export interface RiskDashboardEntity {
       heatmap: RiskHeatmapAggregate;
       period_risks: PeriodRiskQueryAggregate;
@@ -653,6 +682,7 @@ declare namespace Components {
     export type RiskResponseEnum = "Avoid" | "Reduce" | "Transfer" | "Accept";
     export type RiskStatusEnum = "Proposed" | "Open" | "Managed" | "Expired" | "Rejected" | "Impacted" | "Deleted";
     export type RiskTypeEnum = "Threat" | "Opportunity";
+    export type TeamMemberRoleEnum = "Admininstrator" | "Executive" | "Team Member";
     export interface UpdateAssumptionDto {
       workpackage_id?: string | null; // uuid
       rbs_element_id?: string | null; // uuid
@@ -811,6 +841,18 @@ declare namespace Components {
   }
 }
 declare namespace Paths {
+  namespace AcceptInvitation {
+    export type RequestBody = Components.Schemas.AcceptInvitationDto;
+    namespace Responses {
+      export type $200 = Components.Schemas.InvitationEntity;
+    }
+  }
+  namespace AddInvitation {
+    export type RequestBody = Components.Schemas.AddInvitationDto;
+    namespace Responses {
+      export type $201 = Components.Schemas.InvitationEntity;
+    }
+  }
   namespace AddProjectObsElement {
     export type RequestBody = Components.Schemas.AddObsElementDto;
     namespace Responses {
@@ -1088,6 +1130,12 @@ declare namespace Paths {
     }
     export interface QueryParameters {
       workpackage_id?: Parameters.WorkpackageId; // uuid
+    }
+  }
+  namespace RejectInvitation {
+    export type RequestBody = Components.Schemas.RejectInvitationDto;
+    namespace Responses {
+      export type $200 = Components.Schemas.InvitationEntity;
     }
   }
   namespace UpdateProjectAssumption {
@@ -1611,6 +1659,30 @@ export interface OperationMethods {
     data?: any,
     config?: AxiosRequestConfig  
   ): OperationResponse<any>
+  /**
+   * AddInvitation
+   */
+  'AddInvitation'(
+    parameters?: Parameters<UnknownParamsObject> | null,
+    data?: Paths.AddInvitation.RequestBody,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.AddInvitation.Responses.$201>
+  /**
+   * AcceptInvitation
+   */
+  'AcceptInvitation'(
+    parameters?: Parameters<UnknownParamsObject> | null,
+    data?: Paths.AcceptInvitation.RequestBody,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.AcceptInvitation.Responses.$200>
+  /**
+   * RejectInvitation
+   */
+  'RejectInvitation'(
+    parameters?: Parameters<UnknownParamsObject> | null,
+    data?: Paths.RejectInvitation.RequestBody,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.RejectInvitation.Responses.$200>
 }
 
 export interface PathsDictionary {
@@ -2193,6 +2265,36 @@ export interface PathsDictionary {
       data?: any,
       config?: AxiosRequestConfig  
     ): OperationResponse<any>
+  }
+  ['/organisations/{organisation_id}/invitations/add']: {
+    /**
+     * AddInvitation
+     */
+    'post'(
+      parameters?: Parameters<UnknownParamsObject> | null,
+      data?: Paths.AddInvitation.RequestBody,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.AddInvitation.Responses.$201>
+  }
+  ['/invitations/{invitation_id}/accept']: {
+    /**
+     * AcceptInvitation
+     */
+    'post'(
+      parameters?: Parameters<UnknownParamsObject> | null,
+      data?: Paths.AcceptInvitation.RequestBody,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.AcceptInvitation.Responses.$200>
+  }
+  ['/invitations/{invitation_id}/reject']: {
+    /**
+     * RejectInvitation
+     */
+    'post'(
+      parameters?: Parameters<UnknownParamsObject> | null,
+      data?: Paths.RejectInvitation.RequestBody,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.RejectInvitation.Responses.$200>
   }
 }
 

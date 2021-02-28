@@ -209,6 +209,15 @@
           "type": "string",
           "format": "uuid"
         }
+      },
+      "invitation_id_param": {
+        "name": "invitation_id",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "string",
+          "format": "uuid"
+        }
       }
     },
     "schemas": {
@@ -3147,6 +3156,130 @@
             "nullable": true
           }
         }
+      },
+      "TeamMemberRoleEnum": {
+        "type": "string",
+        "enum": [
+          "Admininstrator",
+          "Executive",
+          "Team Member"
+        ]
+      },
+      "InvitationStatusEnum": {
+        "type": "string",
+        "enum": [
+          "Pending",
+          "Sent",
+          "Failed",
+          "Accepted",
+          "Rejected",
+          "Cancelled"
+        ]
+      },
+      "InvitationEntity": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "invitation_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "organisation_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "organisation_name": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string",
+            "format": "email"
+          },
+          "role": {
+            "$ref": "#/components/schemas/TeamMemberRoleEnum"
+          },
+          "message": {
+            "type": "string",
+            "nullable": true
+          },
+          "status": {
+            "$ref": "#/components/schemas/InvitationStatusEnum"
+          },
+          "status_description": {
+            "type": "string",
+            "nullable": true
+          },
+          "user_id": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          },
+          "created_at": {
+            "type": "integer"
+          },
+          "updated_at": {
+            "type": "integer"
+          },
+          "version": {
+            "type": "integer",
+            "minimum": 1
+          }
+        },
+        "required": [
+          "invitation_id",
+          "organisation_id",
+          "organisation_name",
+          "email",
+          "role",
+          "message",
+          "status",
+          "status_description",
+          "user_id",
+          "created_at",
+          "updated_at",
+          "version"
+        ]
+      },
+      "AddInvitationDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "invitation_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "email": {
+            "type": "string",
+            "format": "email"
+          },
+          "role": {
+            "$ref": "#/components/schemas/TeamMemberRoleEnum"
+          },
+          "message": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "required": [
+          "email",
+          "role",
+          "message"
+        ]
+      },
+      "AcceptInvitationDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "user_id": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      },
+      "RejectInvitationDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {}
       }
     },
     "responses": {
@@ -4937,6 +5070,99 @@
         },
         {
           "$ref": "#/components/parameters/workpackage_id"
+        }
+      ]
+    },
+    "/organisations/{organisation_id}/invitations/add": {
+      "post": {
+        "operationId": "AddInvitation",
+        "responses": {
+          "201": {
+            "description": "Invite somebody to join the organisation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InvitationEntity"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddInvitationDto"
+              }
+            }
+          }
+        }
+      },
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/organisation_id_param"
+        }
+      ]
+    },
+    "/invitations/{invitation_id}/accept": {
+      "post": {
+        "operationId": "AcceptInvitation",
+        "responses": {
+          "200": {
+            "description": "Accept an invitation to join an organisation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InvitationEntity"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AcceptInvitationDto"
+              }
+            }
+          }
+        }
+      },
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/invitation_id_param"
+        }
+      ]
+    },
+    "/invitations/{invitation_id}/reject": {
+      "post": {
+        "operationId": "RejectInvitation",
+        "responses": {
+          "200": {
+            "description": "Reject an invitation to join an organisation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InvitationEntity"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RejectInvitationDto"
+              }
+            }
+          }
+        }
+      },
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/invitation_id_param"
         }
       ]
     }
