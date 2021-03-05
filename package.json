@@ -1,6 +1,6 @@
 {
   "name": "@dalane/projects-api-client",
-  "version": "0.0.11",
+  "version": "0.0.12",
   "description": "",
   "main": "./build/index.js",
   "types": "./build/index.d.ts",
@@ -11,7 +11,7 @@
   ],
   "scripts": {
     "prepare": "npm run build",
-    "build-types": "./node_modules/.bin/typegen ./schema/openapi.json > ./schema/openapi.d.ts",
+    "types": "./node_modules/.bin/typegen ./schema/openapi.json > ./schema/openapi.d.ts",
     "prebuild": "rm -rf ./build",
     "build": "tsc"
   },

@@ -502,15 +502,19 @@ declare namespace Components {
     export interface OrganisationEntity {
       organisation_id: string; // uuid
       name: string;
+      status: OrganisationStatusEnum;
+      status_description?: string | null;
       created_at: number;
       updated_at: number;
       version: number;
     }
+    export type OrganisationStatusEnum = "Active" | "Suspended";
     export type PeriodRiskQueryAggregate = RiskEntity[];
     export interface ProjectDashboardEntity {
-      risks: {
-        risks: RiskDashboardEntity;
-      };
+      risks: RiskDashboardEntity;
+      assumptions: AssumptionDashboardEntity;
+      issues: IssueDashboardEntity;
+      dependencies: DependencyDashboardEntity;
     }
     export interface ProjectEntity {
       project_id: string; // uuid
@@ -1110,10 +1114,18 @@ declare namespace Paths {
   }
   namespace Projects$ProjectIdAssumptionsDashboard {
     namespace Parameters {
-      export type CloseoutByLimit = number;
+      export type CloseOutByLimit = number;
     }
     export interface QueryParameters {
-      closeoutByLimit?: Parameters.CloseoutByLimit;
+      closeOutByLimit?: Parameters.CloseOutByLimit;
+    }
+  }
+  namespace Projects$ProjectIdDashboard {
+    namespace Parameters {
+      export type CloseOutByLimit = number;
+    }
+    export interface QueryParameters {
+      closeOutByLimit?: Parameters.CloseOutByLimit;
     }
   }
   namespace Projects$ProjectIdDependencies {

@@ -1558,6 +1558,13 @@
           "method"
         ]
       },
+      "OrganisationStatusEnum": {
+        "type": "string",
+        "enum": [
+          "Active",
+          "Suspended"
+        ]
+      },
       "OrganisationEntity": {
         "type": "object",
         "additionalProperties": false,
@@ -1568,6 +1575,13 @@
           },
           "name": {
             "type": "string"
+          },
+          "status": {
+            "$ref": "#/components/schemas/OrganisationStatusEnum"
+          },
+          "status_description": {
+            "type": "string",
+            "nullable": true
           },
           "created_at": {
             "type": "number"
@@ -1583,6 +1597,7 @@
         "required": [
           "organisation_id",
           "name",
+          "status",
           "created_at",
           "updated_at",
           "version"
@@ -1787,19 +1802,23 @@
         "additionalProperties": false,
         "properties": {
           "risks": {
-            "type": "object",
-            "properties": {
-              "risks": {
-                "$ref": "#/components/schemas/RiskDashboardEntity"
-              }
-            },
-            "required": [
-              "risks"
-            ]
+            "$ref": "#/components/schemas/RiskDashboardEntity"
+          },
+          "assumptions": {
+            "$ref": "#/components/schemas/AssumptionDashboardEntity"
+          },
+          "issues": {
+            "$ref": "#/components/schemas/IssueDashboardEntity"
+          },
+          "dependencies": {
+            "$ref": "#/components/schemas/DependencyDashboardEntity"
           }
         },
         "required": [
-          "risks"
+          "risks",
+          "assumptions",
+          "issues",
+          "dependencies"
         ]
       },
       "RamAssignmentEnum": {
@@ -3357,7 +3376,7 @@
           "$ref": "#/components/parameters/project_id"
         },
         {
-          "name": "closeoutByLimit",
+          "name": "closeOutByLimit",
           "in": "query",
           "required": false,
           "schema": {
@@ -4169,6 +4188,24 @@
       "parameters": [
         {
           "$ref": "#/components/parameters/project_id"
+        },
+        {
+          "name": "closeOutByLimit",
+          "in": "query",
+          "required": false,
+          "schema": {
+            "type": "integer",
+            "minimum": 0
+          }
+        },
+        {
+          "$ref": "#/components/parameters/requiredAtLimitQueryParam"
+        },
+        {
+          "$ref": "#/components/parameters/period_start_query"
+        },
+        {
+          "$ref": "#/components/parameters/period_end_query"
         }
       ]
     },
