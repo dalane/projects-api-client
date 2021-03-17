@@ -113,7 +113,7 @@ declare namespace Components {
       /**
        * The ID of the WBS deliverable
        */
-      wbs_element_id: string; // uuid
+      workpackage_id?: string; // uuid
       /**
        * The ID of the OBS role
        */
@@ -273,7 +273,7 @@ declare namespace Components {
       reputation_impact: IssueImpactEnum;
     }
     export interface CreateObsDto {
-      method: "empty" | "upload" | "template" | "copy";
+      method: CreateObsMethodEnum;
       templateName?: string;
       projectIdToCopy?: string; // uuid
       data?: CreateObsElementData[];
@@ -284,6 +284,7 @@ declare namespace Components {
       description?: string;
       children?: CreateObsElementData[];
     }
+    export type CreateObsMethodEnum = "empty" | "upload" | "template" | "copy";
     export interface CreateProjectDto {
       name: string;
       description?: string;
@@ -337,7 +338,7 @@ declare namespace Components {
       residual_effect?: string;
     }
     export interface CreateWbsDto {
-      method: "empty" | "upload" | "template" | "copy";
+      method: WbsCreateMethodEnum;
       template_name?: string;
       project_id_to_copy?: string; // uuid
       data?: {
@@ -478,23 +479,14 @@ declare namespace Components {
     export interface ObsElement {
       element_id: string; // uuid
       code: string;
-      path: string;
-      name: string;
+      role: string;
       position: number;
-      description?: string;
-      parent_id?: string; // uuid
+      description: string | null;
+      parent_id: string | null; // uuid
     }
     export interface ObsEntity {
       project_id: string; // uuid
-      elements: {
-        element_id: string; // uuid
-        code: string;
-        path: string;
-        name: string;
-        position: number;
-        description?: string;
-        parent_id?: string; // uuid
-      }[];
+      elements: ObsElement[];
       created_at: number;
       updated_at: number;
       version: number;
@@ -554,7 +546,7 @@ declare namespace Components {
     export type ProjectStatusEnum = "Proposed" | "Delivering" | "Rejected" | "Completed" | "Deleted" | "Cancelled";
     export interface RamAssignmentEntity {
       assignment_id: string; // uuid
-      wbs_element_id: string; // uuid
+      workpackage_id?: string; // uuid
       obs_element_id: string; // uuid
       assignment: RamAssignmentEnum;
     }
@@ -687,6 +679,7 @@ declare namespace Components {
     export type RiskStatusEnum = "Proposed" | "Open" | "Managed" | "Expired" | "Rejected" | "Impacted" | "Deleted";
     export type RiskTypeEnum = "Threat" | "Opportunity";
     export type TeamMemberRoleEnum = "Admininstrator" | "Executive" | "Team Member";
+    export type UUID = string; // uuid
     export interface UpdateAssumptionDto {
       workpackage_id?: string | null; // uuid
       rbs_element_id?: string | null; // uuid
@@ -799,10 +792,10 @@ declare namespace Components {
     }
     export interface UserDashboardEntity {
     }
+    export type WbsCreateMethodEnum = "empty" | "upload" | "template" | "copy";
     export interface WbsElement {
       element_id: string; // uuid
       code: string;
-      path: string;
       name: string;
       position: number;
       description?: string;
@@ -810,15 +803,7 @@ declare namespace Components {
     }
     export interface WbsEntity {
       project_id: string; // uuid
-      elements: {
-        element_id: string; // uuid
-        code: string;
-        path: string;
-        name: string;
-        position: number;
-        description?: string;
-        parent_id?: string; // uuid
-      }[];
+      elements: WbsElement[];
       created_at: number;
       updated_at: number;
       version: number;
@@ -1104,14 +1089,6 @@ declare namespace Paths {
       filter?: Parameters.Filter;
     }
   }
-  namespace Projects$ProjectIdAssumptions {
-    namespace Parameters {
-      export type WorkpackageId = string; // uuid
-    }
-    export interface QueryParameters {
-      workpackage_id?: Parameters.WorkpackageId; // uuid
-    }
-  }
   namespace Projects$ProjectIdAssumptionsDashboard {
     namespace Parameters {
       export type CloseOutByLimit = number;
@@ -1126,22 +1103,6 @@ declare namespace Paths {
     }
     export interface QueryParameters {
       closeOutByLimit?: Parameters.CloseOutByLimit;
-    }
-  }
-  namespace Projects$ProjectIdDependencies {
-    namespace Parameters {
-      export type WorkpackageId = string; // uuid
-    }
-    export interface QueryParameters {
-      workpackage_id?: Parameters.WorkpackageId; // uuid
-    }
-  }
-  namespace Projects$ProjectIdIssues {
-    namespace Parameters {
-      export type WorkpackageId = string; // uuid
-    }
-    export interface QueryParameters {
-      workpackage_id?: Parameters.WorkpackageId; // uuid
     }
   }
   namespace RejectInvitation {

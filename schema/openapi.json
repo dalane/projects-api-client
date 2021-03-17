@@ -183,15 +183,6 @@
           "format": "uuid"
         }
       },
-      "workpackage_id_query": {
-        "name": "workpackage_id",
-        "in": "query",
-        "required": false,
-        "schema": {
-          "type": "string",
-          "format": "uuid"
-        }
-      },
       "period_interval_query": {
         "name": "interval",
         "in": "query",
@@ -205,6 +196,15 @@
         "name": "workpackage_id",
         "in": "path",
         "required": true,
+        "schema": {
+          "type": "string",
+          "format": "uuid"
+        }
+      },
+      "workpackage_id_query": {
+        "name": "workpackage_id",
+        "in": "query",
+        "required": false,
         "schema": {
           "type": "string",
           "format": "uuid"
@@ -299,6 +299,10 @@
           "count",
           "page"
         ]
+      },
+      "UUID": {
+        "type": "string",
+        "format": "uuid"
       },
       "AssumptionRatingEnum": {
         "type": "string",
@@ -1337,6 +1341,15 @@
           "period_issues"
         ]
       },
+      "CreateObsMethodEnum": {
+        "type": "string",
+        "enum": [
+          "empty",
+          "upload",
+          "template",
+          "copy"
+        ]
+      },
       "ObsEntity": {
         "type": "object",
         "additionalProperties": false,
@@ -1348,41 +1361,7 @@
           "elements": {
             "type": "array",
             "items": {
-              "type": "object",
-              "additionalProperties": false,
-              "properties": {
-                "element_id": {
-                  "type": "string",
-                  "format": "uuid"
-                },
-                "code": {
-                  "type": "string"
-                },
-                "path": {
-                  "type": "string"
-                },
-                "name": {
-                  "type": "string"
-                },
-                "position": {
-                  "type": "number",
-                  "minimum": 0
-                },
-                "description": {
-                  "type": "string"
-                },
-                "parent_id": {
-                  "type": "string",
-                  "format": "uuid"
-                }
-              },
-              "required": [
-                "element_id",
-                "code",
-                "path",
-                "name",
-                "position"
-              ]
+              "$ref": "#/components/schemas/ObsElement"
             }
           },
           "created_at": {
@@ -1415,10 +1394,7 @@
           "code": {
             "type": "string"
           },
-          "path": {
-            "type": "string"
-          },
-          "name": {
+          "role": {
             "type": "string"
           },
           "position": {
@@ -1426,19 +1402,22 @@
             "minimum": 0
           },
           "description": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "parent_id": {
             "type": "string",
-            "format": "uuid"
+            "format": "uuid",
+            "nullable": true
           }
         },
         "required": [
           "element_id",
           "code",
-          "path",
-          "name",
-          "position"
+          "role",
+          "position",
+          "description",
+          "parent_id"
         ]
       },
       "AddObsElementDto": {
@@ -1532,13 +1511,7 @@
         "additionalProperties": false,
         "properties": {
           "method": {
-            "type": "string",
-            "enum": [
-              "empty",
-              "upload",
-              "template",
-              "copy"
-            ]
+            "$ref": "#/components/schemas/CreateObsMethodEnum"
           },
           "templateName": {
             "type": "string"
@@ -1915,7 +1888,7 @@
             "type": "string",
             "format": "uuid"
           },
-          "wbs_element_id": {
+          "workpackage_id": {
             "type": "string",
             "format": "uuid"
           },
@@ -1938,7 +1911,7 @@
         "type": "object",
         "additionalProperties": false,
         "properties": {
-          "wbs_element_id": {
+          "workpackage_id": {
             "type": "string",
             "format": "uuid",
             "description": "The ID of the WBS deliverable"
@@ -2809,6 +2782,15 @@
           }
         }
       },
+      "WbsCreateMethodEnum": {
+        "type": "string",
+        "enum": [
+          "empty",
+          "upload",
+          "template",
+          "copy"
+        ]
+      },
       "WbsEntity": {
         "type": "object",
         "additionalProperties": false,
@@ -2820,41 +2802,7 @@
           "elements": {
             "type": "array",
             "items": {
-              "type": "object",
-              "additionalProperties": false,
-              "properties": {
-                "element_id": {
-                  "type": "string",
-                  "format": "uuid"
-                },
-                "code": {
-                  "type": "string"
-                },
-                "path": {
-                  "type": "string"
-                },
-                "name": {
-                  "type": "string"
-                },
-                "position": {
-                  "type": "number",
-                  "minimum": 0
-                },
-                "description": {
-                  "type": "string"
-                },
-                "parent_id": {
-                  "type": "string",
-                  "format": "uuid"
-                }
-              },
-              "required": [
-                "element_id",
-                "code",
-                "path",
-                "name",
-                "position"
-              ]
+              "$ref": "#/components/schemas/WbsElement"
             }
           },
           "created_at": {
@@ -2881,13 +2829,7 @@
         "additionalProperties": false,
         "properties": {
           "method": {
-            "type": "string",
-            "enum": [
-              "empty",
-              "upload",
-              "template",
-              "copy"
-            ]
+            "$ref": "#/components/schemas/WbsCreateMethodEnum"
           },
           "template_name": {
             "type": "string"
@@ -2913,9 +2855,6 @@
             "format": "uuid"
           },
           "code": {
-            "type": "string"
-          },
-          "path": {
             "type": "string"
           },
           "name": {
@@ -3339,13 +3278,7 @@
           "$ref": "#/components/parameters/project_id"
         },
         {
-          "name": "workpackage_id",
-          "in": "query",
-          "required": false,
-          "schema": {
-            "type": "string",
-            "format": "uuid"
-          }
+          "$ref": "#/components/parameters/workpackage_id_query"
         },
         {
           "$ref": "#/components/parameters/include"
@@ -3523,13 +3456,7 @@
           "$ref": "#/components/parameters/project_id"
         },
         {
-          "name": "workpackage_id",
-          "in": "query",
-          "required": false,
-          "schema": {
-            "type": "string",
-            "format": "uuid"
-          }
+          "$ref": "#/components/parameters/workpackage_id_query"
         },
         {
           "$ref": "#/components/parameters/include"
@@ -3684,13 +3611,7 @@
           "$ref": "#/components/parameters/project_id"
         },
         {
-          "name": "workpackage_id",
-          "in": "query",
-          "required": false,
-          "schema": {
-            "type": "string",
-            "format": "uuid"
-          }
+          "$ref": "#/components/parameters/workpackage_id_query"
         },
         {
           "$ref": "#/components/parameters/include"
