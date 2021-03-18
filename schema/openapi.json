@@ -1394,7 +1394,7 @@
           "code": {
             "type": "string"
           },
-          "role": {
+          "name": {
             "type": "string"
           },
           "position": {
@@ -1414,7 +1414,7 @@
         "required": [
           "element_id",
           "code",
-          "role",
+          "name",
           "position",
           "description",
           "parent_id"
@@ -1428,7 +1428,7 @@
             "type": "string",
             "description": "A unique code to represent the OBS element."
           },
-          "role": {
+          "name": {
             "type": "string",
             "description": "A unique role name"
           },
@@ -1449,7 +1449,7 @@
         },
         "required": [
           "code",
-          "role"
+          "name"
         ]
       },
       "MoveObsElementDto": {
@@ -1473,7 +1473,7 @@
           "code": {
             "type": "string"
           },
-          "role": {
+          "name": {
             "type": "string"
           },
           "description": {
@@ -1488,7 +1488,7 @@
           "code": {
             "type": "string"
           },
-          "role": {
+          "name": {
             "type": "string"
           },
           "description": {
@@ -1503,7 +1503,7 @@
         },
         "required": [
           "code",
-          "role"
+          "name"
         ]
       },
       "CreateObsDto": {

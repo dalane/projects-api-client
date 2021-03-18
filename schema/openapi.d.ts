@@ -95,7 +95,7 @@ declare namespace Components {
       /**
        * A unique role name
        */
-      role: string;
+      name: string;
       /**
        * A brief description of the role.
        */
@@ -280,7 +280,7 @@ declare namespace Components {
     }
     export interface CreateObsElementData {
       code: string;
-      role: string;
+      name: string;
       description?: string;
       children?: CreateObsElementData[];
     }
@@ -479,7 +479,7 @@ declare namespace Components {
     export interface ObsElement {
       element_id: string; // uuid
       code: string;
-      role: string;
+      name: string;
       position: number;
       description: string | null;
       parent_id: string | null; // uuid
@@ -733,7 +733,7 @@ declare namespace Components {
     }
     export interface UpdateObsElementDto {
       code?: string;
-      role?: string;
+      name?: string;
       description?: string;
     }
     export interface UpdateRamAssignmentDto {
