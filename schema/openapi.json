@@ -4204,7 +4204,17 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/AddRamAssignmentDto"
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/AddRamAssignmentDto"
+                  },
+                  {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/AddRamAssignmentDto"
+                    }
+                  }
+                ]
               }
             }
           }

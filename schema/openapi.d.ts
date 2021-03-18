@@ -849,7 +849,7 @@ declare namespace Paths {
     }
   }
   namespace AddProjectRamAssignment {
-    export type RequestBody = Components.Schemas.AddRamAssignmentDto;
+    export type RequestBody = Components.Schemas.AddRamAssignmentDto | Components.Schemas.AddRamAssignmentDto[];
     namespace Responses {
       export type $201 = Components.Schemas.RamAssignmentEntity;
     }
