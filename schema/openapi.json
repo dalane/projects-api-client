@@ -1892,7 +1892,7 @@
         },
         "required": [
           "assignment_id",
-          "wbs_element_id",
+          "workpackage_id",
           "obs_element_id",
           "assignment"
         ]

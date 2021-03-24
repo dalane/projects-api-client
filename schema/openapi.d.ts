@@ -549,7 +549,7 @@ declare namespace Components {
     export type ProjectStatusEnum = "Proposed" | "Delivering" | "Rejected" | "Completed" | "Deleted" | "Cancelled";
     export interface RamAssignmentEntity {
       assignment_id: string; // uuid
-      workpackage_id?: string; // uuid
+      workpackage_id: string; // uuid
       obs_element_id: string; // uuid
       assignment: RamAssignmentEnum;
     }
