@@ -65,6 +65,20 @@
           "format": "uuid"
         }
       },
+      "PathAssignmentIds": {
+        "name": "assignment_ids",
+        "in": "path",
+        "required": true,
+        "style": "simple",
+        "explode": false,
+        "schema": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      },
       "expected_version": {
         "name": "X-Expected-Version",
         "in": "header",
@@ -1815,31 +1829,7 @@
           "assignments": {
             "type": "array",
             "items": {
-              "type": "object",
-              "additionalProperties": false,
-              "properties": {
-                "assignment_id": {
-                  "type": "string",
-                  "format": "uuid"
-                },
-                "wbs_element_id": {
-                  "type": "string",
-                  "format": "uuid"
-                },
-                "obs_element_id": {
-                  "type": "string",
-                  "format": "uuid"
-                },
-                "assignment": {
-                  "$ref": "#/components/schemas/RamAssignmentEnum"
-                }
-              },
-              "required": [
-                "assignment_id",
-                "wbs_element_id",
-                "obs_element_id",
-                "assignment"
-              ]
+              "$ref": "#/components/schemas/RamAssignmentEntity"
             }
           },
           "created_at": {
@@ -1926,7 +1916,7 @@
           }
         },
         "required": [
-          "wbs_element_id",
+          "workpackage_id",
           "obs_element_id",
           "assignment"
         ]
@@ -4271,7 +4261,7 @@
         }
       ]
     },
-    "/projects/{project_id}/ram/{assignment_id}/delete": {
+    "/projects/{project_id}/ram/{assignment_ids}/delete": {
       "description": "Deletes a role assignment from the Responsibility Assignment Matrix",
       "delete": {
         "operationId": "deleteProjectRamAssignment",
@@ -4291,7 +4281,7 @@
           "$ref": "#/components/parameters/project_id"
         },
         {
-          "$ref": "#/components/parameters/assignment_id"
+          "$ref": "#/components/parameters/PathAssignmentIds"
         }
       ]
     },

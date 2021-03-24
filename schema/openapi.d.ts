@@ -49,6 +49,9 @@ declare namespace Components {
         number?: number;
       }
     }
+    namespace PathAssignmentIds {
+      export type AssignmentIds = string /* uuid */ [];
+    }
     namespace PeriodEndQuery {
       export type PeriodEnd = number;
     }
@@ -113,7 +116,7 @@ declare namespace Components {
       /**
        * The ID of the WBS deliverable
        */
-      workpackage_id?: string; // uuid
+      workpackage_id: string; // uuid
       /**
        * The ID of the OBS role
        */
@@ -553,12 +556,7 @@ declare namespace Components {
     export type RamAssignmentEnum = "Responsible" | "Accountable" | "Support" | "Consultable" | "Informable";
     export interface RamEntity {
       project_id: string; // uuid
-      assignments: {
-        assignment_id: string; // uuid
-        wbs_element_id: string; // uuid
-        obs_element_id: string; // uuid
-        assignment: RamAssignmentEnum;
-      }[];
+      assignments: RamAssignmentEntity[];
       created_at: number;
       updated_at: number;
       version: number;
@@ -1989,7 +1987,7 @@ export interface PathsDictionary {
       config?: AxiosRequestConfig  
     ): OperationResponse<Paths.UpdateProjectRamAssignment.Responses.$200>
   }
-  ['/projects/{project_id}/ram/{assignment_id}/delete']: {
+  ['/projects/{project_id}/ram/{assignment_ids}/delete']: {
     /**
      * deleteProjectRamAssignment
      */
