@@ -40,6 +40,9 @@ declare namespace Components {
     namespace OrganisationIdParam {
       export type OrganisationId = string; // uuid
     }
+    namespace OrganisationIdPathParam {
+      export type OrganisationId = string; // uuid
+    }
     namespace PaginationQueryParam {
       export interface Page {
         /**
@@ -50,7 +53,7 @@ declare namespace Components {
       }
     }
     namespace PathAssignmentIds {
-      export type AssignmentIds = string /* uuid */ [];
+      export type AssignmentIds = string; // uuid[]
     }
     namespace PeriodEndQuery {
       export type PeriodEnd = number;
@@ -84,33 +87,18 @@ declare namespace Components {
     export interface AcceptInvitationDto {
       user_id?: string; // uuid
     }
+    export interface AddBreakdownStructureElementDto {
+      code: string;
+      name: string;
+      description?: string;
+      parent_id?: UUID; // uuid
+      position?: number;
+    }
     export interface AddInvitationDto {
       invitation_id?: string; // uuid
       email: string; // email
       role: TeamMemberRoleEnum;
       message: string | null;
-    }
-    export interface AddObsElementDto {
-      /**
-       * A unique code to represent the OBS element.
-       */
-      code: string;
-      /**
-       * A unique role name
-       */
-      name: string;
-      /**
-       * A brief description of the role.
-       */
-      description?: string;
-      /**
-       * The ID of the parent element
-       */
-      parent_id?: string; // uuid
-      /**
-       * A number indicating where the element will be displayed amongst its siblings. Defaults to the last position
-       */
-      position?: number;
     }
     export interface AddRamAssignmentDto {
       /**
@@ -122,50 +110,6 @@ declare namespace Components {
        */
       obs_element_id: string; // uuid
       assignment: RamAssignmentEnum;
-    }
-    export interface AddRbsElementDto {
-      /**
-       * A unique code to represent the RBS element.
-       */
-      code: string;
-      /**
-       * A unique name for the element
-       */
-      name: string;
-      /**
-       * A brief description of the element.
-       */
-      description?: string;
-      /**
-       * The ID of the parent element
-       */
-      parent_id?: string; // uuid
-      /**
-       * A number indicating where the element will be displayed amongst its siblings. Defaults to the last position
-       */
-      position?: number;
-    }
-    export interface AddWbsElementDto {
-      /**
-       * A unique code to represent the WBS element.
-       */
-      code: string;
-      /**
-       * A unique name for the element
-       */
-      name: string;
-      /**
-       * A brief description of the element.
-       */
-      description?: string;
-      /**
-       * The ID of the parent element
-       */
-      parent_id?: string; // uuid
-      /**
-       * A number indicating where the element will be displayed amongst its siblings. Defaults to the last position
-       */
-      position?: number;
     }
     export interface AddWorkpackageDto {
       wbs_element_id: string; // uuid
@@ -211,7 +155,7 @@ declare namespace Components {
       updated_at: number;
       version: number;
       workpackage?: WorkpackageEntity;
-      rbs_element?: RbsElement;
+      rbs_element?: BreakdownStructureElementEntity;
     }
     export type AssumptionImpactEnum = "None" | "Negligible" | "Minor" | "Moderate" | "Major" | "Severe";
     export type AssumptionRatingEnum = "Very High" | "High" | "Moderate" | "Low" | "Very Low" | "None";
@@ -223,6 +167,30 @@ declare namespace Components {
     export interface AssumptionsByStatusEntity {
       status: AssumptionStatusEnum;
       count: number;
+    }
+    export interface BreakdownStructureElementEntity {
+      element_id: UUID; // uuid
+      code: string;
+      name: string;
+      position: number;
+      description: string | null;
+      parent_id: string | null; // uuid
+    }
+    export interface BreakdownStructureEntity {
+      project_id: UUID; // uuid
+      elements: BreakdownStructureElementEntity[];
+      /**
+       * UNIX timestamp of when the entity was created
+       */
+      created_at: number;
+      /**
+       * UNIX timestamp of when the entity was updated
+       */
+      updated_at: number;
+      /**
+       * The version of the entity
+       */
+      version: number;
     }
     export interface CreateAssumptionDto {
       workpackage_id?: string; // uuid
@@ -241,6 +209,20 @@ declare namespace Components {
       incorrect_quality_impact?: AssumptionImpactEnum;
       incorrect_reputation_impact?: AssumptionImpactEnum;
     }
+    export type CreateBreakdownStructureDto = CreateUploadedBreakdownStructureDto | CreateEmptyBreakdownStructureDto | CreateTemplateBreakdownStructureDto | CreateCopiedBreakdownStructureDto;
+    /**
+     * A nested array of breakdown structure elements used when creating a breakdown structure using uploaded data.
+     */
+    export interface CreateBreakdownStructureElementData {
+      code: string;
+      name: string;
+      description?: string;
+      children?: CreateBreakdownStructureElementData[];
+    }
+    export interface CreateCopiedBreakdownStructureDto {
+      method: "copy";
+      project_id: UUID; // uuid
+    }
     export interface CreateDependencyDto {
       workpackage_id?: string; // uuid
       name: string;
@@ -254,6 +236,9 @@ declare namespace Components {
       late_quality_impact?: LateDependencyImpactEnum;
       late_reputation_impact?: LateDependencyImpactEnum;
       late_safety_impact?: LateDependencyImpactEnum;
+    }
+    export interface CreateEmptyBreakdownStructureDto {
+      method: "empty";
     }
     export interface CreateIssueDto {
       workpackage_id?: string; // uuid
@@ -275,19 +260,6 @@ declare namespace Components {
       quality_impact: IssueImpactEnum;
       reputation_impact: IssueImpactEnum;
     }
-    export interface CreateObsDto {
-      method: CreateObsMethodEnum;
-      templateName?: string;
-      projectIdToCopy?: string; // uuid
-      data?: CreateObsElementData[];
-    }
-    export interface CreateObsElementData {
-      code: string;
-      name: string;
-      description?: string;
-      children?: CreateObsElementData[];
-    }
-    export type CreateObsMethodEnum = "empty" | "upload" | "template" | "copy";
     export interface CreateProjectDto {
       name: string;
       description?: string;
@@ -298,16 +270,10 @@ declare namespace Components {
       settings?: {
         risk?: ProjectRiskSettings;
       };
+      owner_id?: string; // uuid
     }
     export interface CreateRamDto {
       method: "empty" | "upload";
-      data?: {
-      };
-    }
-    export interface CreateRbsDto {
-      method: "empty" | "upload" | "template" | "copy";
-      template_name?: string;
-      project_id_to_copy?: string; // uuid
       data?: {
       };
     }
@@ -340,12 +306,13 @@ declare namespace Components {
       residual_reputation_impact?: RiskImpactEnum;
       residual_effect?: string;
     }
-    export interface CreateWbsDto {
-      method: WbsCreateMethodEnum;
-      template_name?: string;
-      project_id_to_copy?: string; // uuid
-      data?: {
-      };
+    export interface CreateTemplateBreakdownStructureDto {
+      method: "template";
+      name: string;
+    }
+    export interface CreateUploadedBreakdownStructureDto {
+      method: "upload";
+      data: CreateBreakdownStructureElementData[];
     }
     export interface DependenciesByRatingEntity {
       late_delivery_rating: LateDependencyRatingEnum;
@@ -467,32 +434,9 @@ declare namespace Components {
         size: number;
       };
     }
-    export interface MoveObsElementDto {
-      parent_id?: string; // uuid
+    export interface MoveBreakdownStructureElementDto {
+      parent_id?: UUID; // uuid
       position?: number;
-    }
-    export interface MoveRbsElementDto {
-      parent_id?: string; // uuid
-      position?: number;
-    }
-    export interface MoveWbsElementDto {
-      parent_id?: string; // uuid
-      position?: number;
-    }
-    export interface ObsElement {
-      element_id: string; // uuid
-      code: string;
-      name: string;
-      position: number;
-      description: string | null;
-      parent_id: string | null; // uuid
-    }
-    export interface ObsEntity {
-      project_id: string; // uuid
-      elements: ObsElement[];
-      created_at: number;
-      updated_at: number;
-      version: number;
     }
     export interface OrganisationEntity {
       organisation_id: string; // uuid
@@ -557,30 +501,6 @@ declare namespace Components {
     export interface RamEntity {
       project_id: string; // uuid
       assignments: RamAssignmentEntity[];
-      created_at: number;
-      updated_at: number;
-      version: number;
-    }
-    export interface RbsElement {
-      element_id: string; // uuid
-      code: string;
-      path: string;
-      name: string;
-      position: number;
-      description?: string;
-      parent_id?: string; // uuid
-    }
-    export interface RbsEntity {
-      project_id: string; // uuid
-      elements: {
-        element_id: string; // uuid
-        code: string;
-        path: string;
-        name: string;
-        position: number;
-        description?: string;
-        parent_id?: string; // uuid
-      }[];
       created_at: number;
       updated_at: number;
       version: number;
@@ -659,7 +579,7 @@ declare namespace Components {
       updated_at: number;
       version: number;
       workpackage?: WorkpackageEntity;
-      rbs_element?: RbsElement;
+      rbs_element?: BreakdownStructureElementEntity;
     }
     export type RiskHeatmapAggregate = {
       impact: RiskImpactEnum;
@@ -695,6 +615,11 @@ declare namespace Components {
       incorrect_quality_impact?: AssumptionImpactEnum | null;
       incorrect_reputation_impact?: AssumptionImpactEnum | null;
     }
+    export interface UpdateBreakdownStructureElementDto {
+      code?: string;
+      name?: string;
+      description?: string;
+    }
     export interface UpdateDependencyDto {
       name?: string;
       status?: DependencyStatusEnum;
@@ -729,18 +654,8 @@ declare namespace Components {
       quality_impact?: IssueImpactEnum;
       reputation_impact?: IssueImpactEnum;
     }
-    export interface UpdateObsElementDto {
-      code?: string;
-      name?: string;
-      description?: string;
-    }
     export interface UpdateRamAssignmentDto {
       assignment: RamAssignmentEnum;
-    }
-    export interface UpdateRbsElementDto {
-      code?: string;
-      name?: string;
-      description?: string;
     }
     export interface UpdateRiskDto {
       name?: string;
@@ -770,11 +685,6 @@ declare namespace Components {
       residual_reputation_impact?: RiskImpactEnum;
       residual_effect?: string | null;
     }
-    export interface UpdateWbsElementDto {
-      code?: string;
-      name?: string;
-      description?: string;
-    }
     export interface UpdateWorkpackageDto {
       friendly_id?: string;
       title?: string;
@@ -789,22 +699,6 @@ declare namespace Components {
       references?: string | null;
     }
     export interface UserDashboardEntity {
-    }
-    export type WbsCreateMethodEnum = "empty" | "upload" | "template" | "copy";
-    export interface WbsElement {
-      element_id: string; // uuid
-      code: string;
-      name: string;
-      position: number;
-      description?: string;
-      parent_id?: string; // uuid
-    }
-    export interface WbsEntity {
-      project_id: string; // uuid
-      elements: WbsElement[];
-      created_at: number;
-      updated_at: number;
-      version: number;
     }
     export interface WorkpackageEntity {
       workpackage_id: string; // uuid
@@ -841,9 +735,9 @@ declare namespace Paths {
     }
   }
   namespace AddProjectObsElement {
-    export type RequestBody = Components.Schemas.AddObsElementDto;
+    export type RequestBody = Components.Schemas.AddBreakdownStructureElementDto;
     namespace Responses {
-      export type $201 = Components.Schemas.ObsElement;
+      export type $201 = Components.Schemas.BreakdownStructureEntity;
     }
   }
   namespace AddProjectRamAssignment {
@@ -853,15 +747,15 @@ declare namespace Paths {
     }
   }
   namespace AddProjectRbsElement {
-    export type RequestBody = Components.Schemas.AddRbsElementDto;
+    export type RequestBody = Components.Schemas.AddBreakdownStructureElementDto;
     namespace Responses {
-      export type $201 = Components.Schemas.RbsElement;
+      export type $201 = Components.Schemas.BreakdownStructureEntity;
     }
   }
   namespace AddProjectWbsElement {
-    export type RequestBody = Components.Schemas.AddWbsElementDto;
+    export type RequestBody = Components.Schemas.AddBreakdownStructureElementDto;
     namespace Responses {
-      export type $201 = Components.Schemas.WbsElement;
+      export type $201 = Components.Schemas.BreakdownStructureEntity;
     }
   }
   namespace AddWorkPackage {
@@ -895,9 +789,9 @@ declare namespace Paths {
     }
   }
   namespace CreateProjectObs {
-    export type RequestBody = Components.Schemas.CreateObsDto;
+    export type RequestBody = Components.Schemas.CreateBreakdownStructureDto;
     namespace Responses {
-      export type $201 = Components.Schemas.ObsEntity;
+      export type $201 = Components.Schemas.BreakdownStructureEntity;
     }
   }
   namespace CreateProjectRam {
@@ -907,9 +801,9 @@ declare namespace Paths {
     }
   }
   namespace CreateProjectRbs {
-    export type RequestBody = Components.Schemas.CreateRbsDto;
+    export type RequestBody = Components.Schemas.CreateBreakdownStructureDto;
     namespace Responses {
-      export type $201 = Components.Schemas.RbsEntity;
+      export type $201 = Components.Schemas.BreakdownStructureEntity;
     }
   }
   namespace CreateProjectRisk {
@@ -919,9 +813,24 @@ declare namespace Paths {
     }
   }
   namespace CreateProjectWbs {
-    export type RequestBody = Components.Schemas.CreateWbsDto;
+    export type RequestBody = Components.Schemas.CreateBreakdownStructureDto;
     namespace Responses {
-      export type $201 = Components.Schemas.WbsEntity;
+      export type $201 = Components.Schemas.BreakdownStructureEntity;
+    }
+  }
+  namespace DeleteProjectObsElement {
+    namespace Responses {
+      export type $200 = Components.Schemas.BreakdownStructureEntity;
+    }
+  }
+  namespace DeleteProjectRbsElement {
+    namespace Responses {
+      export type $200 = Components.Schemas.BreakdownStructureEntity;
+    }
+  }
+  namespace DeleteProjectWbsElement {
+    namespace Responses {
+      export type $204 = Components.Schemas.BreakdownStructureEntity;
     }
   }
   namespace FindOrganisationById {
@@ -931,17 +840,17 @@ declare namespace Paths {
   }
   namespace FindProjectObsElement {
     namespace Responses {
-      export type $200 = Components.Schemas.ObsElement;
+      export type $200 = Components.Schemas.BreakdownStructureEntity;
     }
   }
   namespace FindProjectRbsElement {
     namespace Responses {
-      export type $200 = Components.Schemas.RbsElement;
+      export type $200 = Components.Schemas.BreakdownStructureEntity;
     }
   }
   namespace FindProjectWbsElement {
     namespace Responses {
-      export type $200 = Components.Schemas.WbsElement;
+      export type $200 = Components.Schemas.BreakdownStructureEntity;
     }
   }
   namespace FindWorkPackageById {
@@ -1026,7 +935,7 @@ declare namespace Paths {
   }
   namespace ListProjectObs {
     namespace Responses {
-      export type $200 = Components.Schemas.ObsEntity;
+      export type $200 = Components.Schemas.BreakdownStructureEntity;
     }
   }
   namespace ListProjectRam {
@@ -1036,7 +945,7 @@ declare namespace Paths {
   }
   namespace ListProjectRbs {
     namespace Responses {
-      export type $200 = Components.Schemas.RbsEntity;
+      export type $200 = Components.Schemas.BreakdownStructureEntity;
     }
   }
   namespace ListProjectRisks {
@@ -1046,7 +955,7 @@ declare namespace Paths {
   }
   namespace ListProjectWbs {
     namespace Responses {
-      export type $200 = Components.Schemas.WbsEntity;
+      export type $200 = Components.Schemas.BreakdownStructureEntity;
     }
   }
   namespace ListProjects {
@@ -1060,24 +969,24 @@ declare namespace Paths {
     }
   }
   namespace MoveProjectObsElement {
-    export type RequestBody = Components.Schemas.MoveObsElementDto;
+    export type RequestBody = Components.Schemas.MoveBreakdownStructureElementDto;
     namespace Responses {
-      export type $200 = Components.Schemas.ObsElement;
+      export type $200 = Components.Schemas.BreakdownStructureEntity;
     }
   }
   namespace MoveProjectRbsElement {
-    export type RequestBody = Components.Schemas.MoveRbsElementDto;
+    export type RequestBody = Components.Schemas.MoveBreakdownStructureElementDto;
     namespace Responses {
-      export type $200 = Components.Schemas.RbsElement;
+      export type $200 = Components.Schemas.BreakdownStructureEntity;
     }
   }
   namespace MoveProjectWbsElement {
-    export type RequestBody = Components.Schemas.MoveWbsElementDto;
+    export type RequestBody = Components.Schemas.MoveBreakdownStructureElementDto;
     namespace Responses {
-      export type $200 = Components.Schemas.WbsElement;
+      export type $200 = Components.Schemas.BreakdownStructureEntity;
     }
   }
-  namespace Projects {
+  namespace Organisations$OrganisationIdProjects {
     namespace Parameters {
       export interface Filter {
         organisation_id?: string; // uuid
@@ -1087,7 +996,7 @@ declare namespace Paths {
       filter?: Parameters.Filter;
     }
   }
-  namespace Projects$ProjectIdAssumptionsDashboard {
+  namespace Organisations$OrganisationIdProjectsProjectIdAssumptionsDashboard {
     namespace Parameters {
       export type CloseOutByLimit = number;
     }
@@ -1095,7 +1004,7 @@ declare namespace Paths {
       closeOutByLimit?: Parameters.CloseOutByLimit;
     }
   }
-  namespace Projects$ProjectIdDashboard {
+  namespace Organisations$OrganisationIdProjectsProjectIdDashboard {
     namespace Parameters {
       export type CloseOutByLimit = number;
     }
@@ -1128,9 +1037,9 @@ declare namespace Paths {
     }
   }
   namespace UpdateProjectObsElement {
-    export type RequestBody = Components.Schemas.UpdateObsElementDto;
+    export type RequestBody = Components.Schemas.UpdateBreakdownStructureElementDto;
     namespace Responses {
-      export type $200 = Components.Schemas.ObsElement;
+      export type $200 = Components.Schemas.BreakdownStructureEntity;
     }
   }
   namespace UpdateProjectRamAssignment {
@@ -1140,9 +1049,9 @@ declare namespace Paths {
     }
   }
   namespace UpdateProjectRbsElement {
-    export type RequestBody = Components.Schemas.UpdateWbsElementDto;
+    export type RequestBody = Components.Schemas.UpdateBreakdownStructureElementDto;
     namespace Responses {
-      export type $200 = Components.Schemas.RbsElement;
+      export type $200 = Components.Schemas.BreakdownStructureEntity;
     }
   }
   namespace UpdateProjectRisk {
@@ -1152,9 +1061,9 @@ declare namespace Paths {
     }
   }
   namespace UpdateProjectWbsElement {
-    export type RequestBody = Components.Schemas.UpdateWbsElementDto;
+    export type RequestBody = Components.Schemas.UpdateBreakdownStructureElementDto;
     namespace Responses {
-      export type $200 = Components.Schemas.WbsElement;
+      export type $200 = Components.Schemas.BreakdownStructureEntity;
     }
   }
   namespace UpdateWorkPackage {
@@ -1349,7 +1258,7 @@ export interface OperationMethods {
     parameters?: Parameters<UnknownParamsObject> | null,
     data?: any,
     config?: AxiosRequestConfig  
-  ): OperationResponse<any>
+  ): OperationResponse<Paths.DeleteProjectObsElement.Responses.$200>
   /**
    * ListOrganisations
    */
@@ -1493,7 +1402,7 @@ export interface OperationMethods {
     parameters?: Parameters<UnknownParamsObject> | null,
     data?: any,
     config?: AxiosRequestConfig  
-  ): OperationResponse<any>
+  ): OperationResponse<Paths.DeleteProjectRbsElement.Responses.$200>
   /**
    * listProjectRisks
    */
@@ -1589,7 +1498,7 @@ export interface OperationMethods {
     parameters?: Parameters<UnknownParamsObject> | null,
     data?: any,
     config?: AxiosRequestConfig  
-  ): OperationResponse<any>
+  ): OperationResponse<Paths.DeleteProjectWbsElement.Responses.$204>
   /**
    * ListWorkPackages
    */
@@ -1657,7 +1566,7 @@ export interface OperationMethods {
 }
 
 export interface PathsDictionary {
-  ['/projects/{project_id}/assumptions']: {
+  ['/organisations/{organisation_id}/projects/{project_id}/assumptions']: {
     /**
      * listProjectAssumptions
      */
@@ -1667,7 +1576,7 @@ export interface PathsDictionary {
       config?: AxiosRequestConfig  
     ): OperationResponse<Paths.ListProjectAssumptions.Responses.$200>
   }
-  ['/projects/{project_id}/assumptions/dashboard']: {
+  ['/organisations/{organisation_id}/projects/{project_id}/assumptions/dashboard']: {
     /**
      * GetProjectAssumptionsDashboard
      */
@@ -1677,7 +1586,7 @@ export interface PathsDictionary {
       config?: AxiosRequestConfig  
     ): OperationResponse<Paths.GetProjectAssumptionsDashboard.Responses.$200>
   }
-  ['/projects/{project_id}/assumptions/add']: {
+  ['/organisations/{organisation_id}/projects/{project_id}/assumptions/add']: {
     /**
      * createProjectAssumption
      */
@@ -1687,7 +1596,7 @@ export interface PathsDictionary {
       config?: AxiosRequestConfig  
     ): OperationResponse<Paths.CreateProjectAssumption.Responses.$201>
   }
-  ['/projects/{project_id}/assumptions/{assumption_id}']: {
+  ['/organisations/{organisation_id}/projects/{project_id}/assumptions/{assumption_id}']: {
     /**
      * getProjectAssumptionById
      */
@@ -1697,7 +1606,7 @@ export interface PathsDictionary {
       config?: AxiosRequestConfig  
     ): OperationResponse<Paths.GetProjectAssumptionById.Responses.$200>
   }
-  ['/projects/{project_id}/assumptions/{assumption_id}/update']: {
+  ['/organisations/{organisation_id}/projects/{project_id}/assumptions/{assumption_id}/update']: {
     /**
      * updateProjectAssumption
      */
@@ -1717,7 +1626,7 @@ export interface PathsDictionary {
       config?: AxiosRequestConfig  
     ): OperationResponse<Paths.GetUserDashboard.Responses.$200>
   }
-  ['/projects/{project_id}/dependencies']: {
+  ['/organisations/{organisation_id}/projects/{project_id}/dependencies']: {
     /**
      * listProjectDependencies
      */
@@ -1727,7 +1636,7 @@ export interface PathsDictionary {
       config?: AxiosRequestConfig  
     ): OperationResponse<Paths.ListProjectDependencies.Responses.$200>
   }
-  ['/projects/{project_id}/dependencies/dashboard']: {
+  ['/organisations/{organisation_id}/projects/{project_id}/dependencies/dashboard']: {
     /**
      * GetProjectDependencyDashboard
      */
@@ -1737,7 +1646,7 @@ export interface PathsDictionary {
       config?: AxiosRequestConfig  
     ): OperationResponse<Paths.GetProjectDependencyDashboard.Responses.$200>
   }
-  ['/projects/{project_id}/dependencies/add']: {
+  ['/organisations/{organisation_id}/projects/{project_id}/dependencies/add']: {
     /**
      * createProjectDependency
      */
@@ -1747,7 +1656,7 @@ export interface PathsDictionary {
       config?: AxiosRequestConfig  
     ): OperationResponse<Paths.CreateProjectDependency.Responses.$201>
   }
-  ['/projects/{project_id}/dependencies/{dependency_id}']: {
+  ['/organisations/{organisation_id}/projects/{project_id}/dependencies/{dependency_id}']: {
     /**
      * getProjectDependencyById
      */
@@ -1757,7 +1666,7 @@ export interface PathsDictionary {
       config?: AxiosRequestConfig  
     ): OperationResponse<Paths.GetProjectDependencyById.Responses.$200>
   }
-  ['/projects/{project_id}/dependencies/{dependency_id}/update']: {
+  ['/organisations/{organisation_id}/projects/{project_id}/dependencies/{dependency_id}/update']: {
     /**
      * updateProjectDependency
      */
@@ -1767,7 +1676,7 @@ export interface PathsDictionary {
       config?: AxiosRequestConfig  
     ): OperationResponse<Paths.UpdateProjectDependency.Responses.$200>
   }
-  ['/projects/{project_id}/issues']: {
+  ['/organisations/{organisation_id}/projects/{project_id}/issues']: {
     /**
      * listProjectIssues
      */
@@ -1777,7 +1686,7 @@ export interface PathsDictionary {
       config?: AxiosRequestConfig  
     ): OperationResponse<Paths.ListProjectIssues.Responses.$200>
   }
-  ['/projects/{project_id}/issues/dashboard']: {
+  ['/organisations/{organisation_id}/projects/{project_id}/issues/dashboard']: {
     /**
      * GetProjectIssueDashboard
      */
@@ -1787,7 +1696,7 @@ export interface PathsDictionary {
       config?: AxiosRequestConfig  
     ): OperationResponse<Paths.GetProjectIssueDashboard.Responses.$200>
   }
-  ['/projects/{project_id}/issues/add']: {
+  ['/organisations/{organisation_id}/projects/{project_id}/issues/add']: {
     /**
      * createProjectIssue
      */
@@ -1797,7 +1706,7 @@ export interface PathsDictionary {
       config?: AxiosRequestConfig  
     ): OperationResponse<Paths.CreateProjectIssue.Responses.$201>
   }
-  ['/projects/{project_id}/issue/{issue_id}']: {
+  ['/organisations/{organisation_id}/projects/{project_id}/issue/{issue_id}']: {
     /**
      * getProjectIssueById
      */
@@ -1807,7 +1716,7 @@ export interface PathsDictionary {
       config?: AxiosRequestConfig  
     ): OperationResponse<Paths.GetProjectIssueById.Responses.$200>
   }
-  ['/projects/{project_id}/issues/{issue_id}/update']: {
+  ['/organisations/{organisation_id}/projects/{project_id}/issues/{issue_id}/update']: {
     /**
      * updateProjectIssue
      */
@@ -1817,7 +1726,7 @@ export interface PathsDictionary {
       config?: AxiosRequestConfig  
     ): OperationResponse<Paths.UpdateProjectIssue.Responses.$200>
   }
-  ['/projects/{project_id}/obs']: {
+  ['/organisations/{organisation_id}/projects/{project_id}/obs']: {
     /**
      * listProjectObs
      */
@@ -1827,7 +1736,7 @@ export interface PathsDictionary {
       config?: AxiosRequestConfig  
     ): OperationResponse<Paths.ListProjectObs.Responses.$200>
   }
-  ['/projects/{project_id}/obs/create']: {
+  ['/organisations/{organisation_id}/projects/{project_id}/obs/create']: {
     /**
      * CreateProjectObs
      */
@@ -1837,7 +1746,7 @@ export interface PathsDictionary {
       config?: AxiosRequestConfig  
     ): OperationResponse<Paths.CreateProjectObs.Responses.$201>
   }
-  ['/projects/{project_id}/obs/add']: {
+  ['/organisations/{organisation_id}/projects/{project_id}/obs/add']: {
     /**
      * addProjectObsElement
      */
@@ -1847,7 +1756,7 @@ export interface PathsDictionary {
       config?: AxiosRequestConfig  
     ): OperationResponse<Paths.AddProjectObsElement.Responses.$201>
   }
-  ['/projects/{project_id}/obs/{element_id}']: {
+  ['/organisations/{organisation_id}/projects/{project_id}/obs/{element_id}']: {
     /**
      * findProjectObsElement
      */
@@ -1857,7 +1766,7 @@ export interface PathsDictionary {
       config?: AxiosRequestConfig  
     ): OperationResponse<Paths.FindProjectObsElement.Responses.$200>
   }
-  ['/projects/{project_id}/obs/{element_id}/move']: {
+  ['/organisations/{organisation_id}/projects/{project_id}/obs/{element_id}/move']: {
     /**
      * moveProjectObsElement
      */
@@ -1867,7 +1776,7 @@ export interface PathsDictionary {
       config?: AxiosRequestConfig  
     ): OperationResponse<Paths.MoveProjectObsElement.Responses.$200>
   }
-  ['/projects/{project_id}/obs/{element_id}/update']: {
+  ['/organisations/{organisation_id}/projects/{project_id}/obs/{element_id}/update']: {
     /**
      * updateProjectObsElement
      */
@@ -1877,7 +1786,7 @@ export interface PathsDictionary {
       config?: AxiosRequestConfig  
     ): OperationResponse<Paths.UpdateProjectObsElement.Responses.$200>
   }
-  ['/projects/{project_id}/obs/{element_id}/delete']: {
+  ['/organisations/{organisation_id}/projects/{project_id}/obs/{element_id}/delete']: {
     /**
      * deleteProjectObsElement
      */
@@ -1885,7 +1794,7 @@ export interface PathsDictionary {
       parameters?: Parameters<UnknownParamsObject> | null,
       data?: any,
       config?: AxiosRequestConfig  
-    ): OperationResponse<any>
+    ): OperationResponse<Paths.DeleteProjectObsElement.Responses.$200>
   }
   ['/organisations']: {
     /**
@@ -1907,7 +1816,7 @@ export interface PathsDictionary {
       config?: AxiosRequestConfig  
     ): OperationResponse<Paths.FindOrganisationById.Responses.$200>
   }
-  ['/projects']: {
+  ['/organisations/{organisation_id}/projects']: {
     /**
      * listProjects
      */
@@ -1917,7 +1826,7 @@ export interface PathsDictionary {
       config?: AxiosRequestConfig  
     ): OperationResponse<Paths.ListProjects.Responses.$200>
   }
-  ['/projects/create']: {
+  ['/organisations/{organisation_id}/projects/create']: {
     /**
      * createProject
      */
@@ -1927,7 +1836,7 @@ export interface PathsDictionary {
       config?: AxiosRequestConfig  
     ): OperationResponse<Paths.CreateProject.Responses.$201>
   }
-  ['/projects/{project_id}']: {
+  ['/organisations/{organisation_id}/projects/{project_id}']: {
     /**
      * getProjectById
      */
@@ -1937,7 +1846,7 @@ export interface PathsDictionary {
       config?: AxiosRequestConfig  
     ): OperationResponse<Paths.GetProjectById.Responses.$200>
   }
-  ['/projects/{project_id}/dashboard']: {
+  ['/organisations/{organisation_id}/projects/{project_id}/dashboard']: {
     /**
      * getProjectDashboard
      */
@@ -1947,7 +1856,7 @@ export interface PathsDictionary {
       config?: AxiosRequestConfig  
     ): OperationResponse<Paths.GetProjectDashboard.Responses.$200>
   }
-  ['/projects/{project_id}/ram']: {
+  ['/organisations/{organisation_id}/projects/{project_id}/ram']: {
     /**
      * listProjectRam
      */
@@ -1957,7 +1866,7 @@ export interface PathsDictionary {
       config?: AxiosRequestConfig  
     ): OperationResponse<Paths.ListProjectRam.Responses.$200>
   }
-  ['/projects/{project_id}/ram/create']: {
+  ['/organisations/{organisation_id}/projects/{project_id}/ram/create']: {
     /**
      * createProjectRam
      */
@@ -1967,7 +1876,7 @@ export interface PathsDictionary {
       config?: AxiosRequestConfig  
     ): OperationResponse<Paths.CreateProjectRam.Responses.$201>
   }
-  ['/projects/{project_id}/ram/add']: {
+  ['/organisations/{organisation_id}/projects/{project_id}/ram/add']: {
     /**
      * addProjectRamAssignment
      */
@@ -1977,7 +1886,7 @@ export interface PathsDictionary {
       config?: AxiosRequestConfig  
     ): OperationResponse<Paths.AddProjectRamAssignment.Responses.$201>
   }
-  ['/projects/{project_id}/ram/{assignment_id}/update']: {
+  ['/organisations/{organisation_id}/projects/{project_id}/ram/{assignment_id}/update']: {
     /**
      * updateProjectRamAssignment
      */
@@ -1987,7 +1896,7 @@ export interface PathsDictionary {
       config?: AxiosRequestConfig  
     ): OperationResponse<Paths.UpdateProjectRamAssignment.Responses.$200>
   }
-  ['/projects/{project_id}/ram/{assignment_ids}/delete']: {
+  ['/organisations/{organisation_id}/projects/{project_id}/ram/{assignment_ids}']: {
     /**
      * deleteProjectRamAssignment
      */
@@ -1997,7 +1906,7 @@ export interface PathsDictionary {
       config?: AxiosRequestConfig  
     ): OperationResponse<any>
   }
-  ['/projects/{project_id}/rbs']: {
+  ['/organisations/{organisation_id}/projects/{project_id}/rbs']: {
     /**
      * listProjectRbs
      */
@@ -2007,7 +1916,7 @@ export interface PathsDictionary {
       config?: AxiosRequestConfig  
     ): OperationResponse<Paths.ListProjectRbs.Responses.$200>
   }
-  ['/projects/{project_id}/rbs/create']: {
+  ['/organisations/{organisation_id}/projects/{project_id}/rbs/create']: {
     /**
      * createProjectRbs
      */
@@ -2017,7 +1926,7 @@ export interface PathsDictionary {
       config?: AxiosRequestConfig  
     ): OperationResponse<Paths.CreateProjectRbs.Responses.$201>
   }
-  ['/projects/{project_id}/rbs/add']: {
+  ['/organisations/{organisation_id}/projects/{project_id}/rbs/add']: {
     /**
      * addProjectRbsElement
      */
@@ -2027,7 +1936,7 @@ export interface PathsDictionary {
       config?: AxiosRequestConfig  
     ): OperationResponse<Paths.AddProjectRbsElement.Responses.$201>
   }
-  ['/projects/{project_id}/rbs/{element_id}']: {
+  ['/organisations/{organisation_id}/projects/{project_id}/rbs/{element_id}']: {
     /**
      * findProjectRbsElement
      */
@@ -2037,7 +1946,7 @@ export interface PathsDictionary {
       config?: AxiosRequestConfig  
     ): OperationResponse<Paths.FindProjectRbsElement.Responses.$200>
   }
-  ['/projects/{project_id}/rbs/{element_id}/move']: {
+  ['/organisations/{organisation_id}/projects/{project_id}/rbs/{element_id}/move']: {
     /**
      * moveProjectRbsElement
      */
@@ -2047,7 +1956,7 @@ export interface PathsDictionary {
       config?: AxiosRequestConfig  
     ): OperationResponse<Paths.MoveProjectRbsElement.Responses.$200>
   }
-  ['/projects/{project_id}/rbs/{element_id}/update']: {
+  ['/organisations/{organisation_id}/projects/{project_id}/rbs/{element_id}/update']: {
     /**
      * updateProjectRbsElement
      */
@@ -2057,7 +1966,7 @@ export interface PathsDictionary {
       config?: AxiosRequestConfig  
     ): OperationResponse<Paths.UpdateProjectRbsElement.Responses.$200>
   }
-  ['/projects/{project_id}/rbs/{element_id}/delete']: {
+  ['/organisations/{organisation_id}/projects/{project_id}/rbs/{element_id}/delete']: {
     /**
      * deleteProjectRbsElement
      */
@@ -2065,9 +1974,9 @@ export interface PathsDictionary {
       parameters?: Parameters<UnknownParamsObject> | null,
       data?: any,
       config?: AxiosRequestConfig  
-    ): OperationResponse<any>
+    ): OperationResponse<Paths.DeleteProjectRbsElement.Responses.$200>
   }
-  ['/projects/{project_id}/risks']: {
+  ['/organisations/{organisation_id}/projects/{project_id}/risks']: {
     /**
      * listProjectRisks
      */
@@ -2077,7 +1986,7 @@ export interface PathsDictionary {
       config?: AxiosRequestConfig  
     ): OperationResponse<Paths.ListProjectRisks.Responses.$200>
   }
-  ['/projects/{project_id}/risks/dashboard']: {
+  ['/organisations/{organisation_id}/projects/{project_id}/risks/dashboard']: {
     /**
      * GetRiskDashboardByProject
      */
@@ -2087,7 +1996,7 @@ export interface PathsDictionary {
       config?: AxiosRequestConfig  
     ): OperationResponse<Paths.GetRiskDashboardByProject.Responses.$200>
   }
-  ['/projects/{project_id}/risks/add']: {
+  ['/organisations/{organisation_id}/projects/{project_id}/risks/add']: {
     /**
      * createProjectRisk
      */
@@ -2097,7 +2006,7 @@ export interface PathsDictionary {
       config?: AxiosRequestConfig  
     ): OperationResponse<Paths.CreateProjectRisk.Responses.$201>
   }
-  ['/projects/{project_id}/risks/{risk_id}']: {
+  ['/organisations/{organisation_id}/projects/{project_id}/risks/{risk_id}']: {
     /**
      * getProjectRiskById
      */
@@ -2107,7 +2016,7 @@ export interface PathsDictionary {
       config?: AxiosRequestConfig  
     ): OperationResponse<Paths.GetProjectRiskById.Responses.$200>
   }
-  ['/projects/{project_id}/risks/{risk_id}/update']: {
+  ['/organisations/{organisation_id}/projects/{project_id}/risks/{risk_id}/update']: {
     /**
      * updateProjectRisk
      */
@@ -2117,7 +2026,7 @@ export interface PathsDictionary {
       config?: AxiosRequestConfig  
     ): OperationResponse<Paths.UpdateProjectRisk.Responses.$200>
   }
-  ['/projects/{project_id}/wbs']: {
+  ['/organisations/{organisation_id}/projects/{project_id}/wbs']: {
     /**
      * listProjectWbs
      */
@@ -2127,7 +2036,7 @@ export interface PathsDictionary {
       config?: AxiosRequestConfig  
     ): OperationResponse<Paths.ListProjectWbs.Responses.$200>
   }
-  ['/projects/{project_id}/wbs/create']: {
+  ['/organisations/{organisation_id}/projects/{project_id}/wbs/create']: {
     /**
      * createProjectWbs
      */
@@ -2137,7 +2046,7 @@ export interface PathsDictionary {
       config?: AxiosRequestConfig  
     ): OperationResponse<Paths.CreateProjectWbs.Responses.$201>
   }
-  ['/projects/{project_id}/wbs/add']: {
+  ['/organisations/{organisation_id}/projects/{project_id}/wbs/add']: {
     /**
      * addProjectWbsElement
      */
@@ -2147,7 +2056,7 @@ export interface PathsDictionary {
       config?: AxiosRequestConfig  
     ): OperationResponse<Paths.AddProjectWbsElement.Responses.$201>
   }
-  ['/projects/{project_id}/wbs/{element_id}']: {
+  ['/organisations/{organisation_id}/projects/{project_id}/wbs/{element_id}']: {
     /**
      * findProjectWbsElement
      */
@@ -2157,7 +2066,7 @@ export interface PathsDictionary {
       config?: AxiosRequestConfig  
     ): OperationResponse<Paths.FindProjectWbsElement.Responses.$200>
   }
-  ['/projects/{project_id}/wbs/{element_id}/move']: {
+  ['/organisations/{organisation_id}/projects/{project_id}/wbs/{element_id}/move']: {
     /**
      * moveProjectWbsElement
      */
@@ -2167,7 +2076,7 @@ export interface PathsDictionary {
       config?: AxiosRequestConfig  
     ): OperationResponse<Paths.MoveProjectWbsElement.Responses.$200>
   }
-  ['/projects/{project_id}/wbs/{element_id}/update']: {
+  ['/organisations/{organisation_id}/projects/{project_id}/wbs/{element_id}/update']: {
     /**
      * updateProjectWbsElement
      */
@@ -2177,7 +2086,7 @@ export interface PathsDictionary {
       config?: AxiosRequestConfig  
     ): OperationResponse<Paths.UpdateProjectWbsElement.Responses.$200>
   }
-  ['/projects/{project_id}/wbs/{element_id}/delete']: {
+  ['/organisations/{organisation_id}/projects/{project_id}/wbs/{element_id}/delete']: {
     /**
      * deleteProjectWbsElement
      */
@@ -2185,9 +2094,9 @@ export interface PathsDictionary {
       parameters?: Parameters<UnknownParamsObject> | null,
       data?: any,
       config?: AxiosRequestConfig  
-    ): OperationResponse<any>
+    ): OperationResponse<Paths.DeleteProjectWbsElement.Responses.$204>
   }
-  ['/projects/{project_id}/work-packages']: {
+  ['/organisations/{organisation_id}/projects/{project_id}/work-packages']: {
     /**
      * ListWorkPackages
      */
@@ -2197,7 +2106,7 @@ export interface PathsDictionary {
       config?: AxiosRequestConfig  
     ): OperationResponse<Paths.ListWorkPackages.Responses.$200>
   }
-  ['/projects/{project_id}/work-packages/add']: {
+  ['/organisations/{organisation_id}/projects/{project_id}/work-packages/add']: {
     /**
      * AddWorkPackage
      */
@@ -2207,7 +2116,7 @@ export interface PathsDictionary {
       config?: AxiosRequestConfig  
     ): OperationResponse<Paths.AddWorkPackage.Responses.$200>
   }
-  ['/projects/{project_id}/work-packages/{workpackage_id}']: {
+  ['/organisations/{organisation_id}/projects/{project_id}/work-packages/{workpackage_id}']: {
     /**
      * FindWorkPackageById
      */
@@ -2217,7 +2126,7 @@ export interface PathsDictionary {
       config?: AxiosRequestConfig  
     ): OperationResponse<Paths.FindWorkPackageById.Responses.$200>
   }
-  ['/projects/{project_id}/work-packages/{workpackage_id}/update']: {
+  ['/organisations/{organisation_id}/projects/{project_id}/work-packages/{workpackage_id}/update']: {
     /**
      * UpdateWorkPackage
      */
@@ -2227,7 +2136,7 @@ export interface PathsDictionary {
       config?: AxiosRequestConfig  
     ): OperationResponse<Paths.UpdateWorkPackage.Responses.$200>
   }
-  ['/projects/{project_id}/work-packages/{workpackage_id}/delete']: {
+  ['/organisations/{organisation_id}/projects/{project_id}/work-packages/{workpackage_id}/delete']: {
     /**
      * MarkWorkPackageAsDeleted
      */
