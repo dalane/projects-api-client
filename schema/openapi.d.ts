@@ -769,12 +769,6 @@ declare namespace Paths {
       export type $201 = Components.Schemas.ProjectEntity;
     }
   }
-  namespace AddProjectWorkPackage {
-    export type RequestBody = Components.Schemas.AddWorkpackageDto;
-    namespace Responses {
-      export type $200 = Components.Schemas.WorkpackageEntity;
-    }
-  }
   namespace AddRam {
     export type RequestBody = Components.Schemas.AddRamDto;
     namespace Responses {
@@ -815,6 +809,12 @@ declare namespace Paths {
     export type RequestBody = Components.Schemas.AddBreakdownStructureElementDto;
     namespace Responses {
       export type $201 = Components.Schemas.BreakdownStructureEntity;
+    }
+  }
+  namespace AddWorkPackage {
+    export type RequestBody = Components.Schemas.AddWorkpackageDto;
+    namespace Responses {
+      export type $200 = Components.Schemas.WorkpackageEntity;
     }
   }
   namespace DeleteObsElement {
@@ -1267,9 +1267,9 @@ export interface OperationMethods {
     config?: AxiosRequestConfig  
   ): OperationResponse<Paths.DeleteObsElement.Responses.$200>
   /**
-   * ListOrganisations
+   * listOrganisations
    */
-  'ListOrganisations'(
+  'listOrganisations'(
     parameters?: Parameters<UnknownParamsObject> | null,
     data?: any,
     config?: AxiosRequestConfig  
@@ -1531,13 +1531,13 @@ export interface OperationMethods {
     config?: AxiosRequestConfig  
   ): OperationResponse<Paths.ListWorkPackages.Responses.$200>
   /**
-   * addProjectWorkPackage
+   * addWorkPackage
    */
-  'addProjectWorkPackage'(
+  'addWorkPackage'(
     parameters?: Parameters<UnknownParamsObject> | null,
-    data?: Paths.AddProjectWorkPackage.RequestBody,
+    data?: Paths.AddWorkPackage.RequestBody,
     config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.AddProjectWorkPackage.Responses.$200>
+  ): OperationResponse<Paths.AddWorkPackage.Responses.$200>
   /**
    * getWorkPackage
    */
@@ -1843,7 +1843,7 @@ export interface PathsDictionary {
   }
   ['/organisations']: {
     /**
-     * ListOrganisations
+     * listOrganisations
      */
     'get'(
       parameters?: Parameters<UnknownParamsObject> | null,
@@ -2173,13 +2173,13 @@ export interface PathsDictionary {
   }
   ['/organisations/{organisation_id}/projects/{project_id}/work-packages/add']: {
     /**
-     * addProjectWorkPackage
+     * addWorkPackage
      */
     'post'(
       parameters?: Parameters<UnknownParamsObject> | null,
-      data?: Paths.AddProjectWorkPackage.RequestBody,
+      data?: Paths.AddWorkPackage.RequestBody,
       config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.AddProjectWorkPackage.Responses.$200>
+    ): OperationResponse<Paths.AddWorkPackage.Responses.$200>
   }
   ['/organisations/{organisation_id}/projects/{project_id}/work-packages/{workpackage_id}']: {
     /**

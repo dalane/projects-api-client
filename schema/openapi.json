@@ -3713,7 +3713,7 @@
     },
     "/organisations": {
       "get": {
-        "operationId": "ListOrganisations",
+        "operationId": "listOrganisations",
         "responses": {
           "200": {
             "description": "Returns an array containing organisations that the user is a member of.",
@@ -4820,7 +4820,7 @@
     "/organisations/{organisation_id}/projects/{project_id}/work-packages/add": {
       "description": "Update work package properties",
       "post": {
-        "operationId": "addProjectWorkPackage",
+        "operationId": "addWorkPackage",
         "responses": {
           "200": {
             "description": "Ok",
