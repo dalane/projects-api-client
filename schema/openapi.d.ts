@@ -64,7 +64,7 @@ declare namespace Components {
     namespace PeriodStartQuery {
       export type PeriodStart = number;
     }
-    namespace ProjectId {
+    namespace ProjectIdPathParam {
       export type ProjectId = string; // uuid
     }
     namespace RequiredAtLimitQueryParam {
@@ -73,10 +73,10 @@ declare namespace Components {
     namespace RiskId {
       export type RiskId = string; // uuid
     }
-    namespace WorkpackageId {
+    namespace WorkpackageIdPathParam {
       export type WorkpackageId = string; // uuid
     }
-    namespace WorkpackageIdQuery {
+    namespace WorkpackageIdQueryParam {
       export type WorkpackageId = string; // uuid
     }
   }
@@ -87,6 +87,33 @@ declare namespace Components {
     export interface AcceptInvitationDto {
       user_id?: string; // uuid
     }
+    export interface AddAssumptionDto {
+      workpackage_id?: string; // uuid
+      rbs_element_id?: string; // uuid
+      name: string;
+      status: AssumptionStatusEnum;
+      description?: string;
+      reason?: string;
+      closeout_by?: number;
+      closed_at?: number;
+      actions?: string;
+      incorrect_effect?: string;
+      incorrect_schedule_impact?: AssumptionImpactEnum;
+      incorrect_cost_impact?: AssumptionImpactEnum;
+      incorrect_safety_impact?: AssumptionImpactEnum;
+      incorrect_quality_impact?: AssumptionImpactEnum;
+      incorrect_reputation_impact?: AssumptionImpactEnum;
+    }
+    export type AddBreakdownStructureDto = AddUploadedBreakdownStructureDto | AddEmptyBreakdownStructureDto | AddTemplateBreakdownStructureDto | AddCopiedBreakdownStructureDto;
+    /**
+     * A nested array of breakdown structure elements used when creating a breakdown structure using uploaded data.
+     */
+    export interface AddBreakdownStructureElementData {
+      code: string;
+      name: string;
+      description?: string;
+      children?: AddBreakdownStructureElementData[];
+    }
     export interface AddBreakdownStructureElementDto {
       code: string;
       name: string;
@@ -94,11 +121,63 @@ declare namespace Components {
       parent_id?: UUID; // uuid
       position?: number;
     }
+    export interface AddCopiedBreakdownStructureDto {
+      method: "copy";
+      project_id: UUID; // uuid
+    }
+    export interface AddDependencyDto {
+      workpackage_id?: string; // uuid
+      name: string;
+      status: DependencyStatusEnum;
+      description?: string;
+      required_at?: number;
+      expected_at?: number;
+      actions?: string;
+      late_cost_impact?: LateDependencyImpactEnum;
+      late_schedule_impact?: LateDependencyImpactEnum;
+      late_quality_impact?: LateDependencyImpactEnum;
+      late_reputation_impact?: LateDependencyImpactEnum;
+      late_safety_impact?: LateDependencyImpactEnum;
+    }
+    export interface AddEmptyBreakdownStructureDto {
+      method: "empty";
+    }
     export interface AddInvitationDto {
       invitation_id?: string; // uuid
       email: string; // email
       role: TeamMemberRoleEnum;
       message: string | null;
+    }
+    export interface AddIssueDto {
+      workpackage_id?: string; // uuid
+      name: string;
+      status: IssueStatusEnum;
+      description?: string;
+      started_at?: number;
+      expected_at?: number;
+      closed_at?: number;
+      caused_by?: IssueCauseEnum;
+      assumption_id?: string; // uuid
+      risk_id?: string; // uuid
+      dependency_id?: string; // uuid
+      actions?: string;
+      effect?: string;
+      schedule_impact: IssueImpactEnum;
+      cost_impact: IssueImpactEnum;
+      safety_impact: IssueImpactEnum;
+      quality_impact: IssueImpactEnum;
+      reputation_impact: IssueImpactEnum;
+    }
+    export interface AddProjectDto {
+      name: string;
+      description?: string;
+      status: ProjectStatusEnum;
+      friendly_id?: string;
+      initialise?: boolean;
+      settings?: {
+        risk?: ProjectRiskSettings;
+      };
+      owner_id?: string; // uuid
     }
     export interface AddRamAssignmentDto {
       /**
@@ -110,6 +189,48 @@ declare namespace Components {
        */
       obs_element_id: string; // uuid
       assignment: RamAssignmentEnum;
+    }
+    export interface AddRamDto {
+      method: "empty" | "upload";
+      data?: {
+      };
+    }
+    export interface AddRiskDto {
+      name: string;
+      workpackage_id?: string; // uuid
+      rbs_element_id?: string; // uuid
+      description?: string;
+      type: RiskTypeEnum;
+      starting_at?: number;
+      ending_at?: number;
+      impacted_at?: number;
+      cause?: string;
+      effect?: string;
+      contingency?: string;
+      status: RiskStatusEnum;
+      likelihood: RiskLikelihoodEnum;
+      schedule_impact: RiskImpactEnum;
+      cost_impact: RiskImpactEnum;
+      safety_impact: RiskImpactEnum;
+      quality_impact: RiskImpactEnum;
+      reputation_impact: RiskImpactEnum;
+      response_strategy: RiskResponseEnum;
+      response_actions?: string;
+      residual_likelihood?: RiskLikelihoodEnum;
+      residual_schedule_impact?: RiskImpactEnum;
+      residual_cost_impact?: RiskImpactEnum;
+      residual_safety_impact?: RiskImpactEnum;
+      residual_quality_impact?: RiskImpactEnum;
+      residual_reputation_impact?: RiskImpactEnum;
+      residual_effect?: string;
+    }
+    export interface AddTemplateBreakdownStructureDto {
+      method: "template";
+      name: string;
+    }
+    export interface AddUploadedBreakdownStructureDto {
+      method: "upload";
+      data: AddBreakdownStructureElementData[];
     }
     export interface AddWorkpackageDto {
       wbs_element_id: string; // uuid
@@ -191,128 +312,6 @@ declare namespace Components {
        * The version of the entity
        */
       version: number;
-    }
-    export interface CreateAssumptionDto {
-      workpackage_id?: string; // uuid
-      rbs_element_id?: string; // uuid
-      name: string;
-      status: AssumptionStatusEnum;
-      description?: string;
-      reason?: string;
-      closeout_by?: number;
-      closed_at?: number;
-      actions?: string;
-      incorrect_effect?: string;
-      incorrect_schedule_impact?: AssumptionImpactEnum;
-      incorrect_cost_impact?: AssumptionImpactEnum;
-      incorrect_safety_impact?: AssumptionImpactEnum;
-      incorrect_quality_impact?: AssumptionImpactEnum;
-      incorrect_reputation_impact?: AssumptionImpactEnum;
-    }
-    export type CreateBreakdownStructureDto = CreateUploadedBreakdownStructureDto | CreateEmptyBreakdownStructureDto | CreateTemplateBreakdownStructureDto | CreateCopiedBreakdownStructureDto;
-    /**
-     * A nested array of breakdown structure elements used when creating a breakdown structure using uploaded data.
-     */
-    export interface CreateBreakdownStructureElementData {
-      code: string;
-      name: string;
-      description?: string;
-      children?: CreateBreakdownStructureElementData[];
-    }
-    export interface CreateCopiedBreakdownStructureDto {
-      method: "copy";
-      project_id: UUID; // uuid
-    }
-    export interface CreateDependencyDto {
-      workpackage_id?: string; // uuid
-      name: string;
-      status: DependencyStatusEnum;
-      description?: string;
-      required_at?: number;
-      expected_at?: number;
-      actions?: string;
-      late_cost_impact?: LateDependencyImpactEnum;
-      late_schedule_impact?: LateDependencyImpactEnum;
-      late_quality_impact?: LateDependencyImpactEnum;
-      late_reputation_impact?: LateDependencyImpactEnum;
-      late_safety_impact?: LateDependencyImpactEnum;
-    }
-    export interface CreateEmptyBreakdownStructureDto {
-      method: "empty";
-    }
-    export interface CreateIssueDto {
-      workpackage_id?: string; // uuid
-      name: string;
-      status: IssueStatusEnum;
-      description?: string;
-      started_at?: number;
-      expected_at?: number;
-      closed_at?: number;
-      caused_by?: IssueCauseEnum;
-      assumption_id?: string; // uuid
-      risk_id?: string; // uuid
-      dependency_id?: string; // uuid
-      actions?: string;
-      effect?: string;
-      schedule_impact: IssueImpactEnum;
-      cost_impact: IssueImpactEnum;
-      safety_impact: IssueImpactEnum;
-      quality_impact: IssueImpactEnum;
-      reputation_impact: IssueImpactEnum;
-    }
-    export interface CreateProjectDto {
-      name: string;
-      description?: string;
-      status: ProjectStatusEnum;
-      organisation_id: string; // uuid
-      friendly_id?: string;
-      initialise?: boolean;
-      settings?: {
-        risk?: ProjectRiskSettings;
-      };
-      owner_id?: string; // uuid
-    }
-    export interface CreateRamDto {
-      method: "empty" | "upload";
-      data?: {
-      };
-    }
-    export interface CreateRiskDto {
-      name: string;
-      workpackage_id?: string; // uuid
-      rbs_element_id?: string; // uuid
-      description?: string;
-      type: RiskTypeEnum;
-      starting_at?: number;
-      ending_at?: number;
-      impacted_at?: number;
-      cause?: string;
-      effect?: string;
-      contingency?: string;
-      status: RiskStatusEnum;
-      likelihood: RiskLikelihoodEnum;
-      schedule_impact: RiskImpactEnum;
-      cost_impact: RiskImpactEnum;
-      safety_impact: RiskImpactEnum;
-      quality_impact: RiskImpactEnum;
-      reputation_impact: RiskImpactEnum;
-      response_strategy: RiskResponseEnum;
-      response_actions?: string;
-      residual_likelihood?: RiskLikelihoodEnum;
-      residual_schedule_impact?: RiskImpactEnum;
-      residual_cost_impact?: RiskImpactEnum;
-      residual_safety_impact?: RiskImpactEnum;
-      residual_quality_impact?: RiskImpactEnum;
-      residual_reputation_impact?: RiskImpactEnum;
-      residual_effect?: string;
-    }
-    export interface CreateTemplateBreakdownStructureDto {
-      method: "template";
-      name: string;
-    }
-    export interface CreateUploadedBreakdownStructureDto {
-      method: "upload";
-      data: CreateBreakdownStructureElementData[];
     }
     export interface DependenciesByRatingEntity {
       late_delivery_rating: LateDependencyRatingEnum;
@@ -718,7 +717,7 @@ declare namespace Components {
       updated_at: number;
       version: number;
     }
-    export type WorkpackageStatusEnum = "Proposed" | "Approved" | "Delivering" | "Completed" | "Rejected" | "Deleted";
+    export type WorkpackageStatusEnum = "Proposed,Approved,Delivering,Completed,Deleted,Rejected";
   }
 }
 declare namespace Paths {
@@ -728,149 +727,159 @@ declare namespace Paths {
       export type $200 = Components.Schemas.InvitationEntity;
     }
   }
+  namespace AddAssumption {
+    export type RequestBody = Components.Schemas.AddAssumptionDto;
+    namespace Responses {
+      export type $201 = Components.Schemas.AssumptionEntity;
+    }
+  }
+  namespace AddDependency {
+    export type RequestBody = Components.Schemas.AddDependencyDto;
+    namespace Responses {
+      export type $201 = Components.Schemas.DependencyEntity;
+    }
+  }
   namespace AddInvitation {
     export type RequestBody = Components.Schemas.AddInvitationDto;
     namespace Responses {
       export type $201 = Components.Schemas.InvitationEntity;
     }
   }
-  namespace AddProjectObsElement {
+  namespace AddIssue {
+    export type RequestBody = Components.Schemas.AddIssueDto;
+    namespace Responses {
+      export type $201 = Components.Schemas.IssueEntity;
+    }
+  }
+  namespace AddObs {
+    export type RequestBody = Components.Schemas.AddBreakdownStructureDto;
+    namespace Responses {
+      export type $201 = Components.Schemas.BreakdownStructureEntity;
+    }
+  }
+  namespace AddObsElement {
     export type RequestBody = Components.Schemas.AddBreakdownStructureElementDto;
     namespace Responses {
       export type $201 = Components.Schemas.BreakdownStructureEntity;
     }
   }
-  namespace AddProjectRamAssignment {
-    export type RequestBody = Components.Schemas.AddRamAssignmentDto | Components.Schemas.AddRamAssignmentDto[];
+  namespace AddProject {
+    export type RequestBody = Components.Schemas.AddProjectDto;
     namespace Responses {
-      export type $201 = Components.Schemas.RamAssignmentEntity;
+      export type $201 = Components.Schemas.ProjectEntity;
     }
   }
-  namespace AddProjectRbsElement {
-    export type RequestBody = Components.Schemas.AddBreakdownStructureElementDto;
-    namespace Responses {
-      export type $201 = Components.Schemas.BreakdownStructureEntity;
-    }
-  }
-  namespace AddProjectWbsElement {
-    export type RequestBody = Components.Schemas.AddBreakdownStructureElementDto;
-    namespace Responses {
-      export type $201 = Components.Schemas.BreakdownStructureEntity;
-    }
-  }
-  namespace AddWorkPackage {
+  namespace AddProjectWorkPackage {
     export type RequestBody = Components.Schemas.AddWorkpackageDto;
     namespace Responses {
       export type $200 = Components.Schemas.WorkpackageEntity;
     }
   }
-  namespace CreateProject {
-    export type RequestBody = Components.Schemas.CreateProjectDto;
-    namespace Responses {
-      export type $201 = Components.Schemas.ProjectEntity;
-    }
-  }
-  namespace CreateProjectAssumption {
-    export type RequestBody = Components.Schemas.CreateAssumptionDto;
-    namespace Responses {
-      export type $201 = Components.Schemas.AssumptionEntity;
-    }
-  }
-  namespace CreateProjectDependency {
-    export type RequestBody = Components.Schemas.CreateDependencyDto;
-    namespace Responses {
-      export type $201 = Components.Schemas.DependencyEntity;
-    }
-  }
-  namespace CreateProjectIssue {
-    export type RequestBody = Components.Schemas.CreateIssueDto;
-    namespace Responses {
-      export type $201 = Components.Schemas.IssueEntity;
-    }
-  }
-  namespace CreateProjectObs {
-    export type RequestBody = Components.Schemas.CreateBreakdownStructureDto;
-    namespace Responses {
-      export type $201 = Components.Schemas.BreakdownStructureEntity;
-    }
-  }
-  namespace CreateProjectRam {
-    export type RequestBody = Components.Schemas.CreateRamDto;
+  namespace AddRam {
+    export type RequestBody = Components.Schemas.AddRamDto;
     namespace Responses {
       export type $201 = Components.Schemas.RamEntity;
     }
   }
-  namespace CreateProjectRbs {
-    export type RequestBody = Components.Schemas.CreateBreakdownStructureDto;
+  namespace AddRamAssignment {
+    export type RequestBody = Components.Schemas.AddRamAssignmentDto | Components.Schemas.AddRamAssignmentDto[];
+    namespace Responses {
+      export type $201 = Components.Schemas.RamAssignmentEntity;
+    }
+  }
+  namespace AddRbs {
+    export type RequestBody = Components.Schemas.AddBreakdownStructureDto;
     namespace Responses {
       export type $201 = Components.Schemas.BreakdownStructureEntity;
     }
   }
-  namespace CreateProjectRisk {
-    export type RequestBody = Components.Schemas.CreateRiskDto;
+  namespace AddRbsElement {
+    export type RequestBody = Components.Schemas.AddBreakdownStructureElementDto;
+    namespace Responses {
+      export type $201 = Components.Schemas.BreakdownStructureEntity;
+    }
+  }
+  namespace AddRisk {
+    export type RequestBody = Components.Schemas.AddRiskDto;
     namespace Responses {
       export type $201 = Components.Schemas.RiskEntity;
     }
   }
-  namespace CreateProjectWbs {
-    export type RequestBody = Components.Schemas.CreateBreakdownStructureDto;
+  namespace AddWbs {
+    export type RequestBody = Components.Schemas.AddBreakdownStructureDto;
     namespace Responses {
       export type $201 = Components.Schemas.BreakdownStructureEntity;
     }
   }
-  namespace DeleteProjectObsElement {
+  namespace AddWbsElement {
+    export type RequestBody = Components.Schemas.AddBreakdownStructureElementDto;
+    namespace Responses {
+      export type $201 = Components.Schemas.BreakdownStructureEntity;
+    }
+  }
+  namespace DeleteObsElement {
     namespace Responses {
       export type $200 = Components.Schemas.BreakdownStructureEntity;
     }
   }
-  namespace DeleteProjectRbsElement {
+  namespace DeleteRbsElement {
     namespace Responses {
       export type $200 = Components.Schemas.BreakdownStructureEntity;
     }
   }
-  namespace DeleteProjectWbsElement {
+  namespace DeleteWbsElement {
     namespace Responses {
       export type $204 = Components.Schemas.BreakdownStructureEntity;
     }
   }
-  namespace FindOrganisationById {
-    namespace Responses {
-      export type $200 = Components.Schemas.OrganisationEntity;
-    }
-  }
-  namespace FindProjectObsElement {
-    namespace Responses {
-      export type $200 = Components.Schemas.BreakdownStructureEntity;
-    }
-  }
-  namespace FindProjectRbsElement {
-    namespace Responses {
-      export type $200 = Components.Schemas.BreakdownStructureEntity;
-    }
-  }
-  namespace FindProjectWbsElement {
-    namespace Responses {
-      export type $200 = Components.Schemas.BreakdownStructureEntity;
-    }
-  }
-  namespace FindWorkPackageById {
-    namespace Responses {
-      export type $200 = Components.Schemas.WorkpackageEntity;
-    }
-  }
-  namespace GetProjectAssumptionById {
+  namespace GetAssumption {
     namespace Responses {
       export type $200 = Components.Schemas.AssumptionEntity;
     }
   }
-  namespace GetProjectAssumptionsDashboard {
+  namespace GetDependency {
     namespace Responses {
-      export type $200 = Components.Schemas.AssumptionDashboardEntity;
+      export type $200 = Components.Schemas.DependencyEntity;
     }
   }
-  namespace GetProjectById {
+  namespace GetIssue {
+    namespace Responses {
+      export type $200 = Components.Schemas.IssueEntity;
+    }
+  }
+  namespace GetMyDashboard {
+    namespace Responses {
+      export type $200 = Components.Schemas.UserDashboardEntity;
+    }
+  }
+  namespace GetObs {
+    namespace Responses {
+      export type $200 = Components.Schemas.BreakdownStructureEntity;
+    }
+  }
+  namespace GetObsElement {
+    namespace Responses {
+      export type $200 = Components.Schemas.BreakdownStructureEntity;
+    }
+  }
+  namespace GetOrganisation {
+    namespace Responses {
+      export type $200 = Components.Schemas.OrganisationEntity;
+    }
+  }
+  namespace GetOrganisationRiskDashboard {
+    namespace Responses {
+      export type $200 = Components.Schemas.RiskDashboardEntity;
+    }
+  }
+  namespace GetProject {
     namespace Responses {
       export type $200 = Components.Schemas.ProjectEntity;
+    }
+  }
+  namespace GetProjectAssumptionDashboard {
+    namespace Responses {
+      export type $200 = Components.Schemas.AssumptionDashboardEntity;
     }
   }
   namespace GetProjectDashboard {
@@ -878,39 +887,80 @@ declare namespace Paths {
       export type $200 = Components.Schemas.ProjectDashboardEntity;
     }
   }
-  namespace GetProjectDependencyById {
-    namespace Responses {
-      export type $200 = Components.Schemas.DependencyEntity;
-    }
-  }
   namespace GetProjectDependencyDashboard {
     namespace Responses {
       export type $200 = Components.Schemas.DependencyDashboardEntity;
     }
   }
-  namespace GetProjectIssueById {
-    namespace Responses {
-      export type $200 = Components.Schemas.IssueEntity;
-    }
-  }
-  namespace GetProjectIssueDashboard {
+  namespace GetProjectIssuesDashboard {
     namespace Responses {
       export type $200 = Components.Schemas.IssueDashboardEntity;
     }
   }
-  namespace GetProjectRiskById {
-    namespace Responses {
-      export type $200 = Components.Schemas.RiskEntity;
-    }
-  }
-  namespace GetRiskDashboardByProject {
+  namespace GetProjectRiskDashboard {
     namespace Responses {
       export type $200 = Components.Schemas.RiskDashboardEntity;
     }
   }
-  namespace GetUserDashboard {
+  namespace GetRam {
     namespace Responses {
-      export type $200 = Components.Schemas.UserDashboardEntity;
+      export type $200 = Components.Schemas.RamEntity;
+    }
+  }
+  namespace GetRbs {
+    namespace Responses {
+      export type $200 = Components.Schemas.BreakdownStructureEntity;
+    }
+  }
+  namespace GetRbsElement {
+    namespace Responses {
+      export type $200 = Components.Schemas.BreakdownStructureEntity;
+    }
+  }
+  namespace GetRisk {
+    namespace Responses {
+      export type $200 = Components.Schemas.RiskEntity;
+    }
+  }
+  namespace GetWbs {
+    namespace Responses {
+      export type $200 = Components.Schemas.BreakdownStructureEntity;
+    }
+  }
+  namespace GetWbsElement {
+    namespace Responses {
+      export type $200 = Components.Schemas.BreakdownStructureEntity;
+    }
+  }
+  namespace GetWorkPackage {
+    namespace Responses {
+      export type $200 = Components.Schemas.WorkpackageEntity;
+    }
+  }
+  namespace ListMyMemberships {
+    namespace Responses {
+      export type $200 = {
+      }[];
+    }
+  }
+  namespace ListMyOrganisations {
+    namespace Responses {
+      export type $200 = Components.Schemas.OrganisationEntity[];
+    }
+  }
+  namespace ListMyProjects {
+    namespace Responses {
+      export type $200 = Components.Schemas.ProjectEntity[];
+    }
+  }
+  namespace ListOrganisationProjects {
+    namespace Responses {
+      export type $200 = Components.Schemas.ProjectEntity[];
+    }
+  }
+  namespace ListOrganisationRisks {
+    namespace Responses {
+      export type $200 = Components.Schemas.RiskEntity[];
     }
   }
   namespace ListOrganisations {
@@ -933,34 +983,9 @@ declare namespace Paths {
       export type $200 = Components.Schemas.IssueEntity[];
     }
   }
-  namespace ListProjectObs {
-    namespace Responses {
-      export type $200 = Components.Schemas.BreakdownStructureEntity;
-    }
-  }
-  namespace ListProjectRam {
-    namespace Responses {
-      export type $200 = Components.Schemas.RamEntity;
-    }
-  }
-  namespace ListProjectRbs {
-    namespace Responses {
-      export type $200 = Components.Schemas.BreakdownStructureEntity;
-    }
-  }
   namespace ListProjectRisks {
     namespace Responses {
       export type $200 = Components.Schemas.RiskEntity[];
-    }
-  }
-  namespace ListProjectWbs {
-    namespace Responses {
-      export type $200 = Components.Schemas.BreakdownStructureEntity;
-    }
-  }
-  namespace ListProjects {
-    namespace Responses {
-      export type $200 = Components.Schemas.ProjectEntity[];
     }
   }
   namespace ListWorkPackages {
@@ -968,32 +993,22 @@ declare namespace Paths {
       export type $200 = Components.Schemas.WorkpackageEntity[];
     }
   }
-  namespace MoveProjectObsElement {
+  namespace MoveElement {
     export type RequestBody = Components.Schemas.MoveBreakdownStructureElementDto;
     namespace Responses {
       export type $200 = Components.Schemas.BreakdownStructureEntity;
     }
   }
-  namespace MoveProjectRbsElement {
+  namespace MoveObsElement {
     export type RequestBody = Components.Schemas.MoveBreakdownStructureElementDto;
     namespace Responses {
       export type $200 = Components.Schemas.BreakdownStructureEntity;
     }
   }
-  namespace MoveProjectWbsElement {
+  namespace MoveWbsElement {
     export type RequestBody = Components.Schemas.MoveBreakdownStructureElementDto;
     namespace Responses {
       export type $200 = Components.Schemas.BreakdownStructureEntity;
-    }
-  }
-  namespace Organisations$OrganisationIdProjects {
-    namespace Parameters {
-      export interface Filter {
-        organisation_id?: string; // uuid
-      }
-    }
-    export interface QueryParameters {
-      filter?: Parameters.Filter;
     }
   }
   namespace Organisations$OrganisationIdProjectsProjectIdAssumptionsDashboard {
@@ -1018,49 +1033,49 @@ declare namespace Paths {
       export type $200 = Components.Schemas.InvitationEntity;
     }
   }
-  namespace UpdateProjectAssumption {
+  namespace UpdateAssumption {
     export type RequestBody = Components.Schemas.UpdateAssumptionDto;
     namespace Responses {
       export type $200 = Components.Schemas.AssumptionEntity;
     }
   }
-  namespace UpdateProjectDependency {
+  namespace UpdateDependency {
     export type RequestBody = Components.Schemas.UpdateDependencyDto;
     namespace Responses {
       export type $200 = Components.Schemas.DependencyEntity;
     }
   }
-  namespace UpdateProjectIssue {
+  namespace UpdateIssue {
     export type RequestBody = Components.Schemas.UpdateIssueDto;
     namespace Responses {
       export type $200 = Components.Schemas.IssueEntity;
     }
   }
-  namespace UpdateProjectObsElement {
+  namespace UpdateObsElement {
     export type RequestBody = Components.Schemas.UpdateBreakdownStructureElementDto;
     namespace Responses {
       export type $200 = Components.Schemas.BreakdownStructureEntity;
     }
   }
-  namespace UpdateProjectRamAssignment {
+  namespace UpdateRamAssignment {
     export type RequestBody = Components.Schemas.UpdateRamAssignmentDto;
     namespace Responses {
       export type $200 = Components.Schemas.RamAssignmentEntity;
     }
   }
-  namespace UpdateProjectRbsElement {
+  namespace UpdateRbsElement {
     export type RequestBody = Components.Schemas.UpdateBreakdownStructureElementDto;
     namespace Responses {
       export type $200 = Components.Schemas.BreakdownStructureEntity;
     }
   }
-  namespace UpdateProjectRisk {
+  namespace UpdateRisk {
     export type RequestBody = Components.Schemas.UpdateRiskDto;
     namespace Responses {
       export type $200 = Components.Schemas.RiskEntity;
     }
   }
-  namespace UpdateProjectWbsElement {
+  namespace UpdateWbsElement {
     export type RequestBody = Components.Schemas.UpdateBreakdownStructureElementDto;
     namespace Responses {
       export type $200 = Components.Schemas.BreakdownStructureEntity;
@@ -1084,45 +1099,37 @@ export interface OperationMethods {
     config?: AxiosRequestConfig  
   ): OperationResponse<Paths.ListProjectAssumptions.Responses.$200>
   /**
-   * GetProjectAssumptionsDashboard
+   * getProjectAssumptionDashboard
    */
-  'GetProjectAssumptionsDashboard'(
+  'getProjectAssumptionDashboard'(
     parameters?: Parameters<UnknownParamsObject> | null,
     data?: any,
     config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.GetProjectAssumptionsDashboard.Responses.$200>
+  ): OperationResponse<Paths.GetProjectAssumptionDashboard.Responses.$200>
   /**
-   * createProjectAssumption
+   * addAssumption
    */
-  'createProjectAssumption'(
+  'addAssumption'(
     parameters?: Parameters<UnknownParamsObject> | null,
-    data?: Paths.CreateProjectAssumption.RequestBody,
+    data?: Paths.AddAssumption.RequestBody,
     config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.CreateProjectAssumption.Responses.$201>
+  ): OperationResponse<Paths.AddAssumption.Responses.$201>
   /**
-   * getProjectAssumptionById
+   * getAssumption
    */
-  'getProjectAssumptionById'(
-    parameters?: Parameters<UnknownParamsObject> | null,
-    data?: any,
-    config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.GetProjectAssumptionById.Responses.$200>
-  /**
-   * updateProjectAssumption
-   */
-  'updateProjectAssumption'(
-    parameters?: Parameters<UnknownParamsObject> | null,
-    data?: Paths.UpdateProjectAssumption.RequestBody,
-    config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.UpdateProjectAssumption.Responses.$200>
-  /**
-   * GetUserDashboard
-   */
-  'GetUserDashboard'(
+  'getAssumption'(
     parameters?: Parameters<UnknownParamsObject> | null,
     data?: any,
     config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.GetUserDashboard.Responses.$200>
+  ): OperationResponse<Paths.GetAssumption.Responses.$200>
+  /**
+   * updateAssumption
+   */
+  'updateAssumption'(
+    parameters?: Parameters<UnknownParamsObject> | null,
+    data?: Paths.UpdateAssumption.RequestBody,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.UpdateAssumption.Responses.$200>
   /**
    * listProjectDependencies
    */
@@ -1132,37 +1139,37 @@ export interface OperationMethods {
     config?: AxiosRequestConfig  
   ): OperationResponse<Paths.ListProjectDependencies.Responses.$200>
   /**
-   * GetProjectDependencyDashboard
+   * getProjectDependencyDashboard
    */
-  'GetProjectDependencyDashboard'(
+  'getProjectDependencyDashboard'(
     parameters?: Parameters<UnknownParamsObject> | null,
     data?: any,
     config?: AxiosRequestConfig  
   ): OperationResponse<Paths.GetProjectDependencyDashboard.Responses.$200>
   /**
-   * createProjectDependency
+   * addDependency
    */
-  'createProjectDependency'(
+  'addDependency'(
     parameters?: Parameters<UnknownParamsObject> | null,
-    data?: Paths.CreateProjectDependency.RequestBody,
+    data?: Paths.AddDependency.RequestBody,
     config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.CreateProjectDependency.Responses.$201>
+  ): OperationResponse<Paths.AddDependency.Responses.$201>
   /**
-   * getProjectDependencyById
+   * getDependency
    */
-  'getProjectDependencyById'(
+  'getDependency'(
     parameters?: Parameters<UnknownParamsObject> | null,
     data?: any,
     config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.GetProjectDependencyById.Responses.$200>
+  ): OperationResponse<Paths.GetDependency.Responses.$200>
   /**
-   * updateProjectDependency
+   * updateDependency
    */
-  'updateProjectDependency'(
+  'updateDependency'(
     parameters?: Parameters<UnknownParamsObject> | null,
-    data?: Paths.UpdateProjectDependency.RequestBody,
+    data?: Paths.UpdateDependency.RequestBody,
     config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.UpdateProjectDependency.Responses.$200>
+  ): OperationResponse<Paths.UpdateDependency.Responses.$200>
   /**
    * listProjectIssues
    */
@@ -1172,93 +1179,93 @@ export interface OperationMethods {
     config?: AxiosRequestConfig  
   ): OperationResponse<Paths.ListProjectIssues.Responses.$200>
   /**
-   * GetProjectIssueDashboard
+   * getProjectIssuesDashboard
    */
-  'GetProjectIssueDashboard'(
+  'getProjectIssuesDashboard'(
     parameters?: Parameters<UnknownParamsObject> | null,
     data?: any,
     config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.GetProjectIssueDashboard.Responses.$200>
+  ): OperationResponse<Paths.GetProjectIssuesDashboard.Responses.$200>
   /**
-   * createProjectIssue
+   * addIssue
    */
-  'createProjectIssue'(
+  'addIssue'(
     parameters?: Parameters<UnknownParamsObject> | null,
-    data?: Paths.CreateProjectIssue.RequestBody,
+    data?: Paths.AddIssue.RequestBody,
     config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.CreateProjectIssue.Responses.$201>
+  ): OperationResponse<Paths.AddIssue.Responses.$201>
   /**
-   * getProjectIssueById
+   * getIssue
    */
-  'getProjectIssueById'(
-    parameters?: Parameters<UnknownParamsObject> | null,
-    data?: any,
-    config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.GetProjectIssueById.Responses.$200>
-  /**
-   * updateProjectIssue
-   */
-  'updateProjectIssue'(
-    parameters?: Parameters<UnknownParamsObject> | null,
-    data?: Paths.UpdateProjectIssue.RequestBody,
-    config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.UpdateProjectIssue.Responses.$200>
-  /**
-   * listProjectObs
-   */
-  'listProjectObs'(
+  'getIssue'(
     parameters?: Parameters<UnknownParamsObject> | null,
     data?: any,
     config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.ListProjectObs.Responses.$200>
+  ): OperationResponse<Paths.GetIssue.Responses.$200>
   /**
-   * CreateProjectObs
+   * updateIssue
    */
-  'CreateProjectObs'(
+  'updateIssue'(
     parameters?: Parameters<UnknownParamsObject> | null,
-    data?: Paths.CreateProjectObs.RequestBody,
+    data?: Paths.UpdateIssue.RequestBody,
     config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.CreateProjectObs.Responses.$201>
+  ): OperationResponse<Paths.UpdateIssue.Responses.$200>
   /**
-   * addProjectObsElement
+   * getObs
    */
-  'addProjectObsElement'(
-    parameters?: Parameters<UnknownParamsObject> | null,
-    data?: Paths.AddProjectObsElement.RequestBody,
-    config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.AddProjectObsElement.Responses.$201>
-  /**
-   * findProjectObsElement
-   */
-  'findProjectObsElement'(
+  'getObs'(
     parameters?: Parameters<UnknownParamsObject> | null,
     data?: any,
     config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.FindProjectObsElement.Responses.$200>
+  ): OperationResponse<Paths.GetObs.Responses.$200>
   /**
-   * moveProjectObsElement
+   * addObs
    */
-  'moveProjectObsElement'(
+  'addObs'(
     parameters?: Parameters<UnknownParamsObject> | null,
-    data?: Paths.MoveProjectObsElement.RequestBody,
+    data?: Paths.AddObs.RequestBody,
     config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.MoveProjectObsElement.Responses.$200>
+  ): OperationResponse<Paths.AddObs.Responses.$201>
   /**
-   * updateProjectObsElement
+   * addObsElement
    */
-  'updateProjectObsElement'(
+  'addObsElement'(
     parameters?: Parameters<UnknownParamsObject> | null,
-    data?: Paths.UpdateProjectObsElement.RequestBody,
+    data?: Paths.AddObsElement.RequestBody,
     config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.UpdateProjectObsElement.Responses.$200>
+  ): OperationResponse<Paths.AddObsElement.Responses.$201>
   /**
-   * deleteProjectObsElement
+   * getObsElement
    */
-  'deleteProjectObsElement'(
+  'getObsElement'(
     parameters?: Parameters<UnknownParamsObject> | null,
     data?: any,
     config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.DeleteProjectObsElement.Responses.$200>
+  ): OperationResponse<Paths.GetObsElement.Responses.$200>
+  /**
+   * moveObsElement
+   */
+  'moveObsElement'(
+    parameters?: Parameters<UnknownParamsObject> | null,
+    data?: Paths.MoveObsElement.RequestBody,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.MoveObsElement.Responses.$200>
+  /**
+   * updateObsElement
+   */
+  'updateObsElement'(
+    parameters?: Parameters<UnknownParamsObject> | null,
+    data?: Paths.UpdateObsElement.RequestBody,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.UpdateObsElement.Responses.$200>
+  /**
+   * deleteObsElement
+   */
+  'deleteObsElement'(
+    parameters?: Parameters<UnknownParamsObject> | null,
+    data?: any,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.DeleteObsElement.Responses.$200>
   /**
    * ListOrganisations
    */
@@ -1268,37 +1275,37 @@ export interface OperationMethods {
     config?: AxiosRequestConfig  
   ): OperationResponse<Paths.ListOrganisations.Responses.$200>
   /**
-   * FindOrganisationById
+   * getOrganisation
    */
-  'FindOrganisationById'(
+  'getOrganisation'(
     parameters?: Parameters<UnknownParamsObject> | null,
     data?: any,
     config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.FindOrganisationById.Responses.$200>
+  ): OperationResponse<Paths.GetOrganisation.Responses.$200>
   /**
-   * listProjects
+   * listOrganisationProjects
    */
-  'listProjects'(
+  'listOrganisationProjects'(
     parameters?: Parameters<UnknownParamsObject> | null,
     data?: any,
     config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.ListProjects.Responses.$200>
+  ): OperationResponse<Paths.ListOrganisationProjects.Responses.$200>
   /**
-   * createProject
+   * addProject
    */
-  'createProject'(
+  'addProject'(
     parameters?: Parameters<UnknownParamsObject> | null,
-    data?: Paths.CreateProject.RequestBody,
+    data?: Paths.AddProject.RequestBody,
     config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.CreateProject.Responses.$201>
+  ): OperationResponse<Paths.AddProject.Responses.$201>
   /**
-   * getProjectById
+   * getProject
    */
-  'getProjectById'(
+  'getProject'(
     parameters?: Parameters<UnknownParamsObject> | null,
     data?: any,
     config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.GetProjectById.Responses.$200>
+  ): OperationResponse<Paths.GetProject.Responses.$200>
   /**
    * getProjectDashboard
    */
@@ -1308,101 +1315,117 @@ export interface OperationMethods {
     config?: AxiosRequestConfig  
   ): OperationResponse<Paths.GetProjectDashboard.Responses.$200>
   /**
-   * listProjectRam
+   * getRam
    */
-  'listProjectRam'(
+  'getRam'(
     parameters?: Parameters<UnknownParamsObject> | null,
     data?: any,
     config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.ListProjectRam.Responses.$200>
+  ): OperationResponse<Paths.GetRam.Responses.$200>
   /**
-   * createProjectRam
+   * addRam
    */
-  'createProjectRam'(
+  'addRam'(
     parameters?: Parameters<UnknownParamsObject> | null,
-    data?: Paths.CreateProjectRam.RequestBody,
+    data?: Paths.AddRam.RequestBody,
     config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.CreateProjectRam.Responses.$201>
+  ): OperationResponse<Paths.AddRam.Responses.$201>
   /**
-   * addProjectRamAssignment
+   * addRamAssignment
    */
-  'addProjectRamAssignment'(
+  'addRamAssignment'(
     parameters?: Parameters<UnknownParamsObject> | null,
-    data?: Paths.AddProjectRamAssignment.RequestBody,
+    data?: Paths.AddRamAssignment.RequestBody,
     config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.AddProjectRamAssignment.Responses.$201>
+  ): OperationResponse<Paths.AddRamAssignment.Responses.$201>
   /**
-   * updateProjectRamAssignment
+   * updateRamAssignment
    */
-  'updateProjectRamAssignment'(
+  'updateRamAssignment'(
     parameters?: Parameters<UnknownParamsObject> | null,
-    data?: Paths.UpdateProjectRamAssignment.RequestBody,
+    data?: Paths.UpdateRamAssignment.RequestBody,
     config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.UpdateProjectRamAssignment.Responses.$200>
+  ): OperationResponse<Paths.UpdateRamAssignment.Responses.$200>
   /**
-   * deleteProjectRamAssignment
+   * deleteRamAssignments
    */
-  'deleteProjectRamAssignment'(
+  'deleteRamAssignments'(
     parameters?: Parameters<UnknownParamsObject> | null,
     data?: any,
     config?: AxiosRequestConfig  
   ): OperationResponse<any>
   /**
-   * listProjectRbs
+   * getRbs
    */
-  'listProjectRbs'(
+  'getRbs'(
     parameters?: Parameters<UnknownParamsObject> | null,
     data?: any,
     config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.ListProjectRbs.Responses.$200>
+  ): OperationResponse<Paths.GetRbs.Responses.$200>
   /**
-   * createProjectRbs
+   * addRbs
    */
-  'createProjectRbs'(
+  'addRbs'(
     parameters?: Parameters<UnknownParamsObject> | null,
-    data?: Paths.CreateProjectRbs.RequestBody,
+    data?: Paths.AddRbs.RequestBody,
     config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.CreateProjectRbs.Responses.$201>
+  ): OperationResponse<Paths.AddRbs.Responses.$201>
   /**
-   * addProjectRbsElement
+   * addRbsElement
    */
-  'addProjectRbsElement'(
+  'addRbsElement'(
     parameters?: Parameters<UnknownParamsObject> | null,
-    data?: Paths.AddProjectRbsElement.RequestBody,
+    data?: Paths.AddRbsElement.RequestBody,
     config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.AddProjectRbsElement.Responses.$201>
+  ): OperationResponse<Paths.AddRbsElement.Responses.$201>
   /**
-   * findProjectRbsElement
+   * getRbsElement
    */
-  'findProjectRbsElement'(
-    parameters?: Parameters<UnknownParamsObject> | null,
-    data?: any,
-    config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.FindProjectRbsElement.Responses.$200>
-  /**
-   * moveProjectRbsElement
-   */
-  'moveProjectRbsElement'(
-    parameters?: Parameters<UnknownParamsObject> | null,
-    data?: Paths.MoveProjectRbsElement.RequestBody,
-    config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.MoveProjectRbsElement.Responses.$200>
-  /**
-   * updateProjectRbsElement
-   */
-  'updateProjectRbsElement'(
-    parameters?: Parameters<UnknownParamsObject> | null,
-    data?: Paths.UpdateProjectRbsElement.RequestBody,
-    config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.UpdateProjectRbsElement.Responses.$200>
-  /**
-   * deleteProjectRbsElement
-   */
-  'deleteProjectRbsElement'(
+  'getRbsElement'(
     parameters?: Parameters<UnknownParamsObject> | null,
     data?: any,
     config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.DeleteProjectRbsElement.Responses.$200>
+  ): OperationResponse<Paths.GetRbsElement.Responses.$200>
+  /**
+   * moveElement
+   */
+  'moveElement'(
+    parameters?: Parameters<UnknownParamsObject> | null,
+    data?: Paths.MoveElement.RequestBody,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.MoveElement.Responses.$200>
+  /**
+   * updateRbsElement
+   */
+  'updateRbsElement'(
+    parameters?: Parameters<UnknownParamsObject> | null,
+    data?: Paths.UpdateRbsElement.RequestBody,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.UpdateRbsElement.Responses.$200>
+  /**
+   * deleteRbsElement
+   */
+  'deleteRbsElement'(
+    parameters?: Parameters<UnknownParamsObject> | null,
+    data?: any,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.DeleteRbsElement.Responses.$200>
+  /**
+   * listOrganisationRisks
+   */
+  'listOrganisationRisks'(
+    parameters?: Parameters<UnknownParamsObject> | null,
+    data?: any,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.ListOrganisationRisks.Responses.$200>
+  /**
+   * getOrganisationRiskDashboard
+   */
+  'getOrganisationRiskDashboard'(
+    parameters?: Parameters<UnknownParamsObject> | null,
+    data?: any,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.GetOrganisationRiskDashboard.Responses.$200>
   /**
    * listProjectRisks
    */
@@ -1412,157 +1435,189 @@ export interface OperationMethods {
     config?: AxiosRequestConfig  
   ): OperationResponse<Paths.ListProjectRisks.Responses.$200>
   /**
-   * GetRiskDashboardByProject
+   * getProjectRiskDashboard
    */
-  'GetRiskDashboardByProject'(
+  'getProjectRiskDashboard'(
     parameters?: Parameters<UnknownParamsObject> | null,
     data?: any,
     config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.GetRiskDashboardByProject.Responses.$200>
+  ): OperationResponse<Paths.GetProjectRiskDashboard.Responses.$200>
   /**
-   * createProjectRisk
+   * addRisk
    */
-  'createProjectRisk'(
+  'addRisk'(
     parameters?: Parameters<UnknownParamsObject> | null,
-    data?: Paths.CreateProjectRisk.RequestBody,
+    data?: Paths.AddRisk.RequestBody,
     config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.CreateProjectRisk.Responses.$201>
+  ): OperationResponse<Paths.AddRisk.Responses.$201>
   /**
-   * getProjectRiskById
+   * getRisk
    */
-  'getProjectRiskById'(
-    parameters?: Parameters<UnknownParamsObject> | null,
-    data?: any,
-    config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.GetProjectRiskById.Responses.$200>
-  /**
-   * updateProjectRisk
-   */
-  'updateProjectRisk'(
-    parameters?: Parameters<UnknownParamsObject> | null,
-    data?: Paths.UpdateProjectRisk.RequestBody,
-    config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.UpdateProjectRisk.Responses.$200>
-  /**
-   * listProjectWbs
-   */
-  'listProjectWbs'(
+  'getRisk'(
     parameters?: Parameters<UnknownParamsObject> | null,
     data?: any,
     config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.ListProjectWbs.Responses.$200>
+  ): OperationResponse<Paths.GetRisk.Responses.$200>
   /**
-   * createProjectWbs
+   * updateRisk
    */
-  'createProjectWbs'(
+  'updateRisk'(
     parameters?: Parameters<UnknownParamsObject> | null,
-    data?: Paths.CreateProjectWbs.RequestBody,
+    data?: Paths.UpdateRisk.RequestBody,
     config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.CreateProjectWbs.Responses.$201>
+  ): OperationResponse<Paths.UpdateRisk.Responses.$200>
   /**
-   * addProjectWbsElement
+   * getWbs
    */
-  'addProjectWbsElement'(
-    parameters?: Parameters<UnknownParamsObject> | null,
-    data?: Paths.AddProjectWbsElement.RequestBody,
-    config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.AddProjectWbsElement.Responses.$201>
-  /**
-   * findProjectWbsElement
-   */
-  'findProjectWbsElement'(
+  'getWbs'(
     parameters?: Parameters<UnknownParamsObject> | null,
     data?: any,
     config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.FindProjectWbsElement.Responses.$200>
+  ): OperationResponse<Paths.GetWbs.Responses.$200>
   /**
-   * moveProjectWbsElement
+   * addWbs
    */
-  'moveProjectWbsElement'(
+  'addWbs'(
     parameters?: Parameters<UnknownParamsObject> | null,
-    data?: Paths.MoveProjectWbsElement.RequestBody,
+    data?: Paths.AddWbs.RequestBody,
     config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.MoveProjectWbsElement.Responses.$200>
+  ): OperationResponse<Paths.AddWbs.Responses.$201>
   /**
-   * updateProjectWbsElement
+   * addWbsElement
    */
-  'updateProjectWbsElement'(
+  'addWbsElement'(
     parameters?: Parameters<UnknownParamsObject> | null,
-    data?: Paths.UpdateProjectWbsElement.RequestBody,
+    data?: Paths.AddWbsElement.RequestBody,
     config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.UpdateProjectWbsElement.Responses.$200>
+  ): OperationResponse<Paths.AddWbsElement.Responses.$201>
   /**
-   * deleteProjectWbsElement
+   * getWbsElement
    */
-  'deleteProjectWbsElement'(
+  'getWbsElement'(
     parameters?: Parameters<UnknownParamsObject> | null,
     data?: any,
     config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.DeleteProjectWbsElement.Responses.$204>
+  ): OperationResponse<Paths.GetWbsElement.Responses.$200>
   /**
-   * ListWorkPackages
+   * moveWbsElement
    */
-  'ListWorkPackages'(
+  'moveWbsElement'(
+    parameters?: Parameters<UnknownParamsObject> | null,
+    data?: Paths.MoveWbsElement.RequestBody,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.MoveWbsElement.Responses.$200>
+  /**
+   * updateWbsElement
+   */
+  'updateWbsElement'(
+    parameters?: Parameters<UnknownParamsObject> | null,
+    data?: Paths.UpdateWbsElement.RequestBody,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.UpdateWbsElement.Responses.$200>
+  /**
+   * deleteWbsElement
+   */
+  'deleteWbsElement'(
+    parameters?: Parameters<UnknownParamsObject> | null,
+    data?: any,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.DeleteWbsElement.Responses.$204>
+  /**
+   * listWorkPackages
+   */
+  'listWorkPackages'(
     parameters?: Parameters<UnknownParamsObject> | null,
     data?: any,
     config?: AxiosRequestConfig  
   ): OperationResponse<Paths.ListWorkPackages.Responses.$200>
   /**
-   * AddWorkPackage
+   * addProjectWorkPackage
    */
-  'AddWorkPackage'(
+  'addProjectWorkPackage'(
     parameters?: Parameters<UnknownParamsObject> | null,
-    data?: Paths.AddWorkPackage.RequestBody,
+    data?: Paths.AddProjectWorkPackage.RequestBody,
     config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.AddWorkPackage.Responses.$200>
+  ): OperationResponse<Paths.AddProjectWorkPackage.Responses.$200>
   /**
-   * FindWorkPackageById
+   * getWorkPackage
    */
-  'FindWorkPackageById'(
+  'getWorkPackage'(
     parameters?: Parameters<UnknownParamsObject> | null,
     data?: any,
     config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.FindWorkPackageById.Responses.$200>
+  ): OperationResponse<Paths.GetWorkPackage.Responses.$200>
   /**
-   * UpdateWorkPackage
+   * updateWorkPackage
    */
-  'UpdateWorkPackage'(
+  'updateWorkPackage'(
     parameters?: Parameters<UnknownParamsObject> | null,
     data?: Paths.UpdateWorkPackage.RequestBody,
     config?: AxiosRequestConfig  
   ): OperationResponse<Paths.UpdateWorkPackage.Responses.$200>
   /**
-   * MarkWorkPackageAsDeleted
+   * deleteWorkPackage
    */
-  'MarkWorkPackageAsDeleted'(
+  'deleteWorkPackage'(
     parameters?: Parameters<UnknownParamsObject> | null,
     data?: any,
     config?: AxiosRequestConfig  
   ): OperationResponse<any>
   /**
-   * AddInvitation
+   * addInvitation
    */
-  'AddInvitation'(
+  'addInvitation'(
     parameters?: Parameters<UnknownParamsObject> | null,
     data?: Paths.AddInvitation.RequestBody,
     config?: AxiosRequestConfig  
   ): OperationResponse<Paths.AddInvitation.Responses.$201>
   /**
-   * AcceptInvitation
+   * acceptInvitation
    */
-  'AcceptInvitation'(
+  'acceptInvitation'(
     parameters?: Parameters<UnknownParamsObject> | null,
     data?: Paths.AcceptInvitation.RequestBody,
     config?: AxiosRequestConfig  
   ): OperationResponse<Paths.AcceptInvitation.Responses.$200>
   /**
-   * RejectInvitation
+   * rejectInvitation
    */
-  'RejectInvitation'(
+  'rejectInvitation'(
     parameters?: Parameters<UnknownParamsObject> | null,
     data?: Paths.RejectInvitation.RequestBody,
     config?: AxiosRequestConfig  
   ): OperationResponse<Paths.RejectInvitation.Responses.$200>
+  /**
+   * getMyDashboard
+   */
+  'getMyDashboard'(
+    parameters?: Parameters<UnknownParamsObject> | null,
+    data?: any,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.GetMyDashboard.Responses.$200>
+  /**
+   * listMyProjects
+   */
+  'listMyProjects'(
+    parameters?: Parameters<UnknownParamsObject> | null,
+    data?: any,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.ListMyProjects.Responses.$200>
+  /**
+   * listMyOrganisations
+   */
+  'listMyOrganisations'(
+    parameters?: Parameters<UnknownParamsObject> | null,
+    data?: any,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.ListMyOrganisations.Responses.$200>
+  /**
+   * listMyMemberships
+   */
+  'listMyMemberships'(
+    parameters?: Parameters<UnknownParamsObject> | null,
+    data?: any,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.ListMyMemberships.Responses.$200>
 }
 
 export interface PathsDictionary {
@@ -1578,53 +1633,43 @@ export interface PathsDictionary {
   }
   ['/organisations/{organisation_id}/projects/{project_id}/assumptions/dashboard']: {
     /**
-     * GetProjectAssumptionsDashboard
+     * getProjectAssumptionDashboard
      */
     'get'(
       parameters?: Parameters<UnknownParamsObject> | null,
       data?: any,
       config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.GetProjectAssumptionsDashboard.Responses.$200>
+    ): OperationResponse<Paths.GetProjectAssumptionDashboard.Responses.$200>
   }
   ['/organisations/{organisation_id}/projects/{project_id}/assumptions/add']: {
     /**
-     * createProjectAssumption
+     * addAssumption
      */
     'post'(
       parameters?: Parameters<UnknownParamsObject> | null,
-      data?: Paths.CreateProjectAssumption.RequestBody,
+      data?: Paths.AddAssumption.RequestBody,
       config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.CreateProjectAssumption.Responses.$201>
+    ): OperationResponse<Paths.AddAssumption.Responses.$201>
   }
   ['/organisations/{organisation_id}/projects/{project_id}/assumptions/{assumption_id}']: {
     /**
-     * getProjectAssumptionById
+     * getAssumption
      */
     'get'(
       parameters?: Parameters<UnknownParamsObject> | null,
       data?: any,
       config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.GetProjectAssumptionById.Responses.$200>
+    ): OperationResponse<Paths.GetAssumption.Responses.$200>
   }
   ['/organisations/{organisation_id}/projects/{project_id}/assumptions/{assumption_id}/update']: {
     /**
-     * updateProjectAssumption
+     * updateAssumption
      */
     'post'(
       parameters?: Parameters<UnknownParamsObject> | null,
-      data?: Paths.UpdateProjectAssumption.RequestBody,
+      data?: Paths.UpdateAssumption.RequestBody,
       config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.UpdateProjectAssumption.Responses.$200>
-  }
-  ['/dashboard']: {
-    /**
-     * GetUserDashboard
-     */
-    'get'(
-      parameters?: Parameters<UnknownParamsObject> | null,
-      data?: any,
-      config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.GetUserDashboard.Responses.$200>
+    ): OperationResponse<Paths.UpdateAssumption.Responses.$200>
   }
   ['/organisations/{organisation_id}/projects/{project_id}/dependencies']: {
     /**
@@ -1638,7 +1683,7 @@ export interface PathsDictionary {
   }
   ['/organisations/{organisation_id}/projects/{project_id}/dependencies/dashboard']: {
     /**
-     * GetProjectDependencyDashboard
+     * getProjectDependencyDashboard
      */
     'get'(
       parameters?: Parameters<UnknownParamsObject> | null,
@@ -1648,33 +1693,33 @@ export interface PathsDictionary {
   }
   ['/organisations/{organisation_id}/projects/{project_id}/dependencies/add']: {
     /**
-     * createProjectDependency
+     * addDependency
      */
     'post'(
       parameters?: Parameters<UnknownParamsObject> | null,
-      data?: Paths.CreateProjectDependency.RequestBody,
+      data?: Paths.AddDependency.RequestBody,
       config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.CreateProjectDependency.Responses.$201>
+    ): OperationResponse<Paths.AddDependency.Responses.$201>
   }
   ['/organisations/{organisation_id}/projects/{project_id}/dependencies/{dependency_id}']: {
     /**
-     * getProjectDependencyById
+     * getDependency
      */
     'get'(
       parameters?: Parameters<UnknownParamsObject> | null,
       data?: any,
       config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.GetProjectDependencyById.Responses.$200>
+    ): OperationResponse<Paths.GetDependency.Responses.$200>
   }
   ['/organisations/{organisation_id}/projects/{project_id}/dependencies/{dependency_id}/update']: {
     /**
-     * updateProjectDependency
+     * updateDependency
      */
     'post'(
       parameters?: Parameters<UnknownParamsObject> | null,
-      data?: Paths.UpdateProjectDependency.RequestBody,
+      data?: Paths.UpdateDependency.RequestBody,
       config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.UpdateProjectDependency.Responses.$200>
+    ): OperationResponse<Paths.UpdateDependency.Responses.$200>
   }
   ['/organisations/{organisation_id}/projects/{project_id}/issues']: {
     /**
@@ -1688,113 +1733,113 @@ export interface PathsDictionary {
   }
   ['/organisations/{organisation_id}/projects/{project_id}/issues/dashboard']: {
     /**
-     * GetProjectIssueDashboard
+     * getProjectIssuesDashboard
      */
     'get'(
       parameters?: Parameters<UnknownParamsObject> | null,
       data?: any,
       config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.GetProjectIssueDashboard.Responses.$200>
+    ): OperationResponse<Paths.GetProjectIssuesDashboard.Responses.$200>
   }
   ['/organisations/{organisation_id}/projects/{project_id}/issues/add']: {
     /**
-     * createProjectIssue
+     * addIssue
      */
     'post'(
       parameters?: Parameters<UnknownParamsObject> | null,
-      data?: Paths.CreateProjectIssue.RequestBody,
+      data?: Paths.AddIssue.RequestBody,
       config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.CreateProjectIssue.Responses.$201>
+    ): OperationResponse<Paths.AddIssue.Responses.$201>
   }
   ['/organisations/{organisation_id}/projects/{project_id}/issue/{issue_id}']: {
     /**
-     * getProjectIssueById
+     * getIssue
      */
     'get'(
       parameters?: Parameters<UnknownParamsObject> | null,
       data?: any,
       config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.GetProjectIssueById.Responses.$200>
+    ): OperationResponse<Paths.GetIssue.Responses.$200>
   }
   ['/organisations/{organisation_id}/projects/{project_id}/issues/{issue_id}/update']: {
     /**
-     * updateProjectIssue
+     * updateIssue
      */
     'post'(
       parameters?: Parameters<UnknownParamsObject> | null,
-      data?: Paths.UpdateProjectIssue.RequestBody,
+      data?: Paths.UpdateIssue.RequestBody,
       config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.UpdateProjectIssue.Responses.$200>
+    ): OperationResponse<Paths.UpdateIssue.Responses.$200>
   }
   ['/organisations/{organisation_id}/projects/{project_id}/obs']: {
     /**
-     * listProjectObs
+     * getObs
      */
     'get'(
       parameters?: Parameters<UnknownParamsObject> | null,
       data?: any,
       config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.ListProjectObs.Responses.$200>
-  }
-  ['/organisations/{organisation_id}/projects/{project_id}/obs/create']: {
-    /**
-     * CreateProjectObs
-     */
-    'post'(
-      parameters?: Parameters<UnknownParamsObject> | null,
-      data?: Paths.CreateProjectObs.RequestBody,
-      config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.CreateProjectObs.Responses.$201>
+    ): OperationResponse<Paths.GetObs.Responses.$200>
   }
   ['/organisations/{organisation_id}/projects/{project_id}/obs/add']: {
     /**
-     * addProjectObsElement
+     * addObs
      */
     'post'(
       parameters?: Parameters<UnknownParamsObject> | null,
-      data?: Paths.AddProjectObsElement.RequestBody,
+      data?: Paths.AddObs.RequestBody,
       config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.AddProjectObsElement.Responses.$201>
+    ): OperationResponse<Paths.AddObs.Responses.$201>
   }
-  ['/organisations/{organisation_id}/projects/{project_id}/obs/{element_id}']: {
+  ['/organisations/{organisation_id}/projects/{project_id}/obs/elements/add']: {
     /**
-     * findProjectObsElement
+     * addObsElement
+     */
+    'post'(
+      parameters?: Parameters<UnknownParamsObject> | null,
+      data?: Paths.AddObsElement.RequestBody,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.AddObsElement.Responses.$201>
+  }
+  ['/organisations/{organisation_id}/projects/{project_id}/obs/elements/{element_id}']: {
+    /**
+     * getObsElement
      */
     'get'(
       parameters?: Parameters<UnknownParamsObject> | null,
       data?: any,
       config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.FindProjectObsElement.Responses.$200>
+    ): OperationResponse<Paths.GetObsElement.Responses.$200>
   }
-  ['/organisations/{organisation_id}/projects/{project_id}/obs/{element_id}/move']: {
+  ['/organisations/{organisation_id}/projects/{project_id}/obs/elements/{element_id}/move']: {
     /**
-     * moveProjectObsElement
+     * moveObsElement
      */
     'post'(
       parameters?: Parameters<UnknownParamsObject> | null,
-      data?: Paths.MoveProjectObsElement.RequestBody,
+      data?: Paths.MoveObsElement.RequestBody,
       config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.MoveProjectObsElement.Responses.$200>
+    ): OperationResponse<Paths.MoveObsElement.Responses.$200>
   }
-  ['/organisations/{organisation_id}/projects/{project_id}/obs/{element_id}/update']: {
+  ['/organisations/{organisation_id}/projects/{project_id}/obs/elements/{element_id}/update']: {
     /**
-     * updateProjectObsElement
+     * updateObsElement
      */
     'post'(
       parameters?: Parameters<UnknownParamsObject> | null,
-      data?: Paths.UpdateProjectObsElement.RequestBody,
+      data?: Paths.UpdateObsElement.RequestBody,
       config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.UpdateProjectObsElement.Responses.$200>
+    ): OperationResponse<Paths.UpdateObsElement.Responses.$200>
   }
-  ['/organisations/{organisation_id}/projects/{project_id}/obs/{element_id}/delete']: {
+  ['/organisations/{organisation_id}/projects/{project_id}/obs/elements/{element_id}/delete']: {
     /**
-     * deleteProjectObsElement
+     * deleteObsElement
      */
     'post'(
       parameters?: Parameters<UnknownParamsObject> | null,
       data?: any,
       config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.DeleteProjectObsElement.Responses.$200>
+    ): OperationResponse<Paths.DeleteObsElement.Responses.$200>
   }
   ['/organisations']: {
     /**
@@ -1808,43 +1853,43 @@ export interface PathsDictionary {
   }
   ['/organisations/{organisation_id}']: {
     /**
-     * FindOrganisationById
+     * getOrganisation
      */
     'get'(
       parameters?: Parameters<UnknownParamsObject> | null,
       data?: any,
       config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.FindOrganisationById.Responses.$200>
+    ): OperationResponse<Paths.GetOrganisation.Responses.$200>
   }
   ['/organisations/{organisation_id}/projects']: {
     /**
-     * listProjects
+     * listOrganisationProjects
      */
     'get'(
       parameters?: Parameters<UnknownParamsObject> | null,
       data?: any,
       config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.ListProjects.Responses.$200>
+    ): OperationResponse<Paths.ListOrganisationProjects.Responses.$200>
   }
-  ['/organisations/{organisation_id}/projects/create']: {
+  ['/organisations/{organisation_id}/projects/add']: {
     /**
-     * createProject
+     * addProject
      */
     'post'(
       parameters?: Parameters<UnknownParamsObject> | null,
-      data?: Paths.CreateProject.RequestBody,
+      data?: Paths.AddProject.RequestBody,
       config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.CreateProject.Responses.$201>
+    ): OperationResponse<Paths.AddProject.Responses.$201>
   }
   ['/organisations/{organisation_id}/projects/{project_id}']: {
     /**
-     * getProjectById
+     * getProject
      */
     'get'(
       parameters?: Parameters<UnknownParamsObject> | null,
       data?: any,
       config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.GetProjectById.Responses.$200>
+    ): OperationResponse<Paths.GetProject.Responses.$200>
   }
   ['/organisations/{organisation_id}/projects/{project_id}/dashboard']: {
     /**
@@ -1858,47 +1903,47 @@ export interface PathsDictionary {
   }
   ['/organisations/{organisation_id}/projects/{project_id}/ram']: {
     /**
-     * listProjectRam
+     * getRam
      */
     'get'(
       parameters?: Parameters<UnknownParamsObject> | null,
       data?: any,
       config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.ListProjectRam.Responses.$200>
-  }
-  ['/organisations/{organisation_id}/projects/{project_id}/ram/create']: {
-    /**
-     * createProjectRam
-     */
-    'post'(
-      parameters?: Parameters<UnknownParamsObject> | null,
-      data?: Paths.CreateProjectRam.RequestBody,
-      config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.CreateProjectRam.Responses.$201>
+    ): OperationResponse<Paths.GetRam.Responses.$200>
   }
   ['/organisations/{organisation_id}/projects/{project_id}/ram/add']: {
     /**
-     * addProjectRamAssignment
+     * addRam
      */
     'post'(
       parameters?: Parameters<UnknownParamsObject> | null,
-      data?: Paths.AddProjectRamAssignment.RequestBody,
+      data?: Paths.AddRam.RequestBody,
       config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.AddProjectRamAssignment.Responses.$201>
+    ): OperationResponse<Paths.AddRam.Responses.$201>
   }
-  ['/organisations/{organisation_id}/projects/{project_id}/ram/{assignment_id}/update']: {
+  ['/organisations/{organisation_id}/projects/{project_id}/ram/assignments/add']: {
     /**
-     * updateProjectRamAssignment
+     * addRamAssignment
      */
     'post'(
       parameters?: Parameters<UnknownParamsObject> | null,
-      data?: Paths.UpdateProjectRamAssignment.RequestBody,
+      data?: Paths.AddRamAssignment.RequestBody,
       config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.UpdateProjectRamAssignment.Responses.$200>
+    ): OperationResponse<Paths.AddRamAssignment.Responses.$201>
   }
-  ['/organisations/{organisation_id}/projects/{project_id}/ram/{assignment_ids}']: {
+  ['/organisations/{organisation_id}/projects/{project_id}/ram/assignments/{assignment_id}/update']: {
     /**
-     * deleteProjectRamAssignment
+     * updateRamAssignment
+     */
+    'post'(
+      parameters?: Parameters<UnknownParamsObject> | null,
+      data?: Paths.UpdateRamAssignment.RequestBody,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.UpdateRamAssignment.Responses.$200>
+  }
+  ['/organisations/{organisation_id}/projects/{project_id}/ram/assignments/{assignment_ids}/delete']: {
+    /**
+     * deleteRamAssignments
      */
     'delete'(
       parameters?: Parameters<UnknownParamsObject> | null,
@@ -1908,73 +1953,93 @@ export interface PathsDictionary {
   }
   ['/organisations/{organisation_id}/projects/{project_id}/rbs']: {
     /**
-     * listProjectRbs
+     * getRbs
      */
     'get'(
       parameters?: Parameters<UnknownParamsObject> | null,
       data?: any,
       config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.ListProjectRbs.Responses.$200>
-  }
-  ['/organisations/{organisation_id}/projects/{project_id}/rbs/create']: {
-    /**
-     * createProjectRbs
-     */
-    'post'(
-      parameters?: Parameters<UnknownParamsObject> | null,
-      data?: Paths.CreateProjectRbs.RequestBody,
-      config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.CreateProjectRbs.Responses.$201>
+    ): OperationResponse<Paths.GetRbs.Responses.$200>
   }
   ['/organisations/{organisation_id}/projects/{project_id}/rbs/add']: {
     /**
-     * addProjectRbsElement
+     * addRbs
      */
     'post'(
       parameters?: Parameters<UnknownParamsObject> | null,
-      data?: Paths.AddProjectRbsElement.RequestBody,
+      data?: Paths.AddRbs.RequestBody,
       config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.AddProjectRbsElement.Responses.$201>
+    ): OperationResponse<Paths.AddRbs.Responses.$201>
   }
-  ['/organisations/{organisation_id}/projects/{project_id}/rbs/{element_id}']: {
+  ['/organisations/{organisation_id}/projects/{project_id}/rbs/elements/add']: {
     /**
-     * findProjectRbsElement
+     * addRbsElement
+     */
+    'post'(
+      parameters?: Parameters<UnknownParamsObject> | null,
+      data?: Paths.AddRbsElement.RequestBody,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.AddRbsElement.Responses.$201>
+  }
+  ['/organisations/{organisation_id}/projects/{project_id}/rbs/elements/{element_id}']: {
+    /**
+     * getRbsElement
      */
     'get'(
       parameters?: Parameters<UnknownParamsObject> | null,
       data?: any,
       config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.FindProjectRbsElement.Responses.$200>
+    ): OperationResponse<Paths.GetRbsElement.Responses.$200>
   }
-  ['/organisations/{organisation_id}/projects/{project_id}/rbs/{element_id}/move']: {
+  ['/organisations/{organisation_id}/projects/{project_id}/rbs/elements/{element_id}/move']: {
     /**
-     * moveProjectRbsElement
+     * moveElement
      */
     'post'(
       parameters?: Parameters<UnknownParamsObject> | null,
-      data?: Paths.MoveProjectRbsElement.RequestBody,
+      data?: Paths.MoveElement.RequestBody,
       config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.MoveProjectRbsElement.Responses.$200>
+    ): OperationResponse<Paths.MoveElement.Responses.$200>
   }
-  ['/organisations/{organisation_id}/projects/{project_id}/rbs/{element_id}/update']: {
+  ['/organisations/{organisation_id}/projects/{project_id}/rbs/elements/{element_id}/update']: {
     /**
-     * updateProjectRbsElement
+     * updateRbsElement
      */
     'post'(
       parameters?: Parameters<UnknownParamsObject> | null,
-      data?: Paths.UpdateProjectRbsElement.RequestBody,
+      data?: Paths.UpdateRbsElement.RequestBody,
       config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.UpdateProjectRbsElement.Responses.$200>
+    ): OperationResponse<Paths.UpdateRbsElement.Responses.$200>
   }
-  ['/organisations/{organisation_id}/projects/{project_id}/rbs/{element_id}/delete']: {
+  ['/organisations/{organisation_id}/projects/{project_id}/rbs/elements/{element_id}/delete']: {
     /**
-     * deleteProjectRbsElement
+     * deleteRbsElement
      */
     'post'(
       parameters?: Parameters<UnknownParamsObject> | null,
       data?: any,
       config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.DeleteProjectRbsElement.Responses.$200>
+    ): OperationResponse<Paths.DeleteRbsElement.Responses.$200>
+  }
+  ['/organisations/{organisation_id}/risks']: {
+    /**
+     * listOrganisationRisks
+     */
+    'get'(
+      parameters?: Parameters<UnknownParamsObject> | null,
+      data?: any,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.ListOrganisationRisks.Responses.$200>
+  }
+  ['/organisations/{organisation_id}/risks/dashboard']: {
+    /**
+     * getOrganisationRiskDashboard
+     */
+    'get'(
+      parameters?: Parameters<UnknownParamsObject> | null,
+      data?: any,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.GetOrganisationRiskDashboard.Responses.$200>
   }
   ['/organisations/{organisation_id}/projects/{project_id}/risks']: {
     /**
@@ -1988,117 +2053,117 @@ export interface PathsDictionary {
   }
   ['/organisations/{organisation_id}/projects/{project_id}/risks/dashboard']: {
     /**
-     * GetRiskDashboardByProject
+     * getProjectRiskDashboard
      */
     'get'(
       parameters?: Parameters<UnknownParamsObject> | null,
       data?: any,
       config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.GetRiskDashboardByProject.Responses.$200>
+    ): OperationResponse<Paths.GetProjectRiskDashboard.Responses.$200>
   }
   ['/organisations/{organisation_id}/projects/{project_id}/risks/add']: {
     /**
-     * createProjectRisk
+     * addRisk
      */
     'post'(
       parameters?: Parameters<UnknownParamsObject> | null,
-      data?: Paths.CreateProjectRisk.RequestBody,
+      data?: Paths.AddRisk.RequestBody,
       config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.CreateProjectRisk.Responses.$201>
+    ): OperationResponse<Paths.AddRisk.Responses.$201>
   }
   ['/organisations/{organisation_id}/projects/{project_id}/risks/{risk_id}']: {
     /**
-     * getProjectRiskById
+     * getRisk
      */
     'get'(
       parameters?: Parameters<UnknownParamsObject> | null,
       data?: any,
       config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.GetProjectRiskById.Responses.$200>
+    ): OperationResponse<Paths.GetRisk.Responses.$200>
   }
   ['/organisations/{organisation_id}/projects/{project_id}/risks/{risk_id}/update']: {
     /**
-     * updateProjectRisk
+     * updateRisk
      */
     'post'(
       parameters?: Parameters<UnknownParamsObject> | null,
-      data?: Paths.UpdateProjectRisk.RequestBody,
+      data?: Paths.UpdateRisk.RequestBody,
       config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.UpdateProjectRisk.Responses.$200>
+    ): OperationResponse<Paths.UpdateRisk.Responses.$200>
   }
   ['/organisations/{organisation_id}/projects/{project_id}/wbs']: {
     /**
-     * listProjectWbs
+     * getWbs
      */
     'get'(
       parameters?: Parameters<UnknownParamsObject> | null,
       data?: any,
       config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.ListProjectWbs.Responses.$200>
-  }
-  ['/organisations/{organisation_id}/projects/{project_id}/wbs/create']: {
-    /**
-     * createProjectWbs
-     */
-    'post'(
-      parameters?: Parameters<UnknownParamsObject> | null,
-      data?: Paths.CreateProjectWbs.RequestBody,
-      config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.CreateProjectWbs.Responses.$201>
+    ): OperationResponse<Paths.GetWbs.Responses.$200>
   }
   ['/organisations/{organisation_id}/projects/{project_id}/wbs/add']: {
     /**
-     * addProjectWbsElement
+     * addWbs
      */
     'post'(
       parameters?: Parameters<UnknownParamsObject> | null,
-      data?: Paths.AddProjectWbsElement.RequestBody,
+      data?: Paths.AddWbs.RequestBody,
       config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.AddProjectWbsElement.Responses.$201>
+    ): OperationResponse<Paths.AddWbs.Responses.$201>
   }
-  ['/organisations/{organisation_id}/projects/{project_id}/wbs/{element_id}']: {
+  ['/organisations/{organisation_id}/projects/{project_id}/wbs/elements/add']: {
     /**
-     * findProjectWbsElement
+     * addWbsElement
+     */
+    'post'(
+      parameters?: Parameters<UnknownParamsObject> | null,
+      data?: Paths.AddWbsElement.RequestBody,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.AddWbsElement.Responses.$201>
+  }
+  ['/organisations/{organisation_id}/projects/{project_id}/wbs/elements/{element_id}']: {
+    /**
+     * getWbsElement
      */
     'get'(
       parameters?: Parameters<UnknownParamsObject> | null,
       data?: any,
       config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.FindProjectWbsElement.Responses.$200>
+    ): OperationResponse<Paths.GetWbsElement.Responses.$200>
   }
-  ['/organisations/{organisation_id}/projects/{project_id}/wbs/{element_id}/move']: {
+  ['/organisations/{organisation_id}/projects/{project_id}/wbs/elements/{element_id}/move']: {
     /**
-     * moveProjectWbsElement
+     * moveWbsElement
      */
     'post'(
       parameters?: Parameters<UnknownParamsObject> | null,
-      data?: Paths.MoveProjectWbsElement.RequestBody,
+      data?: Paths.MoveWbsElement.RequestBody,
       config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.MoveProjectWbsElement.Responses.$200>
+    ): OperationResponse<Paths.MoveWbsElement.Responses.$200>
   }
-  ['/organisations/{organisation_id}/projects/{project_id}/wbs/{element_id}/update']: {
+  ['/organisations/{organisation_id}/projects/{project_id}/wbs/elements/{element_id}/update']: {
     /**
-     * updateProjectWbsElement
+     * updateWbsElement
      */
     'post'(
       parameters?: Parameters<UnknownParamsObject> | null,
-      data?: Paths.UpdateProjectWbsElement.RequestBody,
+      data?: Paths.UpdateWbsElement.RequestBody,
       config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.UpdateProjectWbsElement.Responses.$200>
+    ): OperationResponse<Paths.UpdateWbsElement.Responses.$200>
   }
-  ['/organisations/{organisation_id}/projects/{project_id}/wbs/{element_id}/delete']: {
+  ['/organisations/{organisation_id}/projects/{project_id}/wbs/elements/{element_id}/delete']: {
     /**
-     * deleteProjectWbsElement
+     * deleteWbsElement
      */
     'post'(
       parameters?: Parameters<UnknownParamsObject> | null,
       data?: any,
       config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.DeleteProjectWbsElement.Responses.$204>
+    ): OperationResponse<Paths.DeleteWbsElement.Responses.$204>
   }
   ['/organisations/{organisation_id}/projects/{project_id}/work-packages']: {
     /**
-     * ListWorkPackages
+     * listWorkPackages
      */
     'get'(
       parameters?: Parameters<UnknownParamsObject> | null,
@@ -2108,27 +2173,27 @@ export interface PathsDictionary {
   }
   ['/organisations/{organisation_id}/projects/{project_id}/work-packages/add']: {
     /**
-     * AddWorkPackage
+     * addProjectWorkPackage
      */
     'post'(
       parameters?: Parameters<UnknownParamsObject> | null,
-      data?: Paths.AddWorkPackage.RequestBody,
+      data?: Paths.AddProjectWorkPackage.RequestBody,
       config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.AddWorkPackage.Responses.$200>
+    ): OperationResponse<Paths.AddProjectWorkPackage.Responses.$200>
   }
   ['/organisations/{organisation_id}/projects/{project_id}/work-packages/{workpackage_id}']: {
     /**
-     * FindWorkPackageById
+     * getWorkPackage
      */
     'get'(
       parameters?: Parameters<UnknownParamsObject> | null,
       data?: any,
       config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.FindWorkPackageById.Responses.$200>
+    ): OperationResponse<Paths.GetWorkPackage.Responses.$200>
   }
   ['/organisations/{organisation_id}/projects/{project_id}/work-packages/{workpackage_id}/update']: {
     /**
-     * UpdateWorkPackage
+     * updateWorkPackage
      */
     'post'(
       parameters?: Parameters<UnknownParamsObject> | null,
@@ -2138,7 +2203,7 @@ export interface PathsDictionary {
   }
   ['/organisations/{organisation_id}/projects/{project_id}/work-packages/{workpackage_id}/delete']: {
     /**
-     * MarkWorkPackageAsDeleted
+     * deleteWorkPackage
      */
     'delete'(
       parameters?: Parameters<UnknownParamsObject> | null,
@@ -2148,7 +2213,7 @@ export interface PathsDictionary {
   }
   ['/organisations/{organisation_id}/invitations/add']: {
     /**
-     * AddInvitation
+     * addInvitation
      */
     'post'(
       parameters?: Parameters<UnknownParamsObject> | null,
@@ -2158,7 +2223,7 @@ export interface PathsDictionary {
   }
   ['/invitations/{invitation_id}/accept']: {
     /**
-     * AcceptInvitation
+     * acceptInvitation
      */
     'post'(
       parameters?: Parameters<UnknownParamsObject> | null,
@@ -2168,13 +2233,53 @@ export interface PathsDictionary {
   }
   ['/invitations/{invitation_id}/reject']: {
     /**
-     * RejectInvitation
+     * rejectInvitation
      */
     'post'(
       parameters?: Parameters<UnknownParamsObject> | null,
       data?: Paths.RejectInvitation.RequestBody,
       config?: AxiosRequestConfig  
     ): OperationResponse<Paths.RejectInvitation.Responses.$200>
+  }
+  ['/me/dashboard']: {
+    /**
+     * getMyDashboard
+     */
+    'get'(
+      parameters?: Parameters<UnknownParamsObject> | null,
+      data?: any,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.GetMyDashboard.Responses.$200>
+  }
+  ['/me/projects']: {
+    /**
+     * listMyProjects
+     */
+    'get'(
+      parameters?: Parameters<UnknownParamsObject> | null,
+      data?: any,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.ListMyProjects.Responses.$200>
+  }
+  ['/me/organisations']: {
+    /**
+     * listMyOrganisations
+     */
+    'get'(
+      parameters?: Parameters<UnknownParamsObject> | null,
+      data?: any,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.ListMyOrganisations.Responses.$200>
+  }
+  ['/me/memberships']: {
+    /**
+     * listMyMemberships
+     */
+    'get'(
+      parameters?: Parameters<UnknownParamsObject> | null,
+      data?: any,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.ListMyMemberships.Responses.$200>
   }
 }
 

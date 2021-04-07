@@ -183,7 +183,7 @@
           "format": "uuid"
         }
       },
-      "project_id": {
+      "ProjectIdPathParam": {
         "name": "project_id",
         "in": "path",
         "required": true,
@@ -210,7 +210,7 @@
           "minimum": 1
         }
       },
-      "workpackage_id": {
+      "WorkpackageIdPathParam": {
         "name": "workpackage_id",
         "in": "path",
         "required": true,
@@ -219,7 +219,7 @@
           "format": "uuid"
         }
       },
-      "workpackage_id_query": {
+      "WorkpackageIdQueryParam": {
         "name": "workpackage_id",
         "in": "query",
         "required": false,
@@ -445,7 +445,7 @@
           }
         }
       },
-      "CreateBreakdownStructureElementData": {
+      "AddBreakdownStructureElementData": {
         "type": "object",
         "additionalProperties": false,
         "description": "A nested array of breakdown structure elements used when creating a breakdown structure using uploaded data.",
@@ -462,7 +462,7 @@
           "children": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/CreateBreakdownStructureElementData"
+              "$ref": "#/components/schemas/AddBreakdownStructureElementData"
             }
           }
         },
@@ -471,7 +471,7 @@
           "name"
         ]
       },
-      "CreateUploadedBreakdownStructureDto": {
+      "AddUploadedBreakdownStructureDto": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
@@ -484,7 +484,7 @@
           "data": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/CreateBreakdownStructureElementData"
+              "$ref": "#/components/schemas/AddBreakdownStructureElementData"
             }
           }
         },
@@ -493,7 +493,7 @@
           "data"
         ]
       },
-      "CreateEmptyBreakdownStructureDto": {
+      "AddEmptyBreakdownStructureDto": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
@@ -508,7 +508,7 @@
           "method"
         ]
       },
-      "CreateTemplateBreakdownStructureDto": {
+      "AddTemplateBreakdownStructureDto": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
@@ -527,7 +527,7 @@
           "name"
         ]
       },
-      "CreateCopiedBreakdownStructureDto": {
+      "AddCopiedBreakdownStructureDto": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
@@ -546,19 +546,19 @@
           "project_id"
         ]
       },
-      "CreateBreakdownStructureDto": {
+      "AddBreakdownStructureDto": {
         "oneOf": [
           {
-            "$ref": "#/components/schemas/CreateUploadedBreakdownStructureDto"
+            "$ref": "#/components/schemas/AddUploadedBreakdownStructureDto"
           },
           {
-            "$ref": "#/components/schemas/CreateEmptyBreakdownStructureDto"
+            "$ref": "#/components/schemas/AddEmptyBreakdownStructureDto"
           },
           {
-            "$ref": "#/components/schemas/CreateTemplateBreakdownStructureDto"
+            "$ref": "#/components/schemas/AddTemplateBreakdownStructureDto"
           },
           {
-            "$ref": "#/components/schemas/CreateCopiedBreakdownStructureDto"
+            "$ref": "#/components/schemas/AddCopiedBreakdownStructureDto"
           }
         ]
       },
@@ -698,7 +698,7 @@
           "version"
         ]
       },
-      "CreateAssumptionDto": {
+      "AddAssumptionDto": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
@@ -962,7 +962,7 @@
           "None"
         ]
       },
-      "CreateDependencyDto": {
+      "AddDependencyDto": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
@@ -1258,7 +1258,7 @@
           "Other"
         ]
       },
-      "CreateIssueDto": {
+      "AddIssueDto": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
@@ -1798,7 +1798,7 @@
           "version"
         ]
       },
-      "CreateProjectDto": {
+      "AddProjectDto": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
@@ -1810,10 +1810,6 @@
           },
           "status": {
             "$ref": "#/components/schemas/ProjectStatusEnum"
-          },
-          "organisation_id": {
-            "type": "string",
-            "format": "uuid"
           },
           "friendly_id": {
             "type": "string"
@@ -1838,8 +1834,7 @@
         },
         "required": [
           "name",
-          "status",
-          "organisation_id"
+          "status"
         ]
       },
       "ProjectDashboardEntity": {
@@ -1909,7 +1904,7 @@
           "version"
         ]
       },
-      "CreateRamDto": {
+      "AddRamDto": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
@@ -2438,7 +2433,7 @@
           "version"
         ]
       },
-      "CreateRiskDto": {
+      "AddRiskDto": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
@@ -2640,12 +2635,14 @@
       "WorkpackageStatusEnum": {
         "type": "string",
         "enum": [
-          "Proposed",
-          "Approved",
-          "Delivering",
-          "Completed",
-          "Rejected",
-          "Deleted"
+          [
+            "Proposed",
+            "Approved",
+            "Delivering",
+            "Completed",
+            "Deleted",
+            "Rejected"
+          ]
         ]
       },
       "WorkpackageEntity": {
@@ -2974,10 +2971,10 @@
           "$ref": "#/components/parameters/OrganisationIdPathParam"
         },
         {
-          "$ref": "#/components/parameters/project_id"
+          "$ref": "#/components/parameters/ProjectIdPathParam"
         },
         {
-          "$ref": "#/components/parameters/workpackage_id_query"
+          "$ref": "#/components/parameters/WorkpackageIdQueryParam"
         },
         {
           "$ref": "#/components/parameters/include"
@@ -2989,7 +2986,7 @@
     },
     "/organisations/{organisation_id}/projects/{project_id}/assumptions/dashboard": {
       "get": {
-        "operationId": "GetProjectAssumptionsDashboard",
+        "operationId": "getProjectAssumptionDashboard",
         "responses": {
           "200": {
             "description": "Assumptions Dashboard",
@@ -3008,7 +3005,7 @@
           "$ref": "#/components/parameters/OrganisationIdPathParam"
         },
         {
-          "$ref": "#/components/parameters/project_id"
+          "$ref": "#/components/parameters/ProjectIdPathParam"
         },
         {
           "name": "closeOutByLimit",
@@ -3023,10 +3020,10 @@
     },
     "/organisations/{organisation_id}/projects/{project_id}/assumptions/add": {
       "post": {
-        "operationId": "createProjectAssumption",
+        "operationId": "addAssumption",
         "responses": {
           "201": {
-            "description": "Created",
+            "description": "Addd",
             "content": {
               "application/json": {
                 "schema": {
@@ -3040,7 +3037,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateAssumptionDto"
+                "$ref": "#/components/schemas/AddAssumptionDto"
               }
             }
           }
@@ -3051,13 +3048,13 @@
           "$ref": "#/components/parameters/OrganisationIdPathParam"
         },
         {
-          "$ref": "#/components/parameters/project_id"
+          "$ref": "#/components/parameters/ProjectIdPathParam"
         }
       ]
     },
     "/organisations/{organisation_id}/projects/{project_id}/assumptions/{assumption_id}": {
       "get": {
-        "operationId": "getProjectAssumptionById",
+        "operationId": "getAssumption",
         "responses": {
           "200": {
             "description": "Ok",
@@ -3076,7 +3073,7 @@
           "$ref": "#/components/parameters/OrganisationIdPathParam"
         },
         {
-          "$ref": "#/components/parameters/project_id"
+          "$ref": "#/components/parameters/ProjectIdPathParam"
         },
         {
           "$ref": "#/components/parameters/assumption_id"
@@ -3088,7 +3085,7 @@
     },
     "/organisations/{organisation_id}/projects/{project_id}/assumptions/{assumption_id}/update": {
       "post": {
-        "operationId": "updateProjectAssumption",
+        "operationId": "updateAssumption",
         "responses": {
           "200": {
             "description": "Ok",
@@ -3116,7 +3113,7 @@
           "$ref": "#/components/parameters/OrganisationIdPathParam"
         },
         {
-          "$ref": "#/components/parameters/project_id"
+          "$ref": "#/components/parameters/ProjectIdPathParam"
         },
         {
           "$ref": "#/components/parameters/assumption_id"
@@ -3125,23 +3122,6 @@
           "$ref": "#/components/parameters/expected_version"
         }
       ]
-    },
-    "/dashboard": {
-      "get": {
-        "operationId": "GetUserDashboard",
-        "responses": {
-          "200": {
-            "description": "Returns the User Dashboard",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/UserDashboardEntity"
-                }
-              }
-            }
-          }
-        }
-      }
     },
     "/organisations/{organisation_id}/projects/{project_id}/dependencies": {
       "get": {
@@ -3167,10 +3147,10 @@
           "$ref": "#/components/parameters/OrganisationIdPathParam"
         },
         {
-          "$ref": "#/components/parameters/project_id"
+          "$ref": "#/components/parameters/ProjectIdPathParam"
         },
         {
-          "$ref": "#/components/parameters/workpackage_id_query"
+          "$ref": "#/components/parameters/WorkpackageIdQueryParam"
         },
         {
           "$ref": "#/components/parameters/include"
@@ -3182,7 +3162,7 @@
     },
     "/organisations/{organisation_id}/projects/{project_id}/dependencies/dashboard": {
       "get": {
-        "operationId": "GetProjectDependencyDashboard",
+        "operationId": "getProjectDependencyDashboard",
         "responses": {
           "200": {
             "description": "Dependency Dashboard",
@@ -3201,7 +3181,7 @@
           "$ref": "#/components/parameters/OrganisationIdPathParam"
         },
         {
-          "$ref": "#/components/parameters/project_id"
+          "$ref": "#/components/parameters/ProjectIdPathParam"
         },
         {
           "$ref": "#/components/parameters/requiredAtLimitQueryParam"
@@ -3210,10 +3190,10 @@
     },
     "/organisations/{organisation_id}/projects/{project_id}/dependencies/add": {
       "post": {
-        "operationId": "createProjectDependency",
+        "operationId": "addDependency",
         "responses": {
           "201": {
-            "description": "Created",
+            "description": "Addd",
             "content": {
               "application/json": {
                 "schema": {
@@ -3227,7 +3207,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateDependencyDto"
+                "$ref": "#/components/schemas/AddDependencyDto"
               }
             }
           }
@@ -3238,13 +3218,13 @@
           "$ref": "#/components/parameters/OrganisationIdPathParam"
         },
         {
-          "$ref": "#/components/parameters/project_id"
+          "$ref": "#/components/parameters/ProjectIdPathParam"
         }
       ]
     },
     "/organisations/{organisation_id}/projects/{project_id}/dependencies/{dependency_id}": {
       "get": {
-        "operationId": "getProjectDependencyById",
+        "operationId": "getDependency",
         "responses": {
           "200": {
             "description": "Ok",
@@ -3263,7 +3243,7 @@
           "$ref": "#/components/parameters/OrganisationIdPathParam"
         },
         {
-          "$ref": "#/components/parameters/project_id"
+          "$ref": "#/components/parameters/ProjectIdPathParam"
         },
         {
           "$ref": "#/components/parameters/dependency_id"
@@ -3275,7 +3255,7 @@
     },
     "/organisations/{organisation_id}/projects/{project_id}/dependencies/{dependency_id}/update": {
       "post": {
-        "operationId": "updateProjectDependency",
+        "operationId": "updateDependency",
         "responses": {
           "200": {
             "description": "Updated",
@@ -3303,7 +3283,7 @@
           "$ref": "#/components/parameters/OrganisationIdPathParam"
         },
         {
-          "$ref": "#/components/parameters/project_id"
+          "$ref": "#/components/parameters/ProjectIdPathParam"
         },
         {
           "$ref": "#/components/parameters/dependency_id"
@@ -3337,10 +3317,10 @@
           "$ref": "#/components/parameters/OrganisationIdPathParam"
         },
         {
-          "$ref": "#/components/parameters/project_id"
+          "$ref": "#/components/parameters/ProjectIdPathParam"
         },
         {
-          "$ref": "#/components/parameters/workpackage_id_query"
+          "$ref": "#/components/parameters/WorkpackageIdQueryParam"
         },
         {
           "$ref": "#/components/parameters/include"
@@ -3352,7 +3332,7 @@
     },
     "/organisations/{organisation_id}/projects/{project_id}/issues/dashboard": {
       "get": {
-        "operationId": "GetProjectIssueDashboard",
+        "operationId": "getProjectIssuesDashboard",
         "responses": {
           "200": {
             "description": "Ok",
@@ -3371,7 +3351,7 @@
           "$ref": "#/components/parameters/OrganisationIdPathParam"
         },
         {
-          "$ref": "#/components/parameters/project_id"
+          "$ref": "#/components/parameters/ProjectIdPathParam"
         },
         {
           "$ref": "#/components/parameters/period_start_query"
@@ -3383,10 +3363,10 @@
     },
     "/organisations/{organisation_id}/projects/{project_id}/issues/add": {
       "post": {
-        "operationId": "createProjectIssue",
+        "operationId": "addIssue",
         "responses": {
           "201": {
-            "description": "Created",
+            "description": "Addd",
             "content": {
               "application/json": {
                 "schema": {
@@ -3400,7 +3380,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateIssueDto"
+                "$ref": "#/components/schemas/AddIssueDto"
               }
             }
           }
@@ -3411,13 +3391,13 @@
           "$ref": "#/components/parameters/OrganisationIdPathParam"
         },
         {
-          "$ref": "#/components/parameters/project_id"
+          "$ref": "#/components/parameters/ProjectIdPathParam"
         }
       ]
     },
     "/organisations/{organisation_id}/projects/{project_id}/issue/{issue_id}": {
       "get": {
-        "operationId": "getProjectIssueById",
+        "operationId": "getIssue",
         "responses": {
           "200": {
             "description": "Ok",
@@ -3436,7 +3416,7 @@
           "$ref": "#/components/parameters/OrganisationIdPathParam"
         },
         {
-          "$ref": "#/components/parameters/project_id"
+          "$ref": "#/components/parameters/ProjectIdPathParam"
         },
         {
           "$ref": "#/components/parameters/issue_id"
@@ -3448,7 +3428,7 @@
     },
     "/organisations/{organisation_id}/projects/{project_id}/issues/{issue_id}/update": {
       "post": {
-        "operationId": "updateProjectIssue",
+        "operationId": "updateIssue",
         "responses": {
           "200": {
             "description": "Updated",
@@ -3476,7 +3456,7 @@
           "$ref": "#/components/parameters/OrganisationIdPathParam"
         },
         {
-          "$ref": "#/components/parameters/project_id"
+          "$ref": "#/components/parameters/ProjectIdPathParam"
         },
         {
           "$ref": "#/components/parameters/issue_id"
@@ -3485,7 +3465,7 @@
     },
     "/organisations/{organisation_id}/projects/{project_id}/obs": {
       "get": {
-        "operationId": "listProjectObs",
+        "operationId": "getObs",
         "responses": {
           "200": {
             "description": "Ok",
@@ -3504,17 +3484,17 @@
           "$ref": "#/components/parameters/OrganisationIdPathParam"
         },
         {
-          "$ref": "#/components/parameters/project_id"
+          "$ref": "#/components/parameters/ProjectIdPathParam"
         }
       ]
     },
-    "/organisations/{organisation_id}/projects/{project_id}/obs/create": {
-      "description": "Create an OBS using a template or an uploaded file.",
+    "/organisations/{organisation_id}/projects/{project_id}/obs/add": {
+      "description": "Add an OBS using a template or an uploaded file.",
       "post": {
-        "operationId": "CreateProjectObs",
+        "operationId": "addObs",
         "responses": {
           "201": {
-            "description": "Created",
+            "description": "Addd",
             "content": {
               "application/json": {
                 "schema": {
@@ -3528,7 +3508,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateBreakdownStructureDto"
+                "$ref": "#/components/schemas/AddBreakdownStructureDto"
               }
             }
           }
@@ -3539,16 +3519,16 @@
           "$ref": "#/components/parameters/OrganisationIdPathParam"
         },
         {
-          "$ref": "#/components/parameters/project_id"
+          "$ref": "#/components/parameters/ProjectIdPathParam"
         }
       ]
     },
-    "/organisations/{organisation_id}/projects/{project_id}/obs/add": {
+    "/organisations/{organisation_id}/projects/{project_id}/obs/elements/add": {
       "post": {
-        "operationId": "addProjectObsElement",
+        "operationId": "addObsElement",
         "responses": {
           "201": {
-            "description": "Created",
+            "description": "Addd",
             "content": {
               "application/json": {
                 "schema": {
@@ -3578,14 +3558,14 @@
           "$ref": "#/components/parameters/OrganisationIdPathParam"
         },
         {
-          "$ref": "#/components/parameters/project_id"
+          "$ref": "#/components/parameters/ProjectIdPathParam"
         }
       ]
     },
-    "/organisations/{organisation_id}/projects/{project_id}/obs/{element_id}": {
+    "/organisations/{organisation_id}/projects/{project_id}/obs/elements/{element_id}": {
       "description": "Displays details of the project obs role",
       "get": {
-        "operationId": "findProjectObsElement",
+        "operationId": "getObsElement",
         "responses": {
           "200": {
             "description": "Ok",
@@ -3604,17 +3584,17 @@
           "$ref": "#/components/parameters/OrganisationIdPathParam"
         },
         {
-          "$ref": "#/components/parameters/project_id"
+          "$ref": "#/components/parameters/ProjectIdPathParam"
         },
         {
           "$ref": "#/components/parameters/element_id"
         }
       ]
     },
-    "/organisations/{organisation_id}/projects/{project_id}/obs/{element_id}/move": {
+    "/organisations/{organisation_id}/projects/{project_id}/obs/elements/{element_id}/move": {
       "description": "Moves the role in the OBS to another position. E.g. change of manager or order of the roles.",
       "post": {
-        "operationId": "moveProjectObsElement",
+        "operationId": "moveObsElement",
         "responses": {
           "200": {
             "description": "Ok",
@@ -3647,17 +3627,17 @@
           "$ref": "#/components/parameters/OrganisationIdPathParam"
         },
         {
-          "$ref": "#/components/parameters/project_id"
+          "$ref": "#/components/parameters/ProjectIdPathParam"
         },
         {
           "$ref": "#/components/parameters/element_id"
         }
       ]
     },
-    "/organisations/{organisation_id}/projects/{project_id}/obs/{element_id}/update": {
+    "/organisations/{organisation_id}/projects/{project_id}/obs/elements/{element_id}/update": {
       "description": "Updates the project role",
       "post": {
-        "operationId": "updateProjectObsElement",
+        "operationId": "updateObsElement",
         "responses": {
           "200": {
             "description": "Updated",
@@ -3690,17 +3670,17 @@
           "$ref": "#/components/parameters/OrganisationIdPathParam"
         },
         {
-          "$ref": "#/components/parameters/project_id"
+          "$ref": "#/components/parameters/ProjectIdPathParam"
         },
         {
           "$ref": "#/components/parameters/element_id"
         }
       ]
     },
-    "/organisations/{organisation_id}/projects/{project_id}/obs/{element_id}/delete": {
+    "/organisations/{organisation_id}/projects/{project_id}/obs/elements/{element_id}/delete": {
       "description": "Deletes the project role from the OBS",
       "post": {
-        "operationId": "deleteProjectObsElement",
+        "operationId": "deleteObsElement",
         "responses": {
           "200": {
             "description": "Deleted",
@@ -3724,7 +3704,7 @@
           "$ref": "#/components/parameters/OrganisationIdPathParam"
         },
         {
-          "$ref": "#/components/parameters/project_id"
+          "$ref": "#/components/parameters/ProjectIdPathParam"
         },
         {
           "$ref": "#/components/parameters/element_id"
@@ -3753,7 +3733,7 @@
     },
     "/organisations/{organisation_id}": {
       "get": {
-        "operationId": "FindOrganisationById",
+        "operationId": "getOrganisation",
         "responses": {
           "200": {
             "description": "Ok",
@@ -3775,7 +3755,7 @@
     },
     "/organisations/{organisation_id}/projects": {
       "get": {
-        "operationId": "listProjects",
+        "operationId": "listOrganisationProjects",
         "responses": {
           "200": {
             "description": "Ok",
@@ -3794,32 +3774,16 @@
       },
       "parameters": [
         {
-          "name": "filter",
-          "in": "query",
-          "required": false,
-          "style": "deepObject",
-          "explode": true,
-          "schema": {
-            "type": "object",
-            "properties": {
-              "organisation_id": {
-                "type": "string",
-                "format": "uuid"
-              }
-            }
-          }
-        },
-        {
           "$ref": "#/components/parameters/OrganisationIdPathParam"
         }
       ]
     },
-    "/organisations/{organisation_id}/projects/create": {
+    "/organisations/{organisation_id}/projects/add": {
       "post": {
-        "operationId": "createProject",
+        "operationId": "addProject",
         "responses": {
           "201": {
-            "description": "Created",
+            "description": "Addd",
             "content": {
               "application/json": {
                 "schema": {
@@ -3833,7 +3797,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateProjectDto"
+                "$ref": "#/components/schemas/AddProjectDto"
               }
             }
           }
@@ -3847,10 +3811,10 @@
     },
     "/organisations/{organisation_id}/projects/{project_id}": {
       "get": {
-        "operationId": "getProjectById",
+        "operationId": "getProject",
         "responses": {
           "200": {
-            "description": "Created",
+            "description": "Addd",
             "content": {
               "application/json": {
                 "schema": {
@@ -3866,7 +3830,7 @@
           "$ref": "#/components/parameters/OrganisationIdPathParam"
         },
         {
-          "$ref": "#/components/parameters/project_id"
+          "$ref": "#/components/parameters/ProjectIdPathParam"
         }
       ]
     },
@@ -3891,7 +3855,7 @@
           "$ref": "#/components/parameters/OrganisationIdPathParam"
         },
         {
-          "$ref": "#/components/parameters/project_id"
+          "$ref": "#/components/parameters/ProjectIdPathParam"
         },
         {
           "name": "closeOutByLimit",
@@ -3916,7 +3880,7 @@
     "/organisations/{organisation_id}/projects/{project_id}/ram": {
       "description": "Returns all role assignments in the Responsibility Assignment Matrix",
       "get": {
-        "operationId": "listProjectRam",
+        "operationId": "getRam",
         "responses": {
           "200": {
             "description": "Ok",
@@ -3935,17 +3899,17 @@
           "$ref": "#/components/parameters/OrganisationIdPathParam"
         },
         {
-          "$ref": "#/components/parameters/project_id"
+          "$ref": "#/components/parameters/ProjectIdPathParam"
         }
       ]
     },
-    "/organisations/{organisation_id}/projects/{project_id}/ram/create": {
-      "description": "Create a Project Responsibility Assignment Matrix by manually assigning responsibilities or uploading a file.",
+    "/organisations/{organisation_id}/projects/{project_id}/ram/add": {
+      "description": "Add a Project Responsibility Assignment Matrix by manually assigning responsibilities or uploading a file.",
       "post": {
-        "operationId": "createProjectRam",
+        "operationId": "addRam",
         "responses": {
           "201": {
-            "description": "Created",
+            "description": "Addd",
             "content": {
               "application/json": {
                 "schema": {
@@ -3959,7 +3923,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateRamDto"
+                "$ref": "#/components/schemas/AddRamDto"
               }
             }
           }
@@ -3970,16 +3934,16 @@
           "$ref": "#/components/parameters/OrganisationIdPathParam"
         },
         {
-          "$ref": "#/components/parameters/project_id"
+          "$ref": "#/components/parameters/ProjectIdPathParam"
         }
       ]
     },
-    "/organisations/{organisation_id}/projects/{project_id}/ram/add": {
+    "/organisations/{organisation_id}/projects/{project_id}/ram/assignments/add": {
       "post": {
-        "operationId": "addProjectRamAssignment",
+        "operationId": "addRamAssignment",
         "responses": {
           "201": {
-            "description": "Created",
+            "description": "Addd",
             "content": {
               "application/json": {
                 "schema": {
@@ -4019,14 +3983,14 @@
           "$ref": "#/components/parameters/OrganisationIdPathParam"
         },
         {
-          "$ref": "#/components/parameters/project_id"
+          "$ref": "#/components/parameters/ProjectIdPathParam"
         }
       ]
     },
-    "/organisations/{organisation_id}/projects/{project_id}/ram/{assignment_id}/update": {
+    "/organisations/{organisation_id}/projects/{project_id}/ram/assignments/{assignment_id}/update": {
       "description": "Updates the role assignment in the Responsibility Assignment Matrix.",
       "post": {
-        "operationId": "updateProjectRamAssignment",
+        "operationId": "updateRamAssignment",
         "responses": {
           "200": {
             "description": "Ok",
@@ -4059,17 +4023,17 @@
           "$ref": "#/components/parameters/OrganisationIdPathParam"
         },
         {
-          "$ref": "#/components/parameters/project_id"
+          "$ref": "#/components/parameters/ProjectIdPathParam"
         },
         {
           "$ref": "#/components/parameters/assignment_id"
         }
       ]
     },
-    "/organisations/{organisation_id}/projects/{project_id}/ram/{assignment_ids}": {
+    "/organisations/{organisation_id}/projects/{project_id}/ram/assignments/{assignment_ids}/delete": {
       "description": "Deletes a role assignment from the Responsibility Assignment Matrix",
       "delete": {
-        "operationId": "deleteProjectRamAssignment",
+        "operationId": "deleteRamAssignments",
         "responses": {
           "204": {
             "description": "Deleted"
@@ -4086,7 +4050,7 @@
           "$ref": "#/components/parameters/OrganisationIdPathParam"
         },
         {
-          "$ref": "#/components/parameters/project_id"
+          "$ref": "#/components/parameters/ProjectIdPathParam"
         },
         {
           "$ref": "#/components/parameters/PathAssignmentIds"
@@ -4095,7 +4059,7 @@
     },
     "/organisations/{organisation_id}/projects/{project_id}/rbs": {
       "get": {
-        "operationId": "listProjectRbs",
+        "operationId": "getRbs",
         "responses": {
           "200": {
             "description": "Ok",
@@ -4114,17 +4078,17 @@
           "$ref": "#/components/parameters/OrganisationIdPathParam"
         },
         {
-          "$ref": "#/components/parameters/project_id"
+          "$ref": "#/components/parameters/ProjectIdPathParam"
         }
       ]
     },
-    "/organisations/{organisation_id}/projects/{project_id}/rbs/create": {
-      "description": "Create a Project RBS by adding elements, using another project, a template or an uploaded file.",
+    "/organisations/{organisation_id}/projects/{project_id}/rbs/add": {
+      "description": "Add a Project RBS by adding elements, using another project, a template or an uploaded file.",
       "post": {
-        "operationId": "createProjectRbs",
+        "operationId": "addRbs",
         "responses": {
           "201": {
-            "description": "Created",
+            "description": "Addd",
             "content": {
               "application/json": {
                 "schema": {
@@ -4138,7 +4102,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateBreakdownStructureDto"
+                "$ref": "#/components/schemas/AddBreakdownStructureDto"
               }
             }
           }
@@ -4149,16 +4113,16 @@
           "$ref": "#/components/parameters/OrganisationIdPathParam"
         },
         {
-          "$ref": "#/components/parameters/project_id"
+          "$ref": "#/components/parameters/ProjectIdPathParam"
         }
       ]
     },
-    "/organisations/{organisation_id}/projects/{project_id}/rbs/add": {
+    "/organisations/{organisation_id}/projects/{project_id}/rbs/elements/add": {
       "post": {
-        "operationId": "addProjectRbsElement",
+        "operationId": "addRbsElement",
         "responses": {
           "201": {
-            "description": "Created",
+            "description": "Addd",
             "content": {
               "application/json": {
                 "schema": {
@@ -4188,14 +4152,14 @@
           "$ref": "#/components/parameters/OrganisationIdPathParam"
         },
         {
-          "$ref": "#/components/parameters/project_id"
+          "$ref": "#/components/parameters/ProjectIdPathParam"
         }
       ]
     },
-    "/organisations/{organisation_id}/projects/{project_id}/rbs/{element_id}": {
+    "/organisations/{organisation_id}/projects/{project_id}/rbs/elements/{element_id}": {
       "description": "Displays details of the project deliverable",
       "get": {
-        "operationId": "findProjectRbsElement",
+        "operationId": "getRbsElement",
         "responses": {
           "200": {
             "description": "Ok",
@@ -4214,17 +4178,17 @@
           "$ref": "#/components/parameters/OrganisationIdPathParam"
         },
         {
-          "$ref": "#/components/parameters/project_id"
+          "$ref": "#/components/parameters/ProjectIdPathParam"
         },
         {
           "$ref": "#/components/parameters/element_id"
         }
       ]
     },
-    "/organisations/{organisation_id}/projects/{project_id}/rbs/{element_id}/move": {
+    "/organisations/{organisation_id}/projects/{project_id}/rbs/elements/{element_id}/move": {
       "description": "Moves the element in the RBS to another position.",
       "post": {
-        "operationId": "moveProjectRbsElement",
+        "operationId": "moveElement",
         "responses": {
           "200": {
             "description": "Ok",
@@ -4257,17 +4221,17 @@
           "$ref": "#/components/parameters/OrganisationIdPathParam"
         },
         {
-          "$ref": "#/components/parameters/project_id"
+          "$ref": "#/components/parameters/ProjectIdPathParam"
         },
         {
           "$ref": "#/components/parameters/element_id"
         }
       ]
     },
-    "/organisations/{organisation_id}/projects/{project_id}/rbs/{element_id}/update": {
+    "/organisations/{organisation_id}/projects/{project_id}/rbs/elements/{element_id}/update": {
       "description": "Updates the project RBS element",
       "post": {
-        "operationId": "updateProjectRbsElement",
+        "operationId": "updateRbsElement",
         "responses": {
           "200": {
             "description": "Updated",
@@ -4300,17 +4264,17 @@
           "$ref": "#/components/parameters/OrganisationIdPathParam"
         },
         {
-          "$ref": "#/components/parameters/project_id"
+          "$ref": "#/components/parameters/ProjectIdPathParam"
         },
         {
           "$ref": "#/components/parameters/element_id"
         }
       ]
     },
-    "/organisations/{organisation_id}/projects/{project_id}/rbs/{element_id}/delete": {
+    "/organisations/{organisation_id}/projects/{project_id}/rbs/elements/{element_id}/delete": {
       "description": "Deletes the project deliverable from the RBS",
       "post": {
-        "operationId": "deleteProjectRbsElement",
+        "operationId": "deleteRbsElement",
         "responses": {
           "200": {
             "description": "Deleted",
@@ -4334,10 +4298,72 @@
           "$ref": "#/components/parameters/OrganisationIdPathParam"
         },
         {
-          "$ref": "#/components/parameters/project_id"
+          "$ref": "#/components/parameters/ProjectIdPathParam"
         },
         {
           "$ref": "#/components/parameters/element_id"
+        }
+      ]
+    },
+    "/organisations/{organisation_id}/risks": {
+      "get": {
+        "operationId": "listOrganisationRisks",
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/RiskEntity"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/OrganisationIdPathParam"
+        },
+        {
+          "$ref": "#/components/parameters/WorkpackageIdQueryParam"
+        },
+        {
+          "$ref": "#/components/parameters/include"
+        },
+        {
+          "$ref": "#/components/parameters/filter"
+        }
+      ]
+    },
+    "/organisations/{organisation_id}/risks/dashboard": {
+      "get": {
+        "operationId": "getOrganisationRiskDashboard",
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RiskDashboardEntity"
+                }
+              }
+            }
+          }
+        }
+      },
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/OrganisationIdPathParam"
+        },
+        {
+          "$ref": "#/components/parameters/period_start_query"
+        },
+        {
+          "$ref": "#/components/parameters/period_end_query"
         }
       ]
     },
@@ -4365,10 +4391,10 @@
           "$ref": "#/components/parameters/OrganisationIdPathParam"
         },
         {
-          "$ref": "#/components/parameters/project_id"
+          "$ref": "#/components/parameters/ProjectIdPathParam"
         },
         {
-          "$ref": "#/components/parameters/workpackage_id_query"
+          "$ref": "#/components/parameters/WorkpackageIdQueryParam"
         },
         {
           "$ref": "#/components/parameters/include"
@@ -4380,7 +4406,7 @@
     },
     "/organisations/{organisation_id}/projects/{project_id}/risks/dashboard": {
       "get": {
-        "operationId": "GetRiskDashboardByProject",
+        "operationId": "getProjectRiskDashboard",
         "responses": {
           "200": {
             "description": "Ok",
@@ -4399,7 +4425,7 @@
           "$ref": "#/components/parameters/OrganisationIdPathParam"
         },
         {
-          "$ref": "#/components/parameters/project_id"
+          "$ref": "#/components/parameters/ProjectIdPathParam"
         },
         {
           "$ref": "#/components/parameters/period_start_query"
@@ -4411,10 +4437,10 @@
     },
     "/organisations/{organisation_id}/projects/{project_id}/risks/add": {
       "post": {
-        "operationId": "createProjectRisk",
+        "operationId": "addRisk",
         "responses": {
           "201": {
-            "description": "Created",
+            "description": "Addd",
             "content": {
               "application/json": {
                 "schema": {
@@ -4428,7 +4454,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateRiskDto"
+                "$ref": "#/components/schemas/AddRiskDto"
               }
             }
           }
@@ -4439,13 +4465,13 @@
           "$ref": "#/components/parameters/OrganisationIdPathParam"
         },
         {
-          "$ref": "#/components/parameters/project_id"
+          "$ref": "#/components/parameters/ProjectIdPathParam"
         }
       ]
     },
     "/organisations/{organisation_id}/projects/{project_id}/risks/{risk_id}": {
       "get": {
-        "operationId": "getProjectRiskById",
+        "operationId": "getRisk",
         "responses": {
           "200": {
             "description": "Ok",
@@ -4464,7 +4490,7 @@
           "$ref": "#/components/parameters/OrganisationIdPathParam"
         },
         {
-          "$ref": "#/components/parameters/project_id"
+          "$ref": "#/components/parameters/ProjectIdPathParam"
         },
         {
           "$ref": "#/components/parameters/risk_id"
@@ -4476,7 +4502,7 @@
     },
     "/organisations/{organisation_id}/projects/{project_id}/risks/{risk_id}/update": {
       "post": {
-        "operationId": "updateProjectRisk",
+        "operationId": "updateRisk",
         "responses": {
           "200": {
             "description": "Updated",
@@ -4504,7 +4530,7 @@
           "$ref": "#/components/parameters/OrganisationIdPathParam"
         },
         {
-          "$ref": "#/components/parameters/project_id"
+          "$ref": "#/components/parameters/ProjectIdPathParam"
         },
         {
           "$ref": "#/components/parameters/risk_id"
@@ -4516,7 +4542,7 @@
     },
     "/organisations/{organisation_id}/projects/{project_id}/wbs": {
       "get": {
-        "operationId": "listProjectWbs",
+        "operationId": "getWbs",
         "responses": {
           "200": {
             "description": "Ok",
@@ -4535,17 +4561,17 @@
           "$ref": "#/components/parameters/OrganisationIdPathParam"
         },
         {
-          "$ref": "#/components/parameters/project_id"
+          "$ref": "#/components/parameters/ProjectIdPathParam"
         }
       ]
     },
-    "/organisations/{organisation_id}/projects/{project_id}/wbs/create": {
-      "description": "Create a Project WBS by adding elements, using another project, a template or an uploaded file.",
+    "/organisations/{organisation_id}/projects/{project_id}/wbs/add": {
+      "description": "Add a Project WBS by adding elements, using another project, a template or an uploaded file.",
       "post": {
-        "operationId": "createProjectWbs",
+        "operationId": "addWbs",
         "responses": {
           "201": {
-            "description": "Created",
+            "description": "Addd",
             "content": {
               "application/json": {
                 "schema": {
@@ -4559,7 +4585,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateBreakdownStructureDto"
+                "$ref": "#/components/schemas/AddBreakdownStructureDto"
               }
             }
           }
@@ -4570,16 +4596,16 @@
           "$ref": "#/components/parameters/OrganisationIdPathParam"
         },
         {
-          "$ref": "#/components/parameters/project_id"
+          "$ref": "#/components/parameters/ProjectIdPathParam"
         }
       ]
     },
-    "/organisations/{organisation_id}/projects/{project_id}/wbs/add": {
+    "/organisations/{organisation_id}/projects/{project_id}/wbs/elements/add": {
       "post": {
-        "operationId": "addProjectWbsElement",
+        "operationId": "addWbsElement",
         "responses": {
           "201": {
-            "description": "Created",
+            "description": "Addd",
             "content": {
               "application/json": {
                 "schema": {
@@ -4609,14 +4635,14 @@
       },
       "parameters": [
         {
-          "$ref": "#/components/parameters/project_id"
+          "$ref": "#/components/parameters/ProjectIdPathParam"
         }
       ]
     },
-    "/organisations/{organisation_id}/projects/{project_id}/wbs/{element_id}": {
+    "/organisations/{organisation_id}/projects/{project_id}/wbs/elements/{element_id}": {
       "description": "Displays details of the project deliverable",
       "get": {
-        "operationId": "findProjectWbsElement",
+        "operationId": "getWbsElement",
         "responses": {
           "200": {
             "description": "Ok",
@@ -4635,17 +4661,17 @@
           "$ref": "#/components/parameters/OrganisationIdPathParam"
         },
         {
-          "$ref": "#/components/parameters/project_id"
+          "$ref": "#/components/parameters/ProjectIdPathParam"
         },
         {
           "$ref": "#/components/parameters/element_id"
         }
       ]
     },
-    "/organisations/{organisation_id}/projects/{project_id}/wbs/{element_id}/move": {
+    "/organisations/{organisation_id}/projects/{project_id}/wbs/elements/{element_id}/move": {
       "description": "Moves the element in the WBS to another position.",
       "post": {
-        "operationId": "moveProjectWbsElement",
+        "operationId": "moveWbsElement",
         "responses": {
           "200": {
             "description": "Ok",
@@ -4678,17 +4704,17 @@
           "$ref": "#/components/parameters/OrganisationIdPathParam"
         },
         {
-          "$ref": "#/components/parameters/project_id"
+          "$ref": "#/components/parameters/ProjectIdPathParam"
         },
         {
           "$ref": "#/components/parameters/element_id"
         }
       ]
     },
-    "/organisations/{organisation_id}/projects/{project_id}/wbs/{element_id}/update": {
+    "/organisations/{organisation_id}/projects/{project_id}/wbs/elements/{element_id}/update": {
       "description": "Updates the project WBS element",
       "post": {
-        "operationId": "updateProjectWbsElement",
+        "operationId": "updateWbsElement",
         "responses": {
           "200": {
             "description": "Updated",
@@ -4721,17 +4747,17 @@
           "$ref": "#/components/parameters/OrganisationIdPathParam"
         },
         {
-          "$ref": "#/components/parameters/project_id"
+          "$ref": "#/components/parameters/ProjectIdPathParam"
         },
         {
           "$ref": "#/components/parameters/element_id"
         }
       ]
     },
-    "/organisations/{organisation_id}/projects/{project_id}/wbs/{element_id}/delete": {
+    "/organisations/{organisation_id}/projects/{project_id}/wbs/elements/{element_id}/delete": {
       "description": "Deletes the project deliverable from the WBS",
       "post": {
-        "operationId": "deleteProjectWbsElement",
+        "operationId": "deleteWbsElement",
         "responses": {
           "204": {
             "description": "Deleted",
@@ -4755,7 +4781,7 @@
           "$ref": "#/components/parameters/OrganisationIdPathParam"
         },
         {
-          "$ref": "#/components/parameters/project_id"
+          "$ref": "#/components/parameters/ProjectIdPathParam"
         },
         {
           "$ref": "#/components/parameters/element_id"
@@ -4763,9 +4789,9 @@
       ]
     },
     "/organisations/{organisation_id}/projects/{project_id}/work-packages": {
-      "description": "List work packages",
+      "description": "Returns a list of a project's work packages.",
       "get": {
-        "operationId": "ListWorkPackages",
+        "operationId": "listWorkPackages",
         "responses": {
           "200": {
             "description": "Ok",
@@ -4787,14 +4813,14 @@
           "$ref": "#/components/parameters/OrganisationIdPathParam"
         },
         {
-          "$ref": "#/components/parameters/project_id"
+          "$ref": "#/components/parameters/ProjectIdPathParam"
         }
       ]
     },
     "/organisations/{organisation_id}/projects/{project_id}/work-packages/add": {
       "description": "Update work package properties",
       "post": {
-        "operationId": "AddWorkPackage",
+        "operationId": "addProjectWorkPackage",
         "responses": {
           "200": {
             "description": "Ok",
@@ -4822,14 +4848,14 @@
           "$ref": "#/components/parameters/OrganisationIdPathParam"
         },
         {
-          "$ref": "#/components/parameters/project_id"
+          "$ref": "#/components/parameters/ProjectIdPathParam"
         }
       ]
     },
     "/organisations/{organisation_id}/projects/{project_id}/work-packages/{workpackage_id}": {
       "description": "Get work package",
       "get": {
-        "operationId": "FindWorkPackageById",
+        "operationId": "getWorkPackage",
         "responses": {
           "200": {
             "description": "Ok",
@@ -4848,17 +4874,17 @@
           "$ref": "#/components/parameters/OrganisationIdPathParam"
         },
         {
-          "$ref": "#/components/parameters/project_id"
+          "$ref": "#/components/parameters/ProjectIdPathParam"
         },
         {
-          "$ref": "#/components/parameters/workpackage_id"
+          "$ref": "#/components/parameters/WorkpackageIdPathParam"
         }
       ]
     },
     "/organisations/{organisation_id}/projects/{project_id}/work-packages/{workpackage_id}/update": {
       "description": "Update work package",
       "post": {
-        "operationId": "UpdateWorkPackage",
+        "operationId": "updateWorkPackage",
         "responses": {
           "200": {
             "description": "Ok",
@@ -4891,17 +4917,17 @@
           "$ref": "#/components/parameters/OrganisationIdPathParam"
         },
         {
-          "$ref": "#/components/parameters/project_id"
+          "$ref": "#/components/parameters/ProjectIdPathParam"
         },
         {
-          "$ref": "#/components/parameters/workpackage_id"
+          "$ref": "#/components/parameters/WorkpackageIdPathParam"
         }
       ]
     },
     "/organisations/{organisation_id}/projects/{project_id}/work-packages/{workpackage_id}/delete": {
       "description": "Changes the status of a work package to deleted",
       "delete": {
-        "operationId": "MarkWorkPackageAsDeleted",
+        "operationId": "deleteWorkPackage",
         "responses": {
           "204": {
             "description": "Deleted"
@@ -4918,16 +4944,16 @@
           "$ref": "#/components/parameters/OrganisationIdPathParam"
         },
         {
-          "$ref": "#/components/parameters/project_id"
+          "$ref": "#/components/parameters/ProjectIdPathParam"
         },
         {
-          "$ref": "#/components/parameters/workpackage_id"
+          "$ref": "#/components/parameters/WorkpackageIdPathParam"
         }
       ]
     },
     "/organisations/{organisation_id}/invitations/add": {
       "post": {
-        "operationId": "AddInvitation",
+        "operationId": "addInvitation",
         "responses": {
           "201": {
             "description": "Invite somebody to join the organisation",
@@ -4958,7 +4984,7 @@
     },
     "/invitations/{invitation_id}/accept": {
       "post": {
-        "operationId": "AcceptInvitation",
+        "operationId": "acceptInvitation",
         "responses": {
           "200": {
             "description": "Accept an invitation to join an organisation",
@@ -4989,7 +5015,7 @@
     },
     "/invitations/{invitation_id}/reject": {
       "post": {
-        "operationId": "RejectInvitation",
+        "operationId": "rejectInvitation",
         "responses": {
           "200": {
             "description": "Reject an invitation to join an organisation",
@@ -5017,6 +5043,83 @@
           "$ref": "#/components/parameters/invitation_id_param"
         }
       ]
+    },
+    "/me/dashboard": {
+      "get": {
+        "operationId": "getMyDashboard",
+        "responses": {
+          "200": {
+            "description": "Returns the User Dashboard",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserDashboardEntity"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/me/projects": {
+      "get": {
+        "operationId": "listMyProjects",
+        "responses": {
+          "200": {
+            "description": "Returns the list of projects that the user is an owner or team member of.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ProjectEntity"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/me/organisations": {
+      "get": {
+        "operationId": "listMyOrganisations",
+        "responses": {
+          "200": {
+            "description": "Returns the list of organisations that the user is an owner or member of.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/OrganisationEntity"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/me/memberships": {
+      "get": {
+        "operationId": "listMyMemberships",
+        "responses": {
+          "200": {
+            "description": "Returns the list of user team memberships.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   }
 }
