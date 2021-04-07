@@ -2635,14 +2635,12 @@
       "WorkpackageStatusEnum": {
         "type": "string",
         "enum": [
-          [
-            "Proposed",
-            "Approved",
-            "Delivering",
-            "Completed",
-            "Deleted",
-            "Rejected"
-          ]
+          "Proposed",
+          "Approved",
+          "Delivering",
+          "Completed",
+          "Deleted",
+          "Rejected"
         ]
       },
       "WorkpackageEntity": {

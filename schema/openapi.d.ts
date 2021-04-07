@@ -717,7 +717,7 @@ declare namespace Components {
       updated_at: number;
       version: number;
     }
-    export type WorkpackageStatusEnum = "Proposed,Approved,Delivering,Completed,Deleted,Rejected";
+    export type WorkpackageStatusEnum = "Proposed" | "Approved" | "Delivering" | "Completed" | "Deleted" | "Rejected";
   }
 }
 declare namespace Paths {
